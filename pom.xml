@@ -4,7 +4,7 @@
   <groupId>org.onap.dmaap.buscontroller</groupId>
   <artifactId>buscontroller</artifactId>
   <version>${artifact.version}</version>
-  <name>buscontroller</name>
+  <name>dmaap-buscontroller</name>
   <parent>
     <groupId>org.onap.oparent</groupId>
     <artifactId>oparent</artifactId>
