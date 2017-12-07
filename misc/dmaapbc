@@ -34,6 +34,12 @@ config() {
 	fi
 	cd $APP_ROOT
 	source $CONTAINER_CONFIG
+	if [ ! -f $APP_ROOT/misc/cert-client-init.sh ]
+	then
+		echo "Did not find $APP_ROOT/misc/cert-client-init.sh to append to truststore"
+		exit 1
+	fi
+	$APP_ROOT/misc/cert-client-init.sh
 	. misc/dmaapbc.properties.tmpl > etc/dmaapbc.properties
     . misc/PolicyEngineApi.properties.tmpl > config/PolicyEngineApi.properties
 	set +x

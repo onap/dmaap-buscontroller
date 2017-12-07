@@ -76,16 +76,52 @@ DmaapName:	${DMAAPBC_INSTANCE_NAME:-FTLIST}
 #
 DR.provhost:	${DMAAPBC_DRPROV_FQDN:-dcae-drps.domain.notset.com}
 #
+# handling of feed delete
+# DeleteOnDR - means use the DR API to DELETE a feed. (default for backwards compatibility)
+# SimulateDelete - means preserve the feed on DR (after cleaning it up), and mark as DELETED in DBCL.  Better for cfy environments
+Feed.deleteHandling: ${DMAAPBC_FEED_DELETE:-DeleteOnDR}
+
+################################################################################
+# MR Related Properties:
+#
+#   Value of the CNAME DNS entry which resolves to the primary central MR cluster (when there are more than one central clusters).
+#   if there is only one MR cluster in an environment, set this to the DNS name for that cluster
+#
+MR.CentralCname:  ${DMAAPBC_MR_CNAME:-notSet.onap.org}
+#
+#   MR Client Delete Level thoroughness:
+#   0 = don't delete
+#   1 = delete from persistent store
+#   2 = delete from persistent store (DB) and authorization store (AAF)
+MR.ClientDeleteLevel: 1
+#
+#   MR Topic Factory Namespace
+#
+MR.TopicFactoryNS: org.onap.dcae.dmaap.topicFactory
+#
+#   MR TopicMgr Role
+MR.TopicMgrRole:    org.onap.dmaapBC.TopicMgr
+
+#   MR topic name style
+MR.topicStyle:	FQTN_LEGACY_FORMAT
+
+#   MR topic ProjectID
+MR.projectID:  23456
+#
+# end of MR Related Properties
+################################################################################
+
+#
 #	The Role and credentials of the MirrorMaker Provisioner.  This is used by DMaaP Bus Controller to pub to the provisioning topic
 #   Not part of 1701
 #
-#MM.ProvRole: ${DMAAPBC_MMPROV_ROLE:-org.openecomp.dmaapBC.MMprov.prov}
-#MM.ProvUserMechId: ${DMAAPBC_MMPROV_ID:-idNotSet@namespaceNotSet}
-#MM.ProvUserPwd: ${DMAAPBC_MMPROV_PWD:-enc:fMxh-hzYZldbtyXumQq9aJU08SslhbM6mXtt}
+MM.ProvRole: ${DMAAPBC_MMPROV_ROLE:-org.onap.dmaapBC.MMprov.prov}
+MM.ProvUserMechId: ${DMAAPBC_MMPROV_ID:-idNotSet@namespaceNotSet}
+MM.ProvUserPwd: ${DMAAPBC_MMPROV_PWD:-pwdNotSet}
 #
 #	The Role of the MirrorMaker Agent. This is used by MM to sub to provisioning topic
 #
-MM.AgentRole: ${DMAAPBC_MMAGENT_ROLE:-org.openecomp.dmaapBC.MMagent.agent}
+MM.AgentRole: ${DMAAPBC_MMAGENT_ROLE:-org.onap.dmaapBC.MMagent.agent}
 #################
 # AAF Properties:
 #
@@ -107,9 +143,20 @@ MM.AgentRole: ${DMAAPBC_MMAGENT_ROLE:-org.openecomp.dmaapBC.MMagent.agent}
 #
 CredentialCodecKeyfile:	${DMAAPBC_CODEC_KEYFILE:-etc/LocalKey}
 #
+# This overrides the Class used for Decryption.
+# This allows for a plugin encryption/decryption method if needed.
+# Call this Class for decryption at runtime.
+#AafDecryption.Class: com.company.proprietaryDecryptor 
+
+#
+# This overrides the Class used for API Permission check.
+# This allows for a plugin policy check, if needed
+#ApiPermission.Class: com.company.policy.DecisionPolicy
+
+#
 # URL of AAF environment to use.
 #
-aaf.URL:	${DMAAPBC_AAF_URL:-https://authentication.simpledemo.openecomp.org:8095/proxy/}
+aaf.URL:	${DMAAPBC_AAF_URL:-https://authentication.simpledemo.onap.org:8095/proxy/}
 #
 # TopicMgr mechid@namespace
 #
@@ -117,7 +164,7 @@ aaf.TopicMgrUser:	${DMAAPBC_TOPICMGR_USER:-idNotSet@namespaceNotSet}
 #
 # TopicMgr password
 # 
-aaf.TopicMgrPassword:	${DMAAPBC_TOPICMGR_PWD:-enc:zyRL9zbI0py3rJAjMS0dFOnYfEw_mJhO}
+aaf.TopicMgrPassword:	${DMAAPBC_TOPICMGR_PWD:-pwdNotSet}
 #
 # Bus Controller Namespace Admin  mechid@namespace
 #
@@ -125,7 +172,7 @@ aaf.AdminUser:	${DMAAPBC_ADMIN_USER:-idNotSet@namespaceNotSet}
 #
 # Bus Controller Namespace Admin password
 #
-aaf.AdminPassword:	${DMAAPBC_ADMIN_PWD:-enc:YEaHwOJrwhDY8a6usetlhbB9mEjUq9m}
+aaf.AdminPassword:	${DMAAPBC_ADMIN_PWD:-pwdNotSet}
 #
 # endof AAF Properties
 #################
@@ -139,13 +186,17 @@ UsePE: ${DMAAPBC_PE_ENABLED:-false}
 # where X is:  TEST= UAT, PROD = PROD, DEVL = TEST
 #
 PeAafEnvironment: ${DMAAPBC_PE_AAF_ENV:-DEVL}
+PeAafUrl.DEVL:  https://aafdev.onap.org:8095/proxy/
+PeAafUrl.TEST:  https://aafist..onap.org:8095/proxy/
+PeAafUrl.PROD:  https://aafprod.onap.org:8095/proxy/
+
 #
 # Name of PolicyEngineApi properties file
 PolicyEngineProperties: config/PolicyEngineApi.properties
 #
 # Namespace for URI values for API used to create AAF permissions
 # e.g. if ApiNamespace is X.Y..dmaapBC.api then for URI /topics we create an AAF perm X.Y..dmaapBC.api.topics
-ApiNamespace: org.openecomp.dmaapBC.api
+ApiNamespace: ${DMAAPBC_API_NAMESPACE:-org.onap.dmaapBC.api}
 #
 # endof PolicyEngineProperties
 #################
