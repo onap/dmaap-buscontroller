@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.onap.dmaap.buscontroller</groupId>
   <artifactId>buscontroller</artifactId>
-  <version>${artifact.version}</version>
+  <version>1.0.1</version>
   <name>dmaap-buscontroller</name>
   <parent>
     <groupId>org.onap.oparent</groupId>
@@ -15,6 +15,30 @@
     <finalName>buscontroller</finalName>
 
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0-M1</version>
+        <executions>
+          <execution>
+            <id>enforce-no-snapshots</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <requireReleaseDeps>
+                  <message>No Snapshots Allowed!</message>
+                  <excludes>
+                    <exclude>org.onap.dmaap.dbcapi:dbcapi</exclude>
+                  </excludes>
+                </requireReleaseDeps>
+              </rules>
+              <fail>true</fail>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
 
     </plugins>
     <pluginManagement>
@@ -160,7 +184,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jettyVersion>9.3.7.v20160115</jettyVersion>
     <eelf.version>0.0.1</eelf.version>
-    <artifact.version>1.0.1-SNAPSHOT</artifact.version>
+    <artifact.version>1.0.1</artifact.version>
 		<!--  SONAR  -->
 		 <jacoco.version>0.7.7.201606060606</jacoco.version>
 	    <sonar-jacoco-listeners.version>3.2</sonar-jacoco-listeners.version>

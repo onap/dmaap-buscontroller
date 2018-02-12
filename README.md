@@ -29,7 +29,10 @@ We can utilize docker to build and register the buscontroller container in a loc
 Note the Dockerfile follows ONAP convention of running app as root.
 
 ```
-<following a successful build, assuming DOCKER_HOST is set appropriately for your environment>
+<following a successful build, copy all dependencies >
+$ mvn dependency:copy-dependencies
+
+<assuming DOCKER_HOST is set appropriately for your environment>
 
 $ docker build -f ./Dockerfile .
 ```
