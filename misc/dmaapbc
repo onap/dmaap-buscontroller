@@ -86,7 +86,13 @@ start() {
 	if [ "$PIDS" = "" ]
 	then
 		echo $COMPONENT startup failed
-		tail -100 $APP_ROOT/logs/dmaap*.log
+		ls -l $APP_ROOT/logs/EELF
+		echo "------------ error.log ---------------"
+		cat $APP_ROOT/logs/EELF/error.log
+		echo "------------ server.log ---------------"
+		cat $APP_ROOT/logs/EELF/server.log
+		echo "------------ tail -100 application.log ---------------"
+		tail -100 $APP_ROOT/logs/EELF/application.log
 	else
 		echo $COMPONENT started
 	fi
