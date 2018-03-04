@@ -150,6 +150,20 @@
 		 </executions>
       </plugin>
 
+	<!-- for Distribution management -->
+		<plugin>
+		  <groupId>org.apache.maven.plugins</groupId>
+		  <artifactId>maven-site-plugin</artifactId>
+		  <version>3.6</version>
+		  <dependencies>
+			<dependency>
+			  <groupId>org.apache.maven.wagon</groupId>
+			  <artifactId>wagon-webdav-jackrabbit</artifactId>
+			  <version>2.10</version>
+			</dependency>
+		  </dependencies>
+		</plugin>
+
     </plugins>
     <pluginManagement>
       <plugins>
@@ -290,6 +304,13 @@
       </plugin>
     </plugins>
   </reporting>
+
+  <distributionManagement>
+	<site>
+		<id>ecomp-site</id>
+		<url>dav:${nexusproxy}${sitePath}</url>
+	</site>
+  </distributionManagement>
   <properties>
     <jersey.version>2.16</jersey.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -312,6 +333,9 @@
 		 <skip.docker.push>true</skip.docker.push>
 		 <nexusproxy>https://nexus.onap.org</nexusproxy>
 		 <docker.push.registry>nexus3.onap.org:10003</docker.push.registry>
+
+	<!-- for Distribution Management -->
+		<sitePath>/content/sites/site/org/onap/dmaap/buscontroller/${artifact.version}</sitePath>
   </properties>
   <description>Packaging Platform (DMaaP) Bus Controller API as a Docker container. </description>
 </project>
