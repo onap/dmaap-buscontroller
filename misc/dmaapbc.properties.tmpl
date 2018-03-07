@@ -2,6 +2,8 @@ cat <<!EOF
 #
 #	Configuration parameters fixed at startup for the DMaaP Bus Controller
 #
+# CSIT TESTING
+csit: ${DMAAPBC_CSIT:-No}
 #
 #	URI to retrieve dynamic DR configuration
 #
@@ -185,7 +187,8 @@ UsePE: ${DMAAPBC_PE_ENABLED:-false}
 # Argument to decisionAttributes.put("AAF_ENVIRONMENT", X); 
 # where X is:  TEST= UAT, PROD = PROD, DEVL = TEST
 #
-PeAafEnvironment: ${DMAAPBC_PE_AAF_ENV:-DEVL}
+PeAafEnvironment: ${DMAAPBC_PE_AAF_ENV:-CSIT}
+PeAafUrl.CSIT:  ${DMAAPBC_AAF_URL:-http://localhost:8095/proxy/}
 PeAafUrl.DEVL:  https://aafdev.onap.org:8095/proxy/
 PeAafUrl.TEST:  https://aafist..onap.org:8095/proxy/
 PeAafUrl.PROD:  https://aafprod.onap.org:8095/proxy/
