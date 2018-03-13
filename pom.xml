@@ -37,10 +37,43 @@
               <fail>true</fail>
             </configuration>
           </execution>
-            </executions>
+        </executions>
       </plugin>
+
+           <!-- Package an Uber jar -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.4.3</version>
+                <executions>
+                    <!-- Run shade goal on package phase -->
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <transformers>
+                                <!-- NOTE: Need the following transformer else gets "Could not resolve type id 'https' into a subtype" error
+                                Solution found from here:
+                                http://stackoverflow.com/questions/27543060/why-does-dropwizard-configuration-is-not-working
+                                Some more context here:
+                                https://github.com/dropwizard/dropwizard/issues/455 -->
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                                <!-- add Main-Class to manifest file -->
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>org.onap.dmaap.dbcapi.server.Main</mainClass>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+
+<!--Special goal to populate target/libs with dependencies to place in docker image 
+	not needed anymore since we are using shade uber jar
 	  <plugin>
-        <!--Special goal to populate target/libs with dependencies to place in docker image -->
 	    <groupId>org.apache.maven.plugins</groupId>
 	    <artifactId>maven-dependency-plugin</artifactId>
 	    <executions>
@@ -55,66 +88,15 @@
 	      </execution>
        </executions>
       </plugin>
-
-	<!-- for Distribution management -->
-		<plugin>
-		  <groupId>org.apache.maven.plugins</groupId>
-		  <artifactId>maven-site-plugin</artifactId>
-		  <version>3.6</version>
-		  <dependencies>
-			<dependency>
-			  <groupId>org.apache.maven.wagon</groupId>
-			  <artifactId>wagon-webdav-jackrabbit</artifactId>
-			  <version>2.10</version>
-			</dependency>
-		  </dependencies>
-		</plugin>
-
-    </plugins>
-    <pluginManagement>
-      <plugins>
-        <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
-        <plugin>
-          <groupId>org.eclipse.m2e</groupId>
-          <artifactId>lifecycle-mapping</artifactId>
-          <version>1.0.0</version>
-          <configuration>
-            <lifecycleMappingMetadata>
-              <pluginExecutions>
-                <pluginExecution>
-                  <pluginExecutionFilter>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-dependency-plugin</artifactId>
-                    <versionRange>[2.10,)</versionRange>
-					    <phase>install</phase>
-                        <goals>
-                          <goal>copy-dependencies</goal>
-                        </goals>
-                  </pluginExecutionFilter>
-                  <action>
-                    <ignore/>
-                  </action>
-                </pluginExecution>
-              </pluginExecutions>
-            </lifecycleMappingMetadata>
-          </configuration>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-  </build>
-  <profiles>
-   <profile>
-    <id>docker</id>
-	<build>
-	 <plugins>
+-->
       <plugin>
 		<groupId>com.spotify</groupId>
 		 <artifactId>docker-maven-plugin</artifactId>
 		 <version>1.0.0</version>
 		 <configuration>
-				 <imageName>${docker.image}</imageName>
+				 <imageName>${onap.nexus.dockerregistry.daily}/${docker.image}</imageName>
 			     <dockerDirectory>${project.basedir}</dockerDirectory>
-				 <!--   <serverId>docker-hub</serverId>   -->
+				 <serverId>${onap.nexus.dockerregistry.daily}</serverId>
 				 <imageTags>
 						 <imageTag>${artifact.version}</imageTag>
 						 <imageTag>latest</imageTag>
@@ -129,13 +111,12 @@
 									<exclude>pom.xml</exclude>
 								</excludes>
 						 </resource>
-<!-- what is this?
+
 						 <resource>
 								 <targetPath>/</targetPath>
 								 <directory>${project.build.directory}</directory>
 								 <include>**/**</include>
 						 </resource>
- -->
 				 </resources>
 		 </configuration>
 		 <executions>
@@ -201,10 +182,53 @@
 				 </execution>
 		 </executions>
       </plugin>
-	 </plugins>
-	</build>
-   </profile>
-  </profiles>
+
+	<!-- for Distribution management -->
+		<plugin>
+		  <groupId>org.apache.maven.plugins</groupId>
+		  <artifactId>maven-site-plugin</artifactId>
+		  <version>3.6</version>
+		  <dependencies>
+			<dependency>
+			  <groupId>org.apache.maven.wagon</groupId>
+			  <artifactId>wagon-webdav-jackrabbit</artifactId>
+			  <version>2.10</version>
+			</dependency>
+		  </dependencies>
+		</plugin>
+
+    </plugins>
+    <pluginManagement>
+      <plugins>
+        <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+        <plugin>
+          <groupId>org.eclipse.m2e</groupId>
+          <artifactId>lifecycle-mapping</artifactId>
+          <version>1.0.0</version>
+          <configuration>
+            <lifecycleMappingMetadata>
+              <pluginExecutions>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <versionRange>[2.10,)</versionRange>
+					    <phase>install</phase>
+                        <goals>
+                          <goal>copy-dependencies</goal>
+                        </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore/>
+                  </action>
+                </pluginExecution>
+              </pluginExecutions>
+            </lifecycleMappingMetadata>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
   <dependencyManagement>
     <dependencies>
  
@@ -338,8 +362,8 @@
 
 	<!-- docker image -->
 		 <docker.image>onap/dmaap/buscontroller</docker.image>
-		 <skip.docker.build>true</skip.docker.build>
-		 <skip.docker.push>true</skip.docker.push>
+		 <skip.docker.build>false</skip.docker.build>
+		 <skip.docker.push>false</skip.docker.push>
 		 <nexusproxy>https://nexus.onap.org</nexusproxy>
 		 <docker.push.registry>nexus3.onap.org:10003</docker.push.registry>
 
