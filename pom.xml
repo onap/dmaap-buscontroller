@@ -37,7 +37,7 @@
               <fail>true</fail>
             </configuration>
           </execution>
-        </executions>
+            </executions>
       </plugin>
 	  <plugin>
         <!--Special goal to populate target/libs with dependencies to place in docker image -->
@@ -55,6 +55,58 @@
 	      </execution>
        </executions>
       </plugin>
+
+	<!-- for Distribution management -->
+		<plugin>
+		  <groupId>org.apache.maven.plugins</groupId>
+		  <artifactId>maven-site-plugin</artifactId>
+		  <version>3.6</version>
+		  <dependencies>
+			<dependency>
+			  <groupId>org.apache.maven.wagon</groupId>
+			  <artifactId>wagon-webdav-jackrabbit</artifactId>
+			  <version>2.10</version>
+			</dependency>
+		  </dependencies>
+		</plugin>
+
+    </plugins>
+    <pluginManagement>
+      <plugins>
+        <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+        <plugin>
+          <groupId>org.eclipse.m2e</groupId>
+          <artifactId>lifecycle-mapping</artifactId>
+          <version>1.0.0</version>
+          <configuration>
+            <lifecycleMappingMetadata>
+              <pluginExecutions>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-dependency-plugin</artifactId>
+                    <versionRange>[2.10,)</versionRange>
+					    <phase>install</phase>
+                        <goals>
+                          <goal>copy-dependencies</goal>
+                        </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore/>
+                  </action>
+                </pluginExecution>
+              </pluginExecutions>
+            </lifecycleMappingMetadata>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+  <profiles>
+   <profile>
+    <id>docker</id>
+	<build>
+	 <plugins>
       <plugin>
 		<groupId>com.spotify</groupId>
 		 <artifactId>docker-maven-plugin</artifactId>
@@ -149,53 +201,10 @@
 				 </execution>
 		 </executions>
       </plugin>
-
-	<!-- for Distribution management -->
-		<plugin>
-		  <groupId>org.apache.maven.plugins</groupId>
-		  <artifactId>maven-site-plugin</artifactId>
-		  <version>3.6</version>
-		  <dependencies>
-			<dependency>
-			  <groupId>org.apache.maven.wagon</groupId>
-			  <artifactId>wagon-webdav-jackrabbit</artifactId>
-			  <version>2.10</version>
-			</dependency>
-		  </dependencies>
-		</plugin>
-
-    </plugins>
-    <pluginManagement>
-      <plugins>
-        <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
-        <plugin>
-          <groupId>org.eclipse.m2e</groupId>
-          <artifactId>lifecycle-mapping</artifactId>
-          <version>1.0.0</version>
-          <configuration>
-            <lifecycleMappingMetadata>
-              <pluginExecutions>
-                <pluginExecution>
-                  <pluginExecutionFilter>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-dependency-plugin</artifactId>
-                    <versionRange>[2.10,)</versionRange>
-					    <phase>install</phase>
-                        <goals>
-                          <goal>copy-dependencies</goal>
-                        </goals>
-                  </pluginExecutionFilter>
-                  <action>
-                    <ignore/>
-                  </action>
-                </pluginExecution>
-              </pluginExecutions>
-            </lifecycleMappingMetadata>
-          </configuration>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-  </build>
+	 </plugins>
+	</build>
+   </profile>
+  </profiles>
   <dependencyManagement>
     <dependencies>
  
