@@ -12,7 +12,7 @@ RUN \
 WORKDIR ${insdir}
 USER root
 COPY target/buscontroller.jar ${insdir}/lib/
-COPY target/dependency/*.jar ${insdir}/lib/
+# COPY target/dependency/*.jar ${insdir}/lib/
 # COPY src/main/resources/log4j.properties ${insdir}/etc/
 # COPY www/ ${insdir}/www/
 # COPY target/site/apidocs/ ${insdir}/www/doc/

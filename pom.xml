@@ -37,23 +37,83 @@
               <fail>true</fail>
             </configuration>
           </execution>
-            </executions>
+        </executions>
       </plugin>
-	  <plugin>
-        <!--Special goal to populate target/libs with dependencies to place in docker image -->
-	    <groupId>org.apache.maven.plugins</groupId>
-	    <artifactId>maven-dependency-plugin</artifactId>
-	    <executions>
-	      <execution>
-		    <phase>install</phase>
-		    <goals>
-		      <goal>copy-dependencies</goal>
-		    </goals>
-		    <configuration>
-		      <outputDirectory>${project.build.directory}/dependency</outputDirectory>
-		    </configuration>
-	      </execution>
-       </executions>
+
+           <!-- Package an Uber jar -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.4.3</version>
+                <executions>
+                    <!-- Run shade goal on package phase -->
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <transformers>
+                                <!-- NOTE: Need the following transformer else gets "Could not resolve type id 'https' into a subtype" error
+                                Solution found from here:
+                                http://stackoverflow.com/questions/27543060/why-does-dropwizard-configuration-is-not-working
+                                Some more context here:
+                                https://github.com/dropwizard/dropwizard/issues/455 -->
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                                <!-- add Main-Class to manifest file -->
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>org.onap.dmaap.dbcapi.server.Main</mainClass>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+
+
+      <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.7</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ecomp-staging</serverId>
+                    <nexusUrl>${nexusproxy}</nexusUrl>
+                    <stagingProfileId>176c31dfe190a</stagingProfileId>
+                </configuration>
+            </plugin>
+
+      <plugin>
+		<groupId>com.spotify</groupId>
+		 <artifactId>docker-maven-plugin</artifactId>
+		 <version>1.0.0</version>
+		 <configuration>
+				 <imageName>${onap.nexus.dockerregistry.daily}/${docker.image}</imageName>
+			     <dockerDirectory>${project.basedir}</dockerDirectory>
+				 <serverId>${onap.nexus.dockerregistry.daily}</serverId>
+				 <imageTags>
+						 <imageTag>${artifact.version}</imageTag>
+						 <imageTag>latest</imageTag>
+				 </imageTags>
+				 <forceTags>true</forceTags>
+				 <resources>
+						 <resource>
+								 <targetPath>/</targetPath>
+								 <directory>${project.basedir}</directory>
+								 <excludes>
+									<exclude>target/**/*</exclude>
+									<exclude>pom.xml</exclude>
+								</excludes>
+						 </resource>
+
+						 <resource>
+								 <targetPath>/</targetPath>
+								 <directory>${project.build.directory}</directory>
+								 <include>**/**</include>
+						 </resource>
+				 </resources>
+		 </configuration>
       </plugin>
 
 	<!-- for Distribution management -->
@@ -102,109 +162,6 @@
       </plugins>
     </pluginManagement>
   </build>
-  <profiles>
-   <profile>
-    <id>docker</id>
-	<build>
-	 <plugins>
-      <plugin>
-		<groupId>com.spotify</groupId>
-		 <artifactId>docker-maven-plugin</artifactId>
-		 <version>1.0.0</version>
-		 <configuration>
-				 <imageName>${docker.image}</imageName>
-			     <dockerDirectory>${project.basedir}</dockerDirectory>
-				 <!--   <serverId>docker-hub</serverId>   -->
-				 <imageTags>
-						 <imageTag>${artifact.version}</imageTag>
-						 <imageTag>latest</imageTag>
-				 </imageTags>
-				 <forceTags>true</forceTags>
-				 <resources>
-						 <resource>
-								 <targetPath>/</targetPath>
-								 <directory>${project.basedir}</directory>
-								 <excludes>
-									<exclude>target/**/*</exclude>
-									<exclude>pom.xml</exclude>
-								</excludes>
-						 </resource>
-<!-- what is this?
-						 <resource>
-								 <targetPath>/</targetPath>
-								 <directory>${project.build.directory}</directory>
-								 <include>**/**</include>
-						 </resource>
- -->
-				 </resources>
-		 </configuration>
-		 <executions>
-				 <execution>
-						 <id>build-image</id>
-						 <phase>package</phase>
-						 <goals>
-								 <goal>build</goal>
-						 </goals>
-						 <configuration>
-								 <skipDockerBuild>${skip.docker.build}</skipDockerBuild>
-						 </configuration>
-				 </execution>
-
-				 <execution>
-						 <id>tag-image-project-version</id>
-						 <phase>package</phase>
-						 <goals>
-								 <goal>tag</goal>
-						 </goals>
-						 <configuration>
-								 <image>${docker.image}</image>
-								 <newName>${docker.push.registry}/${docker.image}:${artifact.version}</newName>
-								 <skipDockerTag>${skip.docker.push}</skipDockerTag>
-						 </configuration>
-				 </execution>
-
-				 <execution>
-						 <id>tag-image-latest</id>
-						 <phase>package</phase>
-						 <goals>
-								 <goal>tag</goal>
-						 </goals>
-						 <configuration>
-								 <image>${docker.image}</image>
-								 <newName>${docker.push.registry}/${docker.image}:latest</newName>
-								 <skipDockerTag>${skip.docker.push}</skipDockerTag>
-						 </configuration>
-				 </execution>
-
-				 <execution>
-						 <id>push-image-latest</id>
-						 <phase>deploy</phase>
-						 <goals>
-								 <goal>push</goal>
-						 </goals>
-						 <configuration>
-								 <imageName>${docker.push.registry}/${docker.image}:${artifact.version}</imageName>
-								 <skipDockerPush>${skip.docker.push}</skipDockerPush>
-						 </configuration>
-				 </execution>
-
-				 <execution>
-						 <id>push-image</id>
-						 <phase>deploy</phase>
-						 <goals>
-								 <goal>push</goal>
-						 </goals>
-						 <configuration>
-								 <imageName>${docker.push.registry}/${docker.image}:latest</imageName>
-								 <skipDockerPush>${skip.docker.push}</skipDockerPush>
-						 </configuration>
-				 </execution>
-		 </executions>
-      </plugin>
-	 </plugins>
-	</build>
-   </profile>
-  </profiles>
   <dependencyManagement>
     <dependencies>
  
@@ -338,8 +295,7 @@
 
 	<!-- docker image -->
 		 <docker.image>onap/dmaap/buscontroller</docker.image>
-		 <skip.docker.build>true</skip.docker.build>
-		 <skip.docker.push>true</skip.docker.push>
+
 		 <nexusproxy>https://nexus.onap.org</nexusproxy>
 		 <docker.push.registry>nexus3.onap.org:10003</docker.push.registry>
 
