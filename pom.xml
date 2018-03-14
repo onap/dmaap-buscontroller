@@ -11,7 +11,7 @@
     <version>0.1.1</version>
     <relativePath/>
   </parent>
-  <build>
+    <build>
     <finalName>buscontroller</finalName>
 
     <plugins>
@@ -84,37 +84,6 @@
                 </configuration>
             </plugin>
 
-      <plugin>
-		<groupId>com.spotify</groupId>
-		 <artifactId>docker-maven-plugin</artifactId>
-		 <version>1.0.0</version>
-		 <configuration>
-				 <imageName>${onap.nexus.dockerregistry.daily}/${docker.image}</imageName>
-			     <dockerDirectory>${project.basedir}</dockerDirectory>
-				 <serverId>${onap.nexus.dockerregistry.daily}</serverId>
-				 <imageTags>
-						 <imageTag>${artifact.version}</imageTag>
-						 <imageTag>latest</imageTag>
-				 </imageTags>
-				 <forceTags>true</forceTags>
-				 <resources>
-						 <resource>
-								 <targetPath>/</targetPath>
-								 <directory>${project.basedir}</directory>
-								 <excludes>
-									<exclude>target/**/*</exclude>
-									<exclude>pom.xml</exclude>
-								</excludes>
-						 </resource>
-
-						 <resource>
-								 <targetPath>/</targetPath>
-								 <directory>${project.build.directory}</directory>
-								 <include>**/**</include>
-						 </resource>
-				 </resources>
-		 </configuration>
-      </plugin>
 
 	<!-- for Distribution management -->
 		<plugin>
@@ -162,6 +131,46 @@
       </plugins>
     </pluginManagement>
   </build>
+	<profiles>
+	<profile>
+		<id>docker</id>
+		<build>
+			<plugins>
+      <plugin>
+		<groupId>com.spotify</groupId>
+		 <artifactId>docker-maven-plugin</artifactId>
+		 <version>1.0.0</version>
+		 <configuration>
+				 <imageName>${onap.nexus.dockerregistry.daily}/${docker.image}</imageName>
+			     <dockerDirectory>${project.basedir}</dockerDirectory>
+				 <serverId>${onap.nexus.dockerregistry.daily}</serverId>
+				 <imageTags>
+						 <imageTag>${artifact.version}</imageTag>
+						 <imageTag>latest</imageTag>
+				 </imageTags>
+				 <forceTags>true</forceTags>
+				 <resources>
+						 <resource>
+								 <targetPath>/</targetPath>
+								 <directory>${project.basedir}</directory>
+								 <excludes>
+									<exclude>target/**/*</exclude>
+									<exclude>pom.xml</exclude>
+								</excludes>
+						 </resource>
+
+						 <resource>
+								 <targetPath>/</targetPath>
+								 <directory>${project.build.directory}</directory>
+								 <include>**/**</include>
+						 </resource>
+				 </resources>
+		 </configuration>
+      </plugin>
+			</plugins>
+		</build>
+	</profile>
+	</profiles>
   <dependencyManagement>
     <dependencies>
  
