@@ -32,7 +32,7 @@ Note the Dockerfile follows ONAP convention of running app as root.
 
 <assuming DOCKER_HOST is set appropriately for your environment>
 
-$ mvn docker:build
+$ mvn -P docker docker:build
 ```
 
 

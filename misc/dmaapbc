@@ -15,9 +15,9 @@ MAIN=org.onap.dmaap.dbcapi.server.Main
 
 
 pids() {
-	#set -x
+	set -x
 	ps -ef | grep java | grep $MAIN | sed -e 's/[^ ]* *//' -e 's/ .*//'
-	#set +x
+	set +x
 }
 
 config() {
@@ -81,22 +81,10 @@ start() {
 	# JVM flags
 #old line from Dockerfile...keep for reference only
 	FLAGS="-cp etc:lib/* -Dlog4j.configuration=etc/log4j.properties -Ddmaapbc.properties=etc/dmaapbc.properties  -Dhttps.protocols=TLSv1.2 -Dhttps.cipherSuites=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256"
-	nohup java $FLAGS $MAIN </dev/null >/dev/null 2>&1 &
+	#nohup java $FLAGS $MAIN </dev/null >/dev/null 2>&1 &
+	nohup java $FLAGS $MAIN </dev/null  &
 	sleep 5
 	PIDS=`pids`
-	if [ "$PIDS" = "" ]
-	then
-		echo $COMPONENT startup failed
-		ls -l $APP_ROOT/logs/EELF
-		echo "------------ error.log ---------------"
-		cat $APP_ROOT/logs/EELF/error.log
-		echo "------------ server.log ---------------"
-		cat $APP_ROOT/logs/EELF/server.log
-		echo "------------ tail -100 application.log ---------------"
-		tail -100 $APP_ROOT/logs/EELF/application.log
-	else
-		echo $COMPONENT started
-	fi
 	set +x
 }
 
@@ -162,4 +150,11 @@ case "$1" in
 	exit 1
 	;;
 esac
+		ls -l $APP_ROOT/logs/EELF
+		echo "------------ tail -100 error.log ---------------"
+		tail -100  $APP_ROOT/logs/EELF/error.log
+		echo "------------ tail -100 server.log ---------------"
+		tail -100  $APP_ROOT/logs/EELF/server.log
+		echo "------------ tail -100 application.log ---------------"
+		tail -100 $APP_ROOT/logs/EELF/application.log
 exit 0

@@ -20,7 +20,7 @@ IntHttpPort:	${DMAAPBC_INT_HTTP_PORT:-8080}
 #	The port number for https as seen within the server
 #   Set to 0 if no certificate is available yet...
 #
-IntHttpsPort:	${DMAAPBC_INT_HTTPS_PORT:-8443}
+IntHttpsPort:	${DMAAPBC_INT_HTTPS_PORT:-0}
 #
 #	The external port number for https taking port mapping into account
 #
@@ -60,7 +60,7 @@ QuiesceFile:	etc/SHUTDOWN
 #
 #	Enable postgress
 #
-UsePGSQL:	${DMAAPBC_PG_ENABLED:-true}
+UsePGSQL:	${DMAAPBC_PG_ENABLED:-false}
 #
 #	The host for postgres access
 #
@@ -89,7 +89,7 @@ Feed.deleteHandling: ${DMAAPBC_FEED_DELETE:-DeleteOnDR}
 #   Value of the CNAME DNS entry which resolves to the primary central MR cluster (when there are more than one central clusters).
 #   if there is only one MR cluster in an environment, set this to the DNS name for that cluster
 #
-MR.CentralCname:  ${DMAAPBC_MR_CNAME:-notSet.onap.org}
+MR.CentralCname:  ${DMAAPBC_MR_CNAME:-dmaap.onap}
 #
 #   MR Client Delete Level thoroughness:
 #   0 = don't delete

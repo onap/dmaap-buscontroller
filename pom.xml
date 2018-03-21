@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.onap.dmaap.buscontroller</groupId>
   <artifactId>buscontroller</artifactId>
-  <version>1.0.1</version>
+  <version>${artifact.version}</version>
   <name>dmaap-buscontroller</name>
   <parent>
     <groupId>org.onap.oparent</groupId>
@@ -53,6 +53,20 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
+							<!-- this filter section is needed to avoid runtime error:
+								java.lang.SecurityException: Invalid signature file digest for Manifest main attributes
+								suggestion found at: https://stackoverflow.com/q/999489 
+							-->
+							<filters>
+								<filter>
+									<artifact>*:*</artifact>
+									<excludes>
+										<exclude>META-INF/*.SF</exclude>
+										<exclude>META-INF/*.DSA</exclude>
+										<exclude>META-INF/*.RSA</exclude>
+									</excludes>
+								</filter>
+							</filters>
                             <transformers>
                                 <!-- NOTE: Need the following transformer else gets "Could not resolve type id 'https' into a subtype" error
                                 Solution found from here:
@@ -256,7 +270,7 @@
 	<dependency>
 		<groupId>org.onap.dmaap.dbcapi</groupId>
 		<artifactId>dbcapi</artifactId>
-		<version>1.0.1-SNAPSHOT</version>
+		<version>1.0.2-SNAPSHOT</version>
 	</dependency>
   </dependencies>
   <reporting>
@@ -291,7 +305,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jettyVersion>9.3.7.v20160115</jettyVersion>
     <eelf.version>0.0.1</eelf.version>
-    <artifact.version>1.0.1</artifact.version>
+    <artifact.version>1.0.2</artifact.version>
 		<!--  SONAR  -->
 		 <jacoco.version>0.7.7.201606060606</jacoco.version>
 	    <sonar-jacoco-listeners.version>3.2</sonar-jacoco-listeners.version>
