@@ -14,6 +14,7 @@ CONTAINER_CONFIG=/opt/app/config/conf
 MAIN=org.onap.dmaap.dbcapi.server.Main 
 
 
+
 pids() {
 	set -x
 	ps -ef | grep java | grep $MAIN | sed -e 's/[^ ]* *//' -e 's/ .*//'
@@ -34,6 +35,14 @@ config() {
 	fi
 	cd $APP_ROOT
 	source $CONTAINER_CONFIG
+
+	if [ "$DMAAPBC_WAIT_TO_EXIT" != "Y" ]
+	then
+		echo "Creating $APP_ROOT/ok_to_exit so no waiting..."
+		> $APP_ROOT/ok_to_exit
+	else
+		echo "Not creating $APP_ROOT/ok_to_exit"
+	fi	
 	# comment out till certs are available
 	#if [ ! -f $APP_ROOT/misc/cert-client-init.sh ]
 	#then
@@ -157,4 +166,11 @@ esac
 		tail -100  $APP_ROOT/logs/EELF/server.log
 		echo "------------ tail -100 application.log ---------------"
 		tail -100 $APP_ROOT/logs/EELF/application.log
+
+		echo "Check $APP_ROOT/ok_to_exit"
+		while [ ! -f $APP_ROOT/ok_to_exit ]
+		do
+			echo "$APP_ROOT/ok_to_exit does not exist.  Sticking around for debugging..."
+			sleep 10
+		done
 exit 0

@@ -1,2 +1,8 @@
 target/
 last*
+/build/
+.classpath
+.project
+.settings/
+dependency-reduced-pom.xml
+/logs/
