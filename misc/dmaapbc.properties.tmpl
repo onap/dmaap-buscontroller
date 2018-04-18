@@ -4,6 +4,7 @@ cat <<!EOF
 #
 # CSIT TESTING
 csit: ${DMAAPBC_CSIT:-No}
+
 #
 #	URI to retrieve dynamic DR configuration
 #
@@ -85,6 +86,9 @@ Feed.deleteHandling: ${DMAAPBC_FEED_DELETE:-DeleteOnDR}
 
 ################################################################################
 # MR Related Properties:
+#
+# ONAP Beijing is a single site deployment.
+MR.multisite:  false
 #
 #   Value of the CNAME DNS entry which resolves to the primary central MR cluster (when there are more than one central clusters).
 #   if there is only one MR cluster in an environment, set this to the DNS name for that cluster
