@@ -78,7 +78,7 @@ DMAAPBC_PE_AAF_ENV=TBD
 Then the following steps could be used to pull and run the Bus Controller.  (onap-nexus is just an example)
 ```
 $ 
-$ docker pull ecomp-nexus:51212/dcae_dmaapbc:1.0.0
-$ docker run -d -p 18080:8080 -v /tmp/docker-databus-controller.conf:/opt/app/config/conf onap-nexus:51212/dmaap/buscontroller:1.0.0
+$ docker pull nexus3.onap.org:10003/onap/dmaap/buscontroller:latest
+$ docker run -d -p 18080:8080 -p 18443:8443 -v /tmp/docker-databus-controller.conf:/opt/app/config/conf nexus3.onap.org:10003/onap/dmaap/buscontroller:latest
 ```
 

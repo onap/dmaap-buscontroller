@@ -43,13 +43,15 @@ config() {
 	else
 		echo "Not creating $APP_ROOT/ok_to_exit"
 	fi	
-	# comment out till certs are available
-	#if [ ! -f $APP_ROOT/misc/cert-client-init.sh ]
-	#then
-	#	echo "Did not find $APP_ROOT/misc/cert-client-init.sh to append to truststore"
-	#	exit 1
-	#fi
-	#$APP_ROOT/misc/cert-client-init.sh
+	
+	if [ ! -f $APP_ROOT/misc/cert-client-init.sh ]
+	then
+		echo "Did not find $APP_ROOT/misc/cert-client-init.sh to append to truststore"
+		exit 1
+	fi
+	$APP_ROOT/misc/cert-client-init.sh
+	. misc/havecert.tmpl > etc/havecert
+	chmod +x etc/havecert
 	. misc/dmaapbc.properties.tmpl > etc/dmaapbc.properties
     . misc/PolicyEngineApi.properties.tmpl > config/PolicyEngineApi.properties
 	set +x
@@ -71,14 +73,13 @@ start() {
 	fi
 	cd $APP_ROOT
 
-# disable until we use certs
-#	if etc/havecert
-#	then
+	if etc/havecert
+	then
 		echo >/dev/null
-#	else
-#		echo No certificate file available.  Cannot start
-#		exit 0
-#	fi
+	else
+		echo No certificate file available.  Cannot start
+		exit 0
+	fi
 	PIDS=`pids`
 	if [ "$PIDS" != "" ]
 	then

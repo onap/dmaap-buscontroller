@@ -20,7 +20,6 @@ case "$action" in
 	/bin/bash dmaapbc.properties.tmpl >dmaapbc.properties
 	/bin/bash havecert.tmpl >havecert
 	/bin/bash PolicyEngineApi.properties.tmpl > ../config/PolicyEngineApi.properties
-	echo "$AFTSWM_ACTION_NEW_VERSION" >VERSION.dmaapbc
 	chmod +x havecert
 	rm -f /opt/app/platform/rc.d/K90dmaapbc /opt/app/platform/rc.d/S10dmaapbc
 	ln -s ../init.d/dmaapbc /opt/app/platform/rc.d/K90dmaapbc

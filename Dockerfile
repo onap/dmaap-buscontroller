@@ -18,6 +18,7 @@ COPY target/buscontroller.jar ${insdir}/lib/
 # COPY target/site/apidocs/ ${insdir}/www/doc/
 COPY misc/LocalKey ${insdir}/etc/
 COPY misc/logback.xml ${insdir}/etc/
+COPY misc/dbc-api.jks ${insdir}/etc/keystore
 COPY misc/opensource.env ${insdir}/misc/
 COPY misc/*.tmpl ${insdir}/misc/
 COPY misc/cert-client-init.sh ${insdir}/misc/
