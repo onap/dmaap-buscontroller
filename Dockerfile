@@ -19,6 +19,8 @@ COPY target/buscontroller.jar ${insdir}/lib/
 COPY misc/LocalKey ${insdir}/etc/
 COPY misc/logback.xml ${insdir}/etc/
 COPY misc/dbc-api.jks ${insdir}/etc/keystore
+RUN chmod 600 ${insdir}/etc/keystore
+COPY ./version.properties ${insdir}/etc
 COPY misc/opensource.env ${insdir}/misc/
 COPY misc/*.tmpl ${insdir}/misc/
 COPY misc/cert-client-init.sh ${insdir}/misc/
