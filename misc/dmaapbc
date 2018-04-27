@@ -160,13 +160,13 @@ case "$1" in
 	exit 1
 	;;
 esac
-		ls -l $APP_ROOT/logs/EELF
+		ls -l $APP_ROOT/logs/ONAP
 		echo "------------ tail -100 error.log ---------------"
-		tail -100  $APP_ROOT/logs/EELF/error.log
+		tail -100  $APP_ROOT/logs/ONAP/error.log
 		echo "------------ tail -100 server.log ---------------"
-		tail -100  $APP_ROOT/logs/EELF/server.log
+		tail -100  $APP_ROOT/logs/ONAP/server.log
 		echo "------------ tail -100 application.log ---------------"
-		tail -100 $APP_ROOT/logs/EELF/application.log
+		tail -100 $APP_ROOT/logs/ONAP/application.log
 
 		echo "Check $APP_ROOT/ok_to_exit"
 		while [ ! -f $APP_ROOT/ok_to_exit ]
