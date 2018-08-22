@@ -37,6 +37,8 @@ COPY misc/LocalKey ${insdir}/etc/
 COPY misc/logback.xml ${insdir}/etc/
 COPY misc/dbc-api.jks ${insdir}/etc/keystore
 RUN chmod 600 ${insdir}/etc/keystore
+COPY misc/org.onap.dmaap-bc.trust.jks ${insdir}/etc
+RUN chmod 600 ${insdir}/etc/org.onap.dmaap-bc.trust.jks
 COPY ./version.properties ${insdir}/etc
 COPY misc/opensource.env ${insdir}/misc/
 COPY misc/*.tmpl ${insdir}/misc/

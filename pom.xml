@@ -50,6 +50,13 @@
                   <message>No Snapshots Allowed!</message>
                   <excludes>
                     <exclude>org.onap.dmaap.dbcapi:dbcapi</exclude>
+					<exclude>org.onap.aaf.authz:aaf-cadi-client</exclude>
+					<exclude>org.onap.aaf.authz:aaf-misc-env</exclude>
+					<exclude>org.onap.aaf.authz:aaf-cadi-aaf</exclude>
+					<exclude>org.onap.aaf.authz:aaf-auth-client</exclude>
+					<exclude>org.onap.aaf.authz:aaf-cadi-core</exclude>
+					<exclude>org.onap.aaf.authz:aaf-misc-rosetta</exclude>
+
                   </excludes>
                 </requireReleaseDeps>
               </rules>
@@ -250,6 +257,13 @@
       <artifactId>jetty-server</artifactId>
       <version>${jettyVersion}</version>
     </dependency>
+        <dependency>
+            <groupId>org.onap.aaf.authz</groupId>
+            <artifactId>aaf-cadi-aaf</artifactId>
+            <version>2.1.2-SNAPSHOT</version>
+            <classifier>full</classifier>
+        </dependency>
+
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-servlet</artifactId>
@@ -287,7 +301,7 @@
 	<dependency>
 		<groupId>org.onap.dmaap.dbcapi</groupId>
 		<artifactId>dbcapi</artifactId>
-		<version>1.0.8-SNAPSHOT</version>
+		<version>1.0.12-SNAPSHOT</version>
 	</dependency>
   </dependencies>
   <reporting>
@@ -322,7 +336,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jettyVersion>9.3.7.v20160115</jettyVersion>
     <eelf.version>0.0.1</eelf.version>
-    <artifact.version>1.0.13</artifact.version>
+    <artifact.version>1.0.14</artifact.version>
 		<!--  SONAR  -->
 		 <jacoco.version>0.7.7.201606060606</jacoco.version>
 	    <sonar-jacoco-listeners.version>3.2</sonar-jacoco-listeners.version>

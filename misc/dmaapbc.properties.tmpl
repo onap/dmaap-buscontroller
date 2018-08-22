@@ -58,11 +58,11 @@ KeyStoreFile:	${DMAAPBC_KSTOREFILE:-etc/keystore}
 #
 #	The password for the https keystore
 #
-KeyStorePassword:	${DMAAPBC_KSTOREPASS:-Demolition Artist Floating}
+KeyStorePassword:	${DMAAPBC_KSTOREPASS:-*j&Z*Ma;.4My4M]W0eB*fal$}
 #
 #	The password for the private key in the https keystore
 #
-KeyPassword:	${DMAAPBC_PVTKEYPASS:-Demolition Artist Floating}
+KeyPassword:	${DMAAPBC_PVTKEYPASS:-*j&Z*Ma;.4My4M]W0eB*fal$}
 #
 #	The type of truststore for https
 #
@@ -70,11 +70,11 @@ TrustStoreType:	jks
 #
 #	The path to the truststore for https
 #
-TrustStoreFile:	${DMAAPBC_TSTOREFILE}
+TrustStoreFile:	${DMAAPBC_TSTOREFILE:-etc/org.onap.dmaap-bc.trust.jks}
 #
 #	The password for the https truststore
 #
-TrustStorePassword:	${DMAAPBC_TSTOREPASS:-changeit}
+TrustStorePassword:	${DMAAPBC_TSTOREPASS:-pi8HuuSbN03MtQQ7(5TcyQ6;}
 #
 #	The path to the file used to trigger an orderly shutdown
 #
@@ -108,7 +108,7 @@ Feed.deleteHandling: ${DMAAPBC_FEED_DELETE:-DeleteOnDR}
 ################################################################################
 # MR Related Properties:
 #
-# ONAP Beijing is a single site deployment.
+# ONAP Beijing and Casablanca are a single site deployment.
 MR.multisite:  false
 #
 #   Value of the CNAME DNS entry which resolves to the primary central MR cluster (when there are more than one central clusters).
@@ -150,6 +150,12 @@ MM.ProvUserPwd: ${DMAAPBC_MMPROV_PWD:-pwdNotSet}
 #
 MM.AgentRole: ${DMAAPBC_MMAGENT_ROLE:-org.onap.dmaapBC.MMagent.agent}
 #################
+#
+# path to cadi.properties
+#
+cadi.properties: /opt/app/osaaf/local/org.onap.dmaap-bc.props
+
+#################
 # AAF Properties:
 #
 # regarding password encryption:
@@ -183,49 +189,29 @@ CredentialCodecKeyfile:	${DMAAPBC_CODEC_KEYFILE:-etc/LocalKey}
 #
 # URL of AAF environment to use.
 #
-aaf.URL:	${DMAAPBC_AAF_URL:-https://authentication.simpledemo.onap.org:8095/proxy/}
+aaf.URL:	${DMAAPBC_AAF_URL:-https://aaf-onap-test.osaaf.org:8095}
 #
 # TopicMgr mechid@namespace
 #
-aaf.TopicMgrUser:	${DMAAPBC_TOPICMGR_USER:-idNotSet@namespaceNotSet}
+aaf.TopicMgrUser:	${DMAAPBC_TOPICMGR_USER:-topic_mgr@dmaap-bc.onap.org}
 #
 # TopicMgr password
 # 
-aaf.TopicMgrPassword:	${DMAAPBC_TOPICMGR_PWD:-pwdNotSet}
+aaf.TopicMgrPassword:	${DMAAPBC_TOPICMGR_PWD:-enc:l0ScEojNQiiKbbkuM6U1mtnrme69q960}
 #
 # Bus Controller Namespace Admin  mechid@namespace
 #
-aaf.AdminUser:	${DMAAPBC_ADMIN_USER:-idNotSet@namespaceNotSet}
+aaf.AdminUser:	${DMAAPBC_ADMIN_USER:-aaf_admin@people.osaag.org}
 #
 # Bus Controller Namespace Admin password
 #
-aaf.AdminPassword:	${DMAAPBC_ADMIN_PWD:-pwdNotSet}
-#
-# endof AAF Properties
-#################
-#################
-# PolicyEngine Properties
-#
-# Flag to turn on/off Authentication
-UsePE: ${DMAAPBC_PE_ENABLED:-false}
-#
-# Argument to decisionAttributes.put("AAF_ENVIRONMENT", X); 
-# where X is:  TEST= UAT, PROD = PROD, DEVL = TEST
-#
-PeAafEnvironment: ${DMAAPBC_PE_AAF_ENV:-CSIT}
-PeAafUrl.CSIT:  ${DMAAPBC_AAF_URL:-http://localhost:8095/proxy/}
-PeAafUrl.DEVL:  https://aafdev.onap.org:8095/proxy/
-PeAafUrl.TEST:  https://aafist..onap.org:8095/proxy/
-PeAafUrl.PROD:  https://aafprod.onap.org:8095/proxy/
+aaf.AdminPassword:	${DMAAPBC_ADMIN_PWD:-demo123456!}
 
-#
-# Name of PolicyEngineApi properties file
-PolicyEngineProperties: config/PolicyEngineApi.properties
-#
+
 # Namespace for URI values for API used to create AAF permissions
 # e.g. if ApiNamespace is X.Y..dmaapBC.api then for URI /topics we create an AAF perm X.Y..dmaapBC.api.topics
-ApiNamespace: ${DMAAPBC_API_NAMESPACE:-org.onap.dmaapBC.api}
+ApiNamespace: ${DMAAPBC_API_NAMESPACE:-org.onap.dmaap-bc.api}
 #
-# endof PolicyEngineProperties
+# endof AAF Properties
 #################
 !EOF
