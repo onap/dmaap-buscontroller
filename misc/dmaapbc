@@ -31,7 +31,8 @@ PATH=/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/opt/java/jdk/
 export PATH
 CLASSPATH=`echo $APP_ROOT/etc $APP_ROOT/lib/*.jar | tr ' ' ':'` 
 export CLASSPATH
-CONTAINER_CONFIG=/opt/app/config/conf
+CONFIGMAP_ROOT=/opt/app/config
+CONTAINER_CONFIG=$CONFIGMAP_ROOT/conf
 MAIN=org.onap.dmaap.dbcapi.server.Main 
 
 
@@ -155,11 +156,33 @@ status() {
 	fi
 }
 
+init() {
+	if [ ! -d $CONFIGMAP_ROOT ]
+	then
+		echo $CONFIGMAP_ROOT does not exist
+		return
+	fi
+
+	cd $CONFIGMAP_ROOT
+	# order is important in this next list
+	for uri in dmaap dcaeLocations mr_clusters topics feeds
+	do
+		if [ -d ${uri} ]
+		then
+			for j in `ls ${uri}/*.json`
+			do
+				curl -v -X POST -H "Content-Type: application/json" -d @${j} http://dmaap-bc:8080/webapi/${uri}
+			done
+		fi
+	done
+}
+
 set -x
 case "$1" in
 'deploy')
 	config
 	start
+	init
 	wait
 	;;
 'start')
