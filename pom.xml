@@ -301,7 +301,7 @@
 	<dependency>
 		<groupId>org.onap.dmaap.dbcapi</groupId>
 		<artifactId>dbcapi</artifactId>
-		<version>1.0.14-SNAPSHOT</version>
+		<version>1.0.15-SNAPSHOT</version>
 	</dependency>
   </dependencies>
   <reporting>
@@ -334,9 +334,9 @@
   <properties>
     <jersey.version>2.16</jersey.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <jettyVersion>9.3.7.v20160115</jettyVersion>
+    <jettyVersion>9.3.8.RC0</jettyVersion>
     <eelf.version>0.0.1</eelf.version>
-    <artifact.version>1.0.17</artifact.version>
+    <artifact.version>1.0.18</artifact.version>
 		<!--  SONAR  -->
 		 <jacoco.version>0.7.7.201606060606</jacoco.version>
 	    <sonar-jacoco-listeners.version>3.2</sonar-jacoco-listeners.version>
