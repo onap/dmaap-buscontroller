@@ -168,7 +168,7 @@ init() {
 	while [ $rc != "200" ]
 	do
 		sleep 10
-		rc=`curl -s -w "%{http_code}" -X GET -H "Content-Type: application/json" http://dmaap-bc:8080/webapi/dmaap`
+		rc=`curl -s -o /dev/null -I -w "%{http_code}" -X GET -H "Content-Type: application/json" http://dmaap-bc:8080/webapi/dmaap`
 		echo "get dmaap response=${rc}"
 	done
 
