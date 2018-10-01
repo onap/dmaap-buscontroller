@@ -19,7 +19,8 @@
   ============LICENSE_END============================================
   ECOMP is a trademark and service mark of AT&T Intellectual Property.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.onap.dmaap.buscontroller</groupId>
   <artifactId>buscontroller</artifactId>
@@ -31,7 +32,7 @@
     <version>1.2.0</version>
     <relativePath/>
   </parent>
-    <build>
+  <build>
     <finalName>buscontroller</finalName>
 
     <plugins>
@@ -50,13 +51,12 @@
                   <message>No Snapshots Allowed!</message>
                   <excludes>
                     <exclude>org.onap.dmaap.dbcapi:dbcapi</exclude>
-					<exclude>org.onap.aaf.authz:aaf-cadi-client</exclude>
-					<exclude>org.onap.aaf.authz:aaf-misc-env</exclude>
-					<exclude>org.onap.aaf.authz:aaf-cadi-aaf</exclude>
-					<exclude>org.onap.aaf.authz:aaf-auth-client</exclude>
-					<exclude>org.onap.aaf.authz:aaf-cadi-core</exclude>
-					<exclude>org.onap.aaf.authz:aaf-misc-rosetta</exclude>
-
+                    <exclude>org.onap.aaf.authz:aaf-cadi-client</exclude>
+                    <exclude>org.onap.aaf.authz:aaf-misc-env</exclude>
+                    <exclude>org.onap.aaf.authz:aaf-cadi-aaf</exclude>
+                    <exclude>org.onap.aaf.authz:aaf-auth-client</exclude>
+                    <exclude>org.onap.aaf.authz:aaf-cadi-core</exclude>
+                    <exclude>org.onap.aaf.authz:aaf-misc-rosetta</exclude>
                   </excludes>
                 </requireReleaseDeps>
               </rules>
@@ -66,76 +66,75 @@
         </executions>
       </plugin>
 
-           <!-- Package an Uber jar -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>2.4.3</version>
-                <executions>
-                    <!-- Run shade goal on package phase -->
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-							<!-- this filter section is needed to avoid runtime error:
-								java.lang.SecurityException: Invalid signature file digest for Manifest main attributes
-								suggestion found at: https://stackoverflow.com/q/999489 
-							-->
-							<filters>
-								<filter>
-									<artifact>*:*</artifact>
-									<excludes>
-										<exclude>META-INF/*.SF</exclude>
-										<exclude>META-INF/*.DSA</exclude>
-										<exclude>META-INF/*.RSA</exclude>
-									</excludes>
-								</filter>
-							</filters>
-                            <transformers>
-                                <!-- NOTE: Need the following transformer else gets "Could not resolve type id 'https' into a subtype" error
-                                Solution found from here:
-                                http://stackoverflow.com/questions/27543060/why-does-dropwizard-configuration-is-not-working
-                                Some more context here:
-                                https://github.com/dropwizard/dropwizard/issues/455 -->
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
-                                <!-- add Main-Class to manifest file -->
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>org.onap.dmaap.dbcapi.server.Main</mainClass>
-                                </transformer>
-                            </transformers>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
+      <!-- Package an Uber jar -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>2.4.3</version>
+        <executions>
+          <!-- Run shade goal on package phase -->
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <!-- this filter section is needed to avoid runtime error:
+                java.lang.SecurityException: Invalid signature file digest for Manifest main attributes
+                suggestion found at: https://stackoverflow.com/q/999489
+              -->
+              <filters>
+                <filter>
+                  <artifact>*:*</artifact>
+                  <excludes>
+                    <exclude>META-INF/*.SF</exclude>
+                    <exclude>META-INF/*.DSA</exclude>
+                    <exclude>META-INF/*.RSA</exclude>
+                  </excludes>
+                </filter>
+              </filters>
+              <transformers>
+                <!-- NOTE: Need the following transformer else gets "Could not resolve type id 'https' into a subtype" error
+                Solution found from here:
+                http://stackoverflow.com/questions/27543060/why-does-dropwizard-configuration-is-not-working
+                Some more context here:
+                https://github.com/dropwizard/dropwizard/issues/455 -->
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                <!-- add Main-Class to manifest file -->
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <mainClass>org.onap.dmaap.dbcapi.server.Main</mainClass>
+                </transformer>
+              </transformers>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
 
 
       <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-                <extensions>true</extensions>
-                <configuration>
-                    <serverId>ecomp-staging</serverId>
-                    <nexusUrl>${nexusproxy}</nexusUrl>
-                    <stagingProfileId>176c31dfe190a</stagingProfileId>
-                </configuration>
-            </plugin>
+        <groupId>org.sonatype.plugins</groupId>
+        <artifactId>nexus-staging-maven-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <serverId>ecomp-staging</serverId>
+          <nexusUrl>${nexusproxy}</nexusUrl>
+          <stagingProfileId>176c31dfe190a</stagingProfileId>
+        </configuration>
+      </plugin>
 
 
-	<!-- for Distribution management -->
-		<plugin>
-		  <groupId>org.apache.maven.plugins</groupId>
-		  <artifactId>maven-site-plugin</artifactId>
-		  <dependencies>
-			<dependency>
-			  <groupId>org.apache.maven.wagon</groupId>
-			  <artifactId>wagon-webdav-jackrabbit</artifactId>
-			  <version>2.10</version>
-			</dependency>
-		  </dependencies>
-		</plugin>
+      <!-- for Distribution management -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <dependencies>
+          <dependency>
+            <groupId>org.apache.maven.wagon</groupId>
+            <artifactId>wagon-webdav-jackrabbit</artifactId>
+            <version>2.10</version>
+          </dependency>
+        </dependencies>
+      </plugin>
 
     </plugins>
     <pluginManagement>
@@ -153,10 +152,10 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-dependency-plugin</artifactId>
                     <versionRange>[2.10,)</versionRange>
-					    <phase>install</phase>
-                        <goals>
-                          <goal>copy-dependencies</goal>
-                        </goals>
+                    <phase>install</phase>
+                    <goals>
+                      <goal>copy-dependencies</goal>
+                    </goals>
                   </pluginExecutionFilter>
                   <action>
                     <ignore/>
@@ -169,46 +168,80 @@
       </plugins>
     </pluginManagement>
   </build>
-	<profiles>
-	<profile>
-		<id>docker</id>
-		<build>
-			<plugins>
-      <plugin>
-		<groupId>com.spotify</groupId>
-		 <artifactId>docker-maven-plugin</artifactId>
-		 <version>1.0.0</version>
-		 <configuration>
-				 <imageName>${onap.nexus.dockerregistry.daily}/${docker.image}</imageName>
-			     <dockerDirectory>${project.basedir}</dockerDirectory>
-				 <serverId>${onap.nexus.dockerregistry.daily}</serverId>
-				 <imageTags>
-						 <imageTag>${artifact.version}</imageTag>
-						 <imageTag>latest</imageTag>
-				 </imageTags>
-				 <forceTags>true</forceTags>
-				 <resources>
-						 <resource>
-								 <targetPath>/</targetPath>
-								 <directory>${project.basedir}</directory>
-								 <excludes>
-									<exclude>target/**/*</exclude>
-									<exclude>pom.xml</exclude>
-								</excludes>
-						 </resource>
+  <profiles>
+    <profile>
+      <id>docker2</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.spotify</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+            <version>1.0.0</version>
+            <configuration>
+              <baseImage>java:openjdk-8-jre</baseImage>
+              <imageName>${onap.nexus.dockerregistry.daily}/${docker.image}</imageName>
+              <entryPoint>["./bin/dmaapbc", "deploy"]</entryPoint>
+              <serverId>${onap.nexus.dockerregistry.daily}</serverId>
+              <imageTags>
+                <imageTag>${artifact.version}</imageTag>
+                <imageTag>latest</imageTag>
+              </imageTags>
+              <volumes>
+                <volume>/opt/app/dmaapbc/log</volume>
+              </volumes>
+              <forceTags>true</forceTags>
+              <user>root</user>
+              <resources>
+                <resource>
+                  <targetPath>/opt/app/dmaapbc/lib</targetPath>
+                  <directory>target</directory>
+                  <include>buscontroller.jar</include>
+                </resource>
+                <resource>
+                  <targetPath>/opt/app/dmaapbc/etc</targetPath>
+                  <directory>misc</directory>
+                  <include>LocalKey</include>
+                  <include>logback.xml</include>
+                  <include>*.tmpl</include>
+                  <include>org.onap.dmaap-bc.trust.jks</include>
+                </resource>
+                <resource>
+                  <targetPath>/opt/app/dmaapbc/etc/keystore</targetPath>
+                  <directory>misc</directory>
+                  <include>dbc-api.jks</include>
+                </resource>
+                <resource>
+                  <targetPath>/opt/app/dmaapbc/etc</targetPath>
+                  <directory>.</directory>
+                  <include>version.properties</include>
+                </resource>
+                <resource>
+                  <targetPath>/opt/app/dmaapbc/misc</targetPath>
+                  <directory>misc</directory>
+                  <include>opensource.env</include>
+                  <include>cert-client-init.sh</include>
+                </resource>
+                <resource>
+                  <targetPath>/opt/app/dmaapbc/bin</targetPath>
+                  <directory>misc</directory>
+                  <include>dmaapbc</include>
+                  <include>doaction</include>
+                </resource>
+              </resources>
+              <runs>
 
-						 <resource>
-								 <targetPath>/</targetPath>
-								 <directory>${project.build.directory}</directory>
-								 <include>**/**</include>
-						 </resource>
-				 </resources>
-		 </configuration>
-      </plugin>
-			</plugins>
-		</build>
-	</profile>
-	</profiles>
+                <run>chmod 600 /opt/app/dmaapbc/etc/keystore</run>
+                <run>chmod 600 /opt/app/dmaapbc/etc/org.onap.dmaap-bc.trust.jks</run>
+                <run>chmod +x /opt/app/dmaapbc/misc/cert-client-init.sh</run>
+                <run>chmod +x /opt/app/dmaapbc/bin/*</run>
+              </runs>
+              <workdir>/opt/app/dmaapbc</workdir>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
   <dependencyManagement>
     <dependencies>
 
@@ -222,21 +255,21 @@
     </dependencies>
   </dependencyManagement>
   <dependencies>
-        <dependency>
-        <groupId>io.swagger</groupId>
-        <artifactId>swagger-core</artifactId>
-        <version>1.5.13</version>
-      </dependency>
-      <dependency>
-        <groupId>io.swagger</groupId>
-        <artifactId>swagger-jersey2-jaxrs</artifactId>
-        <version>1.5.13</version>
-      </dependency>
-       <dependency>
-        <groupId>io.swagger</groupId>
-        <artifactId>swagger-annotations</artifactId>
-        <version>1.5.13</version>
-      </dependency>   
+    <dependency>
+      <groupId>io.swagger</groupId>
+      <artifactId>swagger-core</artifactId>
+      <version>1.5.13</version>
+    </dependency>
+    <dependency>
+      <groupId>io.swagger</groupId>
+      <artifactId>swagger-jersey2-jaxrs</artifactId>
+      <version>1.5.13</version>
+    </dependency>
+    <dependency>
+      <groupId>io.swagger</groupId>
+      <artifactId>swagger-annotations</artifactId>
+      <version>1.5.13</version>
+    </dependency>
     <dependency>
       <groupId>org.glassfish.jersey.containers</groupId>
       <artifactId>jersey-container-servlet-core</artifactId>
@@ -257,12 +290,12 @@
       <artifactId>jetty-server</artifactId>
       <version>${jettyVersion}</version>
     </dependency>
-        <dependency>
-            <groupId>org.onap.aaf.authz</groupId>
-            <artifactId>aaf-cadi-aaf</artifactId>
-            <version>2.1.2-SNAPSHOT</version>
-            <classifier>full</classifier>
-        </dependency>
+    <dependency>
+      <groupId>org.onap.aaf.authz</groupId>
+      <artifactId>aaf-cadi-aaf</artifactId>
+      <version>2.1.2-SNAPSHOT</version>
+      <classifier>full</classifier>
+    </dependency>
 
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
@@ -293,16 +326,16 @@
       <artifactId>postgresql</artifactId>
       <version>9.4.1208.jre7</version>
     </dependency>
-  	<dependency>
-		<groupId>com.att.eelf</groupId> 
-		<artifactId>eelf-core</artifactId> 
-		<version>${eelf.version}</version> 
-	</dependency>
-	<dependency>
-		<groupId>org.onap.dmaap.dbcapi</groupId>
-		<artifactId>dbcapi</artifactId>
-		<version>1.0.15-SNAPSHOT</version>
-	</dependency>
+    <dependency>
+      <groupId>com.att.eelf</groupId>
+      <artifactId>eelf-core</artifactId>
+      <version>${eelf.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.onap.dmaap.dbcapi</groupId>
+      <artifactId>dbcapi</artifactId>
+      <version>1.0.15-SNAPSHOT</version>
+    </dependency>
   </dependencies>
   <reporting>
     <plugins>
@@ -326,10 +359,10 @@
   </reporting>
 
   <distributionManagement>
-	<site>
-		<id>ecomp-site</id>
-		<url>dav:${nexusproxy}${sitePath}</url>
-	</site>
+    <site>
+      <id>ecomp-site</id>
+      <url>dav:${nexusproxy}${sitePath}</url>
+    </site>
   </distributionManagement>
   <properties>
     <jersey.version>2.16</jersey.version>
@@ -337,24 +370,24 @@
     <jettyVersion>9.3.8.RC0</jettyVersion>
     <eelf.version>0.0.1</eelf.version>
     <artifact.version>1.0.19</artifact.version>
-		<!--  SONAR  -->
-		 <jacoco.version>0.7.7.201606060606</jacoco.version>
-	    <sonar-jacoco-listeners.version>3.2</sonar-jacoco-listeners.version>
-	    <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
-	    <!-- Default Sonar configuration -->
-	    <sonar.jacoco.reportPath>target/code-coverage/jacoco-ut.exec</sonar.jacoco.reportPath>
-	    <sonar.jacoco.itReportPath>target/code-coverage/jacoco-it.exec</sonar.jacoco.itReportPath>
-	    <!-- Note: This list should match jacoco-maven-plugin's exclusion list below -->
-	    <sonar.exclusions>**/gen/**,**/generated-sources/**,**/yang-gen**,**/pax/**</sonar.exclusions>
+    <!--  SONAR  -->
+    <jacoco.version>0.7.7.201606060606</jacoco.version>
+    <sonar-jacoco-listeners.version>3.2</sonar-jacoco-listeners.version>
+    <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
+    <!-- Default Sonar configuration -->
+    <sonar.jacoco.reportPath>target/code-coverage/jacoco-ut.exec</sonar.jacoco.reportPath>
+    <sonar.jacoco.itReportPath>target/code-coverage/jacoco-it.exec</sonar.jacoco.itReportPath>
+    <!-- Note: This list should match jacoco-maven-plugin's exclusion list below -->
+    <sonar.exclusions>**/gen/**,**/generated-sources/**,**/yang-gen**,**/pax/**</sonar.exclusions>
 
-	<!-- docker image -->
-		 <docker.image>onap/dmaap/buscontroller</docker.image>
+    <!-- docker image -->
+    <docker.image>onap/dmaap/buscontroller</docker.image>
 
-		 <nexusproxy>https://nexus.onap.org</nexusproxy>
-		 <docker.push.registry>nexus3.onap.org:10003</docker.push.registry>
+    <nexusproxy>https://nexus.onap.org</nexusproxy>
+    <docker.push.registry>nexus3.onap.org:10003</docker.push.registry>
 
-	<!-- for Distribution Management -->
-		<sitePath>/content/sites/site/org/onap/dmaap/buscontroller/${artifact.version}</sitePath>
+    <!-- for Distribution Management -->
+    <sitePath>/content/sites/site/org/onap/dmaap/buscontroller/${artifact.version}</sitePath>
   </properties>
-  <description>Packaging Platform (DMaaP) Bus Controller API as a Docker container. </description>
+  <description>Packaging Platform (DMaaP) Bus Controller API as a Docker container.</description>
 </project>
