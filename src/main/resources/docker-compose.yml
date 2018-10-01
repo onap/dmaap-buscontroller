@@ -1,0 +1,25 @@
+version: '2'
+services:
+  dbc-pg-primary:
+    image: crunchydata/crunchy-postgres:centos7-10.4-2.0.0
+    ports:
+    - "5432:5432"
+    environment:
+    - PG_MODE=master
+    - PG_PRIMARY_USER="dmaap_admin"
+    - PG_PRIMARY_PASSWORD=onapdemodb
+    - PG_USER="dmaap_admin"
+    - PG_PASSWORD=onapdemodb
+    - PG_ROOT_PASSWORD=onapdemodb
+    - PG_DATABASE="dmaap"
+    - PG_PRIMARY_PORT=5432
+
+  dmaap-bc:
+    image: nexus3.onap.org:10001/onap/dmaap/buscontroller:latest
+    ports:
+    - "18080:8080"
+    - "18443:8443"
+    volumes:
+    - /var/tmp/docker-databus-controller.conf:/opt/app/config/conf
+    depends_on:
+      - dbc-pg-primary
