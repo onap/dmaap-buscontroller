@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bada0100_bf636e19",
+        "filename": "pom.xml",
+        "patchSetId": 5
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 1111
+      },
+      "writtenOn": "2018-10-08T16:38:06Z",
+      "side": 1,
+      "message": "So sorry for missing this before.  We should bump this up to 1.0.20.\nAlso, there is a version.properties file that needs to have the same change made.",
+      "range": {
+        "startLine": 368,
+        "startChar": 22,
+        "endLine": 368,
+        "endChar": 28
+      },
+      "revId": "96806e86f628d23207aa9e8fdf0bbe0526a50893",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
