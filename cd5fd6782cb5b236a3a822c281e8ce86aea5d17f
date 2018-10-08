@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bada0100_0cfcda3d",
+        "filename": "src/main/resources/docker-compose.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1111
+      },
+      "writtenOn": "2018-10-08T12:35:33Z",
+      "side": 1,
+      "message": "Should the host port match what we have reserved for kubernetes oom reservation? (see codecloud.web.att.com/projects/ST_DCAECNTR/repos/dmaap-blueprints/browse)  In that case we map 30241-\u003e8080 and 30242-\u003e8443.   I think advantages are: one set of port mappings used everywhere (easier to script), and no conflicts with other containers such as DR.",
+      "revId": "cd5fd6782cb5b236a3a822c281e8ce86aea5d17f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    }
+  ]
+}
