@@ -16,6 +16,24 @@
       "revId": "cd5fd6782cb5b236a3a822c281e8ce86aea5d17f",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bada0100_2c7e7eaf",
+        "filename": "src/main/resources/docker-compose.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3663
+      },
+      "writtenOn": "2018-10-08T12:46:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bada0100_0cfcda3d",
+      "revId": "cd5fd6782cb5b236a3a822c281e8ce86aea5d17f",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
