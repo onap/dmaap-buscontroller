@@ -1,0 +1,12 @@
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+1: Adam Krysiak <adam.krysiak@nokia.com>
+Code-Review+1: Marcin Migdal <marcin.migdal@nokia.com>
+Code-Review+1: Wojciech Sliwka <wojciech.sliwka@nokia.com>
+Code-Review+1: Piotr Darosz <piotr.darosz@nokia.com>
+Code-Review+1: Dominic Lunanuova <dgl@research.att.com>
+Code-Review+2: varun gudisena <vg411h@att.com>
+Submitted-by: varun gudisena <vg411h@att.com>
+Submitted-at: Tue, 09 Oct 2018 15:03:52 +0000
+Reviewed-on: https://gerrit.onap.org/r/69590
+Project: dmaap/buscontroller
+Branch: refs/heads/master
