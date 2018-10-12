@@ -114,7 +114,7 @@ MR.multisite:  false
 #   Value of the CNAME DNS entry which resolves to the primary central MR cluster (when there are more than one central clusters).
 #   if there is only one MR cluster in an environment, set this to the DNS name for that cluster
 #
-MR.CentralCname:  ${DMAAPBC_MR_CNAME:-dmaap.onap}
+MR.CentralCname:  ${DMAAPBC_MR_CNAME:-message-router}
 #
 #   MR Client Delete Level thoroughness:
 #   0 = don't delete
@@ -127,7 +127,7 @@ MR.ClientDeleteLevel: 1
 MR.TopicFactoryNS: org.onap.dcae.dmaap.topicFactory
 #
 #   MR TopicMgr Role
-MR.TopicMgrRole:    org.onap.dmaapBC.TopicMgr
+MR.TopicMgrRole:    org.onap.dmaap-bc-topic-mgr.client
 
 #   MR topic name style
 MR.topicStyle:	FQTN_LEGACY_FORMAT
@@ -142,13 +142,13 @@ MR.projectID:  23456
 #	The Role and credentials of the MirrorMaker Provisioner.  This is used by DMaaP Bus Controller to pub to the provisioning topic
 #   Not part of 1701
 #
-MM.ProvRole: ${DMAAPBC_MMPROV_ROLE:-org.onap.dmaapBC.MMprov.prov}
-MM.ProvUserMechId: ${DMAAPBC_MMPROV_ID:-idNotSet@namespaceNotSet}
-MM.ProvUserPwd: ${DMAAPBC_MMPROV_PWD:-pwdNotSet}
+MM.ProvRole: ${DMAAPBC_MMPROV_ROLE:-org.onap.dmaap-bc-mm-prov.prov}
+MM.ProvUserMechId: ${DMAAPBC_MMPROV_ID:-dmaap-bc-mm-prov@dmaap-bc-mm-prov.onap.org}
+MM.ProvUserPwd: ${DMAAPBC_MMPROV_PWD:-demo123456!}
 #
 #	The Role of the MirrorMaker Agent. This is used by MM to sub to provisioning topic
 #
-MM.AgentRole: ${DMAAPBC_MMAGENT_ROLE:-org.onap.dmaapBC.MMagent.agent}
+MM.AgentRole: ${DMAAPBC_MMAGENT_ROLE:-org.onap.dmaap-bc-mm-prov.agent}
 #################
 #
 # path to cadi.properties
@@ -157,6 +157,7 @@ cadi.properties: /opt/app/osaaf/local/org.onap.dmaap-bc.props
 
 #################
 # AAF Properties:
+UseAAF: ${DMAAPBC_USEAAF:-false}
 #
 # regarding password encryption:
 # In the dependencies that Maven retrieves (e.g., under dcae_dmaapbc/target/deps/ is a jar file cadi-core-version.jar.  Generate the key file with:
@@ -186,6 +187,9 @@ CredentialCodecKeyfile:	${DMAAPBC_CODEC_KEYFILE:-etc/LocalKey}
 # This allows for a plugin policy check, if needed
 #ApiPermission.Class: com.company.policy.DecisionPolicy
 
+# Namespace for URI values for API used to create AAF permissions
+# e.g. if ApiNamespace is X.Y..dmaapBC.api then for URI /topics we create an AAF perm X.Y..dmaapBC.api.topics
+ApiNamespace: ${DMAAPBC_API_NAMESPACE:-org.onap.dmaap-bc.api}
 #
 # URL of AAF environment to use.
 #
@@ -193,7 +197,7 @@ aaf.URL:	${DMAAPBC_AAF_URL:-https://aaf-onap-test.osaaf.org:8095}
 #
 # TopicMgr mechid@namespace
 #
-aaf.TopicMgrUser:	${DMAAPBC_TOPICMGR_USER:-topic_mgr@dmaap-bc.onap.org}
+aaf.TopicMgrUser:	${DMAAPBC_TOPICMGR_USER:-dmaap-bc-topic-mgr@dmaap-bc-topic-mgr.onap.org}
 #
 # TopicMgr password
 # 
@@ -208,9 +212,6 @@ aaf.AdminUser:	${DMAAPBC_ADMIN_USER:-aaf_admin@people.osaag.org}
 aaf.AdminPassword:	${DMAAPBC_ADMIN_PWD:-demo123456!}
 
 
-# Namespace for URI values for API used to create AAF permissions
-# e.g. if ApiNamespace is X.Y..dmaapBC.api then for URI /topics we create an AAF perm X.Y..dmaapBC.api.topics
-ApiNamespace: ${DMAAPBC_API_NAMESPACE:-org.onap.dmaap-bc.api}
 #
 # endof AAF Properties
 #################
