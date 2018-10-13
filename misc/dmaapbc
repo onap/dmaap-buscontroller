@@ -74,8 +74,17 @@ config() {
 	$APP_ROOT/misc/cert-client-init.sh
 	. misc/havecert.tmpl > etc/havecert
 	chmod +x etc/havecert
-	. misc/dmaapbc.properties.tmpl > etc/dmaapbc.properties
-    . misc/PolicyEngineApi.properties.tmpl > config/PolicyEngineApi.properties
+
+	# These files might be better provided in kubernetes configmaps
+	# so if they are already there, don't overwrite.
+	if [ ! -f etc/dmaapbc.properties ]
+	then
+		. misc/dmaapbc.properties.tmpl > etc/dmaapbc.properties
+	fi
+	if [ ! -f config/PolicyEngineApi.properties ]
+	then
+    		. misc/PolicyEngineApi.properties.tmpl > config/PolicyEngineApi.properties
+	fi
 	set +x
 }
 
