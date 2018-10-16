@@ -125,7 +125,7 @@ start() {
 
 	# JVM flags
 #old line from Dockerfile...keep for reference only
-	FLAGS="-cp etc:lib/* -Dlog4j.configuration=etc/log4j.properties -Ddmaapbc.properties=$PROPS  -Dlogback.configurationFile=etc/logback.xml -Dhttps.protocols=TLSv1.2 -Dhttps.cipherSuites=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256"
+	FLAGS="-cp etc:lib/* -Dlog4j.configuration=etc/log4j.properties -DConfigFile=$PROPS  -Dlogback.configurationFile=etc/logback.xml -Dhttps.protocols=TLSv1.2 -Dhttps.cipherSuites=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256"
 	#nohup java $FLAGS $MAIN </dev/null >/dev/null 2>&1 &
 	nohup java $FLAGS $MAIN </dev/null  &
 	sleep 5
