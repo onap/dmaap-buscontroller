@@ -31,8 +31,9 @@ PATH=/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/opt/java/jdk/
 export PATH
 CLASSPATH=`echo $APP_ROOT/etc $APP_ROOT/lib/*.jar | tr ' ' ':'` 
 export CLASSPATH
-CONFIGMAP_ROOT=/opt/app/config
-CONTAINER_CONFIG=$CONFIGMAP_ROOT/conf
+CONFIGMAP_ROOT=${CONFIGMAP_ROOT:-/opt/app/config/conf}
+CONFIGMAP_PROPS=${CONFIGMAP_PROPS:-/opt/app/config/dmaapbc.properties}
+CONTAINER_CONFIG=$CONFIGMAP_ROOT/buscontroller.env
 MAIN=org.onap.dmaap.dbcapi.server.Main 
 
 
@@ -53,6 +54,7 @@ config() {
 	if [ !  -f $CONTAINER_CONFIG ]
 	then
 		echo "Expected env file $CONTAINER_CONFIG not found"
+		find $CONTAINER_ROOT -type f
 		exit 1
 	fi
 	cd $APP_ROOT
@@ -76,10 +78,13 @@ config() {
 	chmod +x etc/havecert
 
 	# These files might be better provided in kubernetes configmaps
-	# so if they are already there, don't overwrite.
-	if [ ! -f etc/dmaapbc.properties ]
+	# so if they are there, use them
+	if [ -f $CONFIGMAP_PROPS ]
 	then
-		. misc/dmaapbc.properties.tmpl > etc/dmaapbc.properties
+		PROPS=$CONFIGMAP_PROPS
+	else
+		PROPS=etc/dmaapbc.properties
+		. misc/dmaapbc.properties.tmpl > $PROPS
 	fi
 	if [ ! -f config/PolicyEngineApi.properties ]
 	then
@@ -121,7 +126,7 @@ start() {
 
 	# JVM flags
 #old line from Dockerfile...keep for reference only
-	FLAGS="-cp etc:lib/* -Dlog4j.configuration=etc/log4j.properties -Ddmaapbc.properties=etc/dmaapbc.properties  -Dlogback.configurationFile=etc/logback.xml -Dhttps.protocols=TLSv1.2 -Dhttps.cipherSuites=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256"
+	FLAGS="-cp etc:lib/* -Dlog4j.configuration=etc/log4j.properties -Ddmaapbc.properties=$PROPS  -Dlogback.configurationFile=etc/logback.xml -Dhttps.protocols=TLSv1.2 -Dhttps.cipherSuites=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256"
 	#nohup java $FLAGS $MAIN </dev/null >/dev/null 2>&1 &
 	nohup java $FLAGS $MAIN </dev/null  &
 	sleep 5
