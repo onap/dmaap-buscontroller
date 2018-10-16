@@ -32,7 +32,7 @@ export PATH
 CLASSPATH=`echo $APP_ROOT/etc $APP_ROOT/lib/*.jar | tr ' ' ':'` 
 export CLASSPATH
 CONFIGMAP_ROOT=${CONFIGMAP_ROOT:-/opt/app/config/conf}
-CONFIGMAP_PROPS=${CONFIGMAP_PROPS:-/opt/app/config/dmaapbc.properties}
+CONFIGMAP_PROPS=${CONFIGMAP_PROPS:-/opt/app/config/conf/dmaapbc.properties}
 CONTAINER_CONFIG=$CONFIGMAP_ROOT/buscontroller.env
 MAIN=org.onap.dmaap.dbcapi.server.Main 
 
@@ -53,9 +53,8 @@ config() {
 	fi
 	if [ !  -f $CONTAINER_CONFIG ]
 	then
-		echo "Expected env file $CONTAINER_CONFIG not found"
+		echo "WARNING: Expected env file $CONTAINER_CONFIG not found. Default behaviors in effect"
 		find $CONTAINER_ROOT -type f
-		exit 1
 	fi
 	cd $APP_ROOT
 	source $CONTAINER_CONFIG
