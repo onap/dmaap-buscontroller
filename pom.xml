@@ -330,7 +330,7 @@
     <dependency>
       <groupId>org.onap.dmaap.dbcapi</groupId>
       <artifactId>dbcapi</artifactId>
-      <version>1.0.15-SNAPSHOT</version>
+      <version>1.0.16-SNAPSHOT</version>
     </dependency>
   </dependencies>
   <reporting>
