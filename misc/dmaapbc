@@ -39,7 +39,6 @@ MAIN=org.onap.dmaap.dbcapi.server.Main
 
 
 pids() {
-	echo "ENTER pids"
 	set -x
 	ps -ef | grep java | grep $MAIN | sed -e 's/[^ ]* *//' -e 's/ .*//'
 	set +x
