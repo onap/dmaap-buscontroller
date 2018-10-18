@@ -31,20 +31,22 @@ PATH=/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/opt/java/jdk/
 export PATH
 CLASSPATH=`echo $APP_ROOT/etc $APP_ROOT/lib/*.jar | tr ' ' ':'` 
 export CLASSPATH
-CONFIGMAP_ROOT=${CONFIGMAP_ROOT:-/opt/app/config/conf}
-CONFIGMAP_PROPS=${CONFIGMAP_PROPS:-/opt/app/config/conf/dmaapbc.properties}
-CONTAINER_CONFIG=$CONFIGMAP_ROOT/buscontroller.env
+CONFIGMAP_ROOT=${CONFIGMAP_ROOT:-/opt/app/config}
+CONFIGMAP_PROPS=${CONFIGMAP_PROPS:-$CONFIGMAP_ROOT/conf/dmaapbc.properties}
+CONTAINER_CONFIG=$CONFIGMAP_ROOT/conf/buscontroller.env
 MAIN=org.onap.dmaap.dbcapi.server.Main 
 
 
 
 pids() {
+	echo "ENTER pids"
 	set -x
 	ps -ef | grep java | grep $MAIN | sed -e 's/[^ ]* *//' -e 's/ .*//'
 	set +x
 }
 
 config() {
+	echo "ENTER config"
 	set -x
 	if [ ! -d $APP_ROOT ]
 	then
@@ -93,6 +95,7 @@ config() {
 }
 
 start() {
+	echo "ENTER start"
 	set -x
 	ID=`id -n -u`
 	GRP=`id -n -g`
@@ -107,6 +110,7 @@ start() {
 		exit 1
 	fi
 	cd $APP_ROOT
+	pwd
 
 	if etc/havecert
 	then
@@ -134,6 +138,7 @@ start() {
 }
 
 stop() {
+	echo "ENTER stop"
 	ID=`id -n -u`
 	GRP=`id -n -g`
 	if [ "$ID" != "$USER" ]
@@ -160,6 +165,7 @@ stop() {
 }
 
 status() {
+	echo "ENTER status"
 	PIDS=`pids`
 	if [ "$PIDS" != "" ]
 	then
@@ -170,6 +176,7 @@ status() {
 }
 
 init() {
+	echo "ENTER init"
 	if [ ! -d $CONFIGMAP_ROOT ]
 	then
 		echo $CONFIGMAP_ROOT does not exist
@@ -186,6 +193,7 @@ init() {
 	done
 
 	cd $CONFIGMAP_ROOT
+	pwd
 	# order is important in this next list
 	for uri in dmaap dcaeLocations mr_clusters topics feeds
 	do
@@ -193,7 +201,9 @@ init() {
 		then
 			for j in `ls ${uri}/*.json`
 			do
-				curl -v -X POST -H "Content-Type: application/json" -d @${j} http://dmaap-bc:8080/webapi/${uri}
+				echo "POST $j to $uri"
+				rc=`curl -v -X POST -w "%{http_code}" -H "Content-Type: application/json" -d @${j} http://dmaap-bc:8080/webapi/${uri}`
+				echo "response=$rc"
 			done
 		fi
 	done
