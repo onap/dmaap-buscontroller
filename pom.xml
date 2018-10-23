@@ -320,13 +320,9 @@
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
-      <version>9.4.1208.jre7</version>
+      <version>42.2.5</version>
     </dependency>
-    <dependency>
-      <groupId>com.att.eelf</groupId>
-      <artifactId>eelf-core</artifactId>
-      <version>${eelf.version}</version>
-    </dependency>
+
     <dependency>
       <groupId>org.onap.dmaap.dbcapi</groupId>
       <artifactId>dbcapi</artifactId>
@@ -364,7 +360,7 @@
     <jersey.version>2.16</jersey.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jettyVersion>9.3.8.RC0</jettyVersion>
-    <eelf.version>0.0.1</eelf.version>
+    <eelf.version>1.0.0</eelf.version>
     <artifact.version>1.0.24</artifact.version>
     <!--  SONAR  -->
     <jacoco.version>0.7.7.201606060606</jacoco.version>
