@@ -13,7 +13,7 @@ Usage Scenarios
 ---------------
 Bus Controller endpoints are used to provision:
 - a authorized topic on MR, and to create and grant permission for publishers and subscribers.
-- a feed on DR, with associated user authenticatio n.
+- a feed on DR, with associated user authentication.
 
 .. blockdiag::
 

@@ -26,7 +26,7 @@ DMaaP Bus Controller API
 
 Data Movement as a Platform (DMaaP) Bus Controller provides an API for other ONAP infrastructure components to provision DMaaP resources.
 A typical DMaaP resource is a Data Router Feed or a Message Router Topic, and their associated publishers and subscribers.
-Other infrastucture resources such as DR Nodes and MR Clusters are also provisioned through this API.
+Other infrastructure resources such as DR Nodes and MR Clusters are also provisioned through this API.
 
 ### Build Instructions for a Continuous Integration environment using Jenkins
 
@@ -231,7 +231,7 @@ The table below lists all the settings, default values (if not set), and shows a
 
 ### Environment Variables
 The following environment variables can be set in the container environment to further effect behavior:
-- DMAAPBC_WAIT_TOEXIT=Y   when set this will attempt to keep the dmaap-bc container running.  Sometimes needed to get a better look at logs when the main proces is exiting for some reason.
+- DMAAPBC_WAIT_TOEXIT=Y   when set this will attempt to keep the dmaap-bc container running.  Sometimes needed to get a better look at logs when the main process is exiting for some reason.
 
 - CONFIGMAP_ROOT defaults to /opt/app/config/conf  but can be overwritten if needed.  This value serves as the root to where the buscontroller.env file is found.
 
