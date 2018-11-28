@@ -289,7 +289,7 @@
     <dependency>
       <groupId>org.onap.aaf.authz</groupId>
       <artifactId>aaf-cadi-aaf</artifactId>
-      <version>2.1.7-SNAPSHOT</version>
+      <version>2.1.7</version>
       <classifier>full</classifier>
     </dependency>
 
@@ -326,7 +326,7 @@
     <dependency>
       <groupId>org.onap.dmaap.dbcapi</groupId>
       <artifactId>dbcapi</artifactId>
-      <version>1.0.17-SNAPSHOT</version>
+      <version>1.0.17</version>
     </dependency>
   </dependencies>
   <reporting>
