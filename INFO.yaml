@@ -23,16 +23,6 @@ meetings:
         time: '13:00 UTC'
 committers:
     - <<: *onap_releng_ptl
-    - name: 'Habib Madani'
-        email: 'habibmadani1@gmail.com'
-        company: 'Huawei'
-        id: 'hmadani'
-        timezone: 'America/Dallas'
-    - name: 'Jing Wang'
-        email: 'jing.wang5@huawei.com'
-        company: 'Huawei'
-        id: 'jwang5'
-        timezone: 'America/Dallas'
     - name: 'Ramdas Sawant'
         email: 'rs873m@att.com'
         company: 'ATT'
@@ -45,3 +35,8 @@ committers:
         timezone: 'America/Dallas'
 tsc:
     approval: 'https://lists.onap.org/pipermail/onap-tsc'
+    changes:
+        - type: 'Removal'
+          name: 'Habib Madani'
+          name: 'Xinhui Li'
+          name: 'Jing Wang'
