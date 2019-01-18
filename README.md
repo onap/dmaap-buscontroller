@@ -187,6 +187,8 @@ The table below lists all the settings, default values (if not set), and shows a
 |-|-|-|-|
 |aaf.AdminPassword     | AAF credential of AdminUser                             | notSet                                 | demo123456! |
 |-|-|-|-|
+|aaf.NsOwnerIdentity     | AAF Identity to be used as topic Namespace owner      | notSet                                 | aaf_admin@people.osaaf.org |
+|-|-|-|-|
 |CredentialCodeKeyfile | location of the codec keyfile used to decrypt passwords | LocalKey                               | etc/LocalKey |
 |                      | in this properties file before they are passed to AAF   | LocalKey                               | etc/LocalKey |
 |-|-|-|-|
