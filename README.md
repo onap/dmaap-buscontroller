@@ -132,7 +132,7 @@ However, a java argument -DConfigFile  can be set to a different path.  (Our kub
 The table below lists all the settings, default values (if not set), and shows any explicit setting in ONAP oom kubernetes deployment.
 
 |-|-|-|-|
-| Property | Description | Default | Kubernetes Setting | 
+| Property | Description | Default | ONAP Kubernetes Setting | 
 |-|-|-|-|
 |UseAAF                | Flag for whether AAF authz API is to be used            | false                                  | false |
 |-|-|-|-|
@@ -188,6 +188,7 @@ The table below lists all the settings, default values (if not set), and shows a
 |aaf.AdminPassword     | AAF credential of AdminUser                             | notSet                                 | demo123456! |
 |-|-|-|-|
 |aaf.NsOwnerIdentity     | AAF Identity to be used as topic Namespace owner      | notSet                                 | aaf_admin@people.osaaf.org |
+|topicNsRoot           | AAF namespace value used to create FQTN                 | org.onap.dcae.dmaap                    | org.onap.dcae.dmaap | 
 |-|-|-|-|
 |CredentialCodeKeyfile | location of the codec keyfile used to decrypt passwords | LocalKey                               | etc/LocalKey |
 |                      | in this properties file before they are passed to AAF   | LocalKey                               | etc/LocalKey |
@@ -205,6 +206,14 @@ The table below lists all the settings, default values (if not set), and shows a
 |MM.ProvUserPwd        | AAF credenital for ProvUserMechId                       | notSet                                 | demo123456! | 
 |-|-|-|-|
 |MM.AgentRole          | AAF Role of client susbcribing to MM command topic      | notSet                                 | org.onal.dmaap-bc-mm-prov.agent |
+|-|-|-|-|
+|DR.provApi            | Version name of DR API (ONAP or AT&T)                   | ONAP                                   | ONAP |
+|-|-|-|-|
+|DR.onBehalfHeader     | String for "On Behalf Of" HTTP Header in DR API         | X-DR-ON-BEHALF-OF                      | X-DR-ON-BEHALF-OF |
+|-|-|-|-|
+|DR.feedContentType    | Value for Content-Type Header in DR Feed API            | application/vnd.dr.feed                | application/vnd.dr.feed |
+|-|-|-|-|
+|DR subContentType     | Value for Content-Type Header in DR Subscription API    | application/vnd.dr.subscription        | application/vnd.dr.subscription |
 |-|-|-|-|
 |HttpAllowed           | flag indicating whether http is supported               | false                                  | true |
 |-|-|-|-|
