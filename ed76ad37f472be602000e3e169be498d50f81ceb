@@ -1,0 +1,8 @@
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Verified+1: Dominic Lunanuova <dgl@research.att.com>
+Code-Review+2: Dominic Lunanuova <dgl@research.att.com>
+Submitted-by: Dominic Lunanuova <dgl@research.att.com>
+Submitted-at: Tue, 29 Jan 2019 19:37:21 +0000
+Reviewed-on: https://gerrit.onap.org/r/77533
+Project: dmaap/buscontroller
+Branch: refs/heads/master
