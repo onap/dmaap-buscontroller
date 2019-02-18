@@ -1,0 +1,122 @@
+#!/bin/sh
+#
+# ============LICENSE_START==========================================
+# org.onap.dmaap
+# ===================================================================
+# Copyright © 2019 AT&T Intellectual Property. All rights reserved.
+# ===================================================================
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ============LICENSE_END============================================
+# ECOMP is a trademark and service mark of AT&T Intellectual Property.
+#
+#
+
+umask 0022
+TZ=GMT0
+COMPONENT=dbc_client
+APP_ROOT=/opt/app/$COMPONENT
+USER=root
+export TZ
+PATH=/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin
+export PATH
+CONFIGMAP_ROOT=${CONFIGMAP_ROOT:-/opt/app/config}
+CONTAINER_CONFIG=$CONFIGMAP_ROOT/conf/dbc_client.env
+
+
+
+
+config() {
+	echo "ENTER config"
+	set -x
+	if [ ! -d $APP_ROOT ]
+	then
+		echo "Expected app root directory $APP_ROOT does not exist"
+		exit 1
+	fi
+	cd $APP_ROOT
+	find . -type f -exec ls -l {} \;
+	find $CONFIGMAP_ROOT -type f -exec ls -l {} \;
+	if [ !  -f $CONTAINER_CONFIG ]
+	then
+		echo "WARNING: Expected env file $CONTAINER_CONFIG not found. Default behaviors in effect"
+	else
+		source $CONTAINER_CONFIG
+	fi
+
+	if [ "$DMAAPBC_WAIT_TO_EXIT" != "Y" ]
+	then
+		echo "Creating $APP_ROOT/ok_to_exit so no waiting..."
+		> $APP_ROOT/ok_to_exit
+	else
+		echo "Not creating $APP_ROOT/ok_to_exit"
+	fi	
+	
+	if [ ! -f $APP_ROOT/misc/cert-client-init.sh ]
+	then
+		echo "Did not find $APP_ROOT/misc/cert-client-init.sh to append to truststore"
+		exit 1
+	fi
+	$APP_ROOT/misc/cert-client-init.sh
+
+	set +x
+}
+
+
+init() {
+	echo "ENTER init"
+	if [ ! -d $CONFIGMAP_ROOT ]
+	then
+		echo $CONFIGMAP_ROOT does not exist
+		return
+	fi
+
+	#loop on get /dmaap until we get a good response to indicate other provisioning can continue
+	rc=999
+	while [ $rc != "200" ]
+	do
+		sleep 10
+		rc=`curl -s -o /dev/null -I -w "%{http_code}" -X GET -H "Content-Type: application/json" http://dmaap-bc:8080/webapi/dmaap`
+		echo "get dmaap response=${rc}"
+	done
+}
+doprov() {
+
+	cd $CONFIGMAP_ROOT
+	pwd
+	# order is important in this next list
+	for uri in dmaap dcaeLocations mr_clusters topics feeds mr_clients dr_pubs dr_subs
+	do
+		if [ -d ${uri} ]
+		then
+			for j in `ls ${uri}/*.json`
+			do
+				echo "POST $j to $uri"
+				rc=`curl -v -X POST -w "%{http_code}" -H "Content-Type: application/json" -d @${j} http://dmaap-bc:8080/webapi/${uri}`
+				echo "response=$rc"
+			done
+		fi
+	done
+}
+
+set -x
+config
+init
+doprov
+
+echo "Check $APP_ROOT/ok_to_exit"
+while [ ! -f $APP_ROOT/ok_to_exit ]
+do
+	echo "$APP_ROOT/ok_to_exit does not exist.  Sticking around for debugging..."
+	sleep 10
+done
+exit 0
