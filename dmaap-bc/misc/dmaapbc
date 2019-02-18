@@ -213,7 +213,7 @@ case "$1" in
 'deploy')
 	config
 	start
-	init
+	#init
 	wait
 	;;
 'start')

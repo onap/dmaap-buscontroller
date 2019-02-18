@@ -28,6 +28,12 @@ Data Movement as a Platform (DMaaP) Bus Controller provides an API for other ONA
 A typical DMaaP resource is a Data Router Feed or a Message Router Topic, and their associated publishers and subscribers.
 Other infrastucture resources such as DR Nodes and MR Clusters are also provisioned through this API.
 
+### Sub-components
+
+This project produces the following mvn modules in their respective sub-directories:
+- dmaap-bc is a docker image intended to be used to instantiate the DMaaP Bus Controller container
+- dbc-client is a docker image intended to serve as a temporary http client of the Bus Controller API.  It will be instantiated in a container that is a Helm hook (e.g. post-install hook) that knows how to invoke the Bus Controller API.
+
 ### Build Instructions for a Continuous Integration environment using Jenkins
 
 When this component is included in a Continuous Integration environment, such as structured by the Linux Foundation, the artifacts can be created and deployed via Jenkins.  The following maven targets are currently supported in the Build step:
@@ -38,7 +44,7 @@ clean install
 
 ### Build Instructions for external developers
 
-This project is organized as a mvn project for a jar package.
+This project is organized as a mvn project for a docker image.
 After cloning from this git repo:
 
 ```
@@ -119,8 +125,8 @@ DMAAPBC_PE_AAF_ENV=TBD
 Then the following steps could be used to pull and run the Bus Controller.  (onap-nexus is just an example)
 ```
 $ 
-$ docker pull nexus3.onap.org:10003/onap/dmaap/buscontroller:latest
-$ docker run -d -p 18080:8080 -p 18443:8443 -v /tmp/docker-databus-controller.conf:/opt/app/config/conf nexus3.onap.org:10003/onap/dmaap/buscontroller:latest
+$ docker pull nexus3.onap.org:10003/onap/dmaap/dmaap-bc:latest
+$ docker run -d -p 18080:8080 -p 18443:8443 -v /tmp/docker-databus-controller.conf:/opt/app/config/conf nexus3.onap.org:10003/onap/dmaap/dmaap-bc:latest
 ```
 
 ### Properties
