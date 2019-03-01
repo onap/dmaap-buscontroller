@@ -173,7 +173,7 @@
     <jettyVersion>9.4.12.RC2</jettyVersion>
     <eelf.version>1.0.0</eelf.version>
     <swagger.version>1.5.19</swagger.version>
-    <artifact.version>1.0.2</artifact.version>
+    <artifact.version>1.0.3</artifact.version>
     <!--  SONAR  -->
     <jacoco.version>0.7.7.201606060606</jacoco.version>
     <sonar-jacoco-listeners.version>3.2</sonar-jacoco-listeners.version>

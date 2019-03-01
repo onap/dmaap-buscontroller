@@ -31,6 +31,7 @@ PATH=/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin
 export PATH
 CONFIGMAP_ROOT=${CONFIGMAP_ROOT:-/opt/app/config}
 CONTAINER_CONFIG=$CONFIGMAP_ROOT/conf/dbc-client.env
+REQUESTID=${REQUESTID:-dbc-client}
 
 
 
@@ -85,7 +86,7 @@ init() {
 	while [ $rc != "200" ]
 	do
 		sleep 10
-		rc=`curl -s -o /dev/null -I -w "%{http_code}" -X GET -H "Content-Type: application/json" http://dmaap-bc:8080/webapi/dmaap`
+		rc=`curl -s -o /dev/null -I -w "%{http_code}" -X GET -H "X-ECOMP-RequestID: $REQUESTID" -H "Content-Type: application/json" http://dmaap-bc:8080/webapi/dmaap`
 		echo "get dmaap response=${rc}"
 	done
 }
@@ -94,21 +95,29 @@ doprov() {
 	cd $CONFIGMAP_ROOT
 	pwd
 	# order is important in this next list
-	for uri in dmaap dcaeLocations mr_clusters topics feeds mr_clients dr_pubs dr_subs
+	for uri in dmaap dcaeLocations mr_clusters topics mr_clients dr_nodes feeds dr_pubs dr_subs
 	do
 		if [ -d ${uri} ]
 		then
 			for j in `ls ${uri}/*.json`
 			do
 				echo "POST $j to $uri"
-				rc=`curl -v -X POST -w "%{http_code}" -H "Content-Type: application/json" -d @${j} http://dmaap-bc:8080/webapi/${uri}`
+				rc=`curl -v -X POST -w "%{http_code}" -H "X-ECOMP-RequestID: $REQUESTID" -H "Content-Type: application/json" -d @${j} http://dmaap-bc:8080/webapi/${uri}`
 				echo "response=$rc"
 			done
 		fi
 	done
 }
+delay() {
+	echo "DELAY=$DELAY"
+	if [ ! -z "$DELAY" ]
+	then
+		sleep $DELAY
+	fi
+}
 
 set -x
+delay
 config
 init
 doprov
