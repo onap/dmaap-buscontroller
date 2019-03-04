@@ -168,95 +168,165 @@
     </pluginManagement>
   </build>
   <profiles>
-    <profile>
-      <id>docker</id>
-           <properties>
-                <skipDockerBuild>false</skipDockerBuild>
-                <skipDockerTag>false</skipDockerTag>
-                <skipTests>true</skipTests>
-            </properties>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>com.spotify</groupId>
-            <artifactId>docker-maven-plugin</artifactId>
-	    <version>${docker.maven.plugin.version}</version>
-            <configuration>
-              <baseImage>java:openjdk-8-jre</baseImage>
-              <imageName>${onap.nexus.dockerregistry.daily}/${docker.image}</imageName>
-              <entryPoint>["./bin/dmaapbc", "deploy"]</entryPoint>
-              <serverId>${onap.nexus.dockerregistry.daily}</serverId>
-	      <skipDockerBuild>false</skipDockerBuild>
-              <imageTags>
-                <imageTag>${artifact.version}</imageTag>
-                <imageTag>latest</imageTag>
-              </imageTags>
-              <volumes>
-                <volume>/opt/app/dmaapbc/log</volume>
-              </volumes>
-              <forceTags>true</forceTags>
-              <user>root</user>
-              <resources>
+      <profile>
+        <id>docker</id>
+        <properties>
+            <skipDockerBuild>false</skipDockerBuild>
+            <skipDockerTag>false</skipDockerTag>
+            <skipTests>true</skipTests>
+        </properties>
+        <build>
+            <!-- Copy files to docker-stage to be included in image -->        
+            <resources>
                 <resource>
-                  <targetPath>/opt/app/dmaapbc/lib</targetPath>
-                  <directory>${multiproject.basedir}/dmaap-bc/target</directory>
-                  <include>dmaap-bc.jar</include>
+                    <targetPath>${basedir}/target/docker-stage</targetPath>
+                    <directory>${basedir}/src/main/resources</directory>
+                        <includes>
+                            <include>Dockerfile</include>
+                        </includes>
                 </resource>
-                <resource>
-                  <targetPath>/opt/app/dmaapbc/etc</targetPath>
-                  <directory>${multiproject.basedir}/dmaap-bc/misc</directory>
-                  <include>LocalKey</include>
-                  <include>logback.xml</include>
-                  <include>org.onap.dmaap-bc.trust.jks</include>
-                  <include>dbc-api.jks</include>
+                 <resource>
+                    <targetPath>${basedir}/target/docker-stage/opt/app/dmaapbc/etc</targetPath>
+                    <directory>${basedir}/misc</directory>
+                        <includes>
+                          <include>LocalKey</include>
+                          <include>logback.xml</include>
+                          <include>org.onap.dmaap-bc.trust.jks</include>
+                          <include>dbc-api.jks</include>
+                        </includes>
                 </resource>
-                <resource>
-                  <targetPath>/opt/app/dmaapbc/etc</targetPath>
-                  <directory>${multiproject.basedir}/dmaap-bc</directory>
-                  <include>version.properties</include>
+                 <resource>
+                    <targetPath>${basedir}/target/docker-stage/opt/app/dmaapbc/etc</targetPath>
+                    <directory>${basedir}</directory>
+                        <includes>
+                            <include>version.properties</include>
+                        </includes>
                 </resource>
-                <resource>
-                  <targetPath>/opt/app/dmaapbc/misc</targetPath>
-                  <directory>${multiproject.basedir}/dmaap-bc/misc</directory>
-                  <include>opensource.env</include>
-                  <include>*.tmpl</include>
+                 <resource>
+                    <targetPath>${basedir}/target/docker-stage/opt/app/dmaapbc/misc</targetPath>
+                    <directory>${basedir}/misc</directory>
+                        <includes>
+                            <include>opensource.env</include>
+                            <include>*.tmpl</include>
+                        </includes>
                 </resource>
-                <resource>
-                  <targetPath>/opt/app/dmaapbc/misc</targetPath>
-                  <directory>${multiproject.basedir}/misc</directory>
-                  <include>cert-client-init.sh</include>
+                 <resource>
+                    <targetPath>${basedir}/target/docker-stage/opt/app/dmaapbc/misc</targetPath>
+                    <directory>${multiproject.basedir}/misc</directory>
+                        <includes>
+                            <include>cert-client-init.sh</include>
+                        </includes>
                 </resource>
-                <resource>
-                  <targetPath>/opt/app/dmaapbc/bin</targetPath>
-                  <directory>${multiproject.basedir}/dmaap-bc/misc</directory>
-                  <include>dmaapbc</include>
-                  <include>doaction</include>
+                 <resource>
+                    <targetPath>${basedir}/target/docker-stage/opt/app/dmaapbc/bin</targetPath>
+                    <directory>${basedir}/misc</directory>
+                        <includes>
+                            <include>dmaapbc</include>
+                            <include>doaction</include>
+                        </includes>
                 </resource>
               </resources>
-              <runs>
-                <run>mv /opt/app/dmaapbc/etc/dbc-api.jks /opt/app/dmaapbc/etc/keystore</run>
-                <run>chmod 600 /opt/app/dmaapbc/etc/keystore</run>
-                <run>chmod 600 /opt/app/dmaapbc/etc/org.onap.dmaap-bc.trust.jks</run>
-                <run>chmod +x /opt/app/dmaapbc/misc/cert-client-init.sh</run>
-                <run>chmod +x /opt/app/dmaapbc/bin/*</run>
-                <run>mkdir /opt/app/dmaapbc/logs</run>
-                <run>mkdir /opt/app/dmaapbc/www</run>
-                <run>mkdir /opt/app/dmaapbc/www/doc</run>
-              </runs>
-              <workdir>/opt/app/dmaapbc</workdir>
-            </configuration>
-            <executions>
-             <execution>
-                 <id>default</id>
-                 <goals>
-                      <goal>build</goal>
-                      <goal>push</goal>
-                  </goals>
-             </execution>
-         </executions>
-          </plugin>
-        </plugins>
-      </build>
+            <plugins>
+              <!-- Copy jar to docker-stage to be included in image -->
+              <plugin>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>2.7</version>
+                    <executions>
+                       <execution>
+                            <id>copy-jar</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>copy-resources</goal>
+                            </goals>
+                            <configuration>
+                                <outputDirectory>${basedir}/target/docker-stage/opt/app/dmaapbc/lib</outputDirectory>
+                                <resources>
+                                    <resource>
+                                        <directory>${multiproject.basedir}/dmaap-bc/target</directory>
+                                        <includes>
+                                            <include>dmaap-bc.jar</include>
+                                        </includes>
+                                    </resource>
+                                </resources>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+
+                <!-- Setup image tags per https://wiki.onap.org/display/DW/Independent+Versioning+and+Release+Process#IndependentVersioningandReleaseProcess-StandardizedDockerTagging -->
+                <plugin>
+                  <groupId>org.codehaus.groovy.maven</groupId>
+                  <artifactId>gmaven-plugin</artifactId>
+                  <executions>
+                      <execution>
+                          <phase>validate</phase>
+                          <goals>
+                              <goal>execute</goal>
+                          </goals>
+                          <configuration>
+                              <properties>
+                                  <ver>${project.version}</ver>
+                                  <timestamp>${maven.build.timestamp}</timestamp>
+                              </properties>
+                              <source>
+                                  println 'ver: ' + project.properties['ver'];
+                                  if ( project.properties['ver'].endsWith("-SNAPSHOT") ) {
+                                      project.properties['dockertag1']=project.properties['ver'] + "-latest";
+                                      project.properties['dockertag2']=project.properties['ver'] + "-" + project.properties['timestamp'];
+                                  } else {
+                                      project.properties['dockertag1']=project.properties['ver'] + "-STAGING-latest";
+                                      project.properties['dockertag2']=project.properties['ver'] + "-STAGING-" + project.properties['timestamp'];
+                                  }
+                                  println 'docker tag 1: ' + project.properties['dockertag1'];
+                                  println 'docker tag 2: ' + project.properties['dockertag2'];
+                              </source>
+                          </configuration>
+                      </execution>
+                  </executions>
+                </plugin>
+
+               <plugin>
+                    <groupId>io.fabric8</groupId>
+                    <artifactId>docker-maven-plugin</artifactId>
+                    <version>0.28.0</version>  
+                    <configuration>
+                        <verbose>${docker.verbose}</verbose>
+                        <apiVersion>${docker.apiVersion}</apiVersion>
+                        <pullRegistry>${docker.pull.registry}</pullRegistry>
+                        <images>
+                            <image>                            
+                                <name>${onap.nexus.dockerregistry.daily}/${docker.image}</name>
+                                <build>
+                                    <cleanup>try</cleanup>
+                                    <dockerFileDir>${basedir}/target/docker-stage</dockerFileDir>
+                                    <dockerFile>Dockerfile</dockerFile>
+                                    <tags>
+                                        <tag>${dockertag1}</tag>
+                                        <tag>${dockertag2}</tag>
+                                    </tags>
+                                </build>
+                            </image>
+                        </images>
+                    </configuration>
+                     <executions>
+                         <execution>
+                             <id>generate-images</id>
+                             <phase>install</phase>
+                             <goals>
+                                 <goal>build</goal>
+                             </goals>
+                         </execution>
+                         <execution>
+                             <id>push-images</id>
+                             <phase>deploy</phase>
+                             <goals>
+                                 <goal>push</goal>
+                             </goals>
+                         </execution>
+                     </executions>
+                </plugin>
+            </plugins>
+        </build>
     </profile>
   </profiles>
   <dependencyManagement>
@@ -400,6 +470,9 @@
 
     <nexusproxy>https://nexus.onap.org</nexusproxy>
     <docker.push.registry>10.12.5.45:5000</docker.push.registry>
+
+    <timestamp>${maven.build.timestamp}</timestamp>
+    <maven.build.timestamp.format>yyyyMMdd'T'HHmmss'Z'</maven.build.timestamp.format>
 
     <!-- for Distribution Management -->
     <sitePath>/content/sites/site/org/onap/dmaap/dmaap-bc/${artifact.version}</sitePath>
