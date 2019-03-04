@@ -55,13 +55,12 @@ mvn clean install
 ### Docker Packaging
 
 We can utilize docker to build and register the buscontroller container in a local dev repository.
-Note the Dockerfile follows ONAP convention of running app as root.
 
 ```
 
 <assuming DOCKER_HOST is set appropriately for your environment>
 
-$ mvn -P docker docker:build
+$ mvn -P docker 
 ```
 
 

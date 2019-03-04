@@ -95,25 +95,125 @@
     </pluginManagement>
   </build>
   <profiles>
+      <profile>
+        <id>docker</id>
+        <properties>
+            <skipDockerBuild>false</skipDockerBuild>
+            <skipDockerTag>false</skipDockerTag>
+            <skipTests>true</skipTests>
+        </properties>
+        <build>
+            <!-- Copy files to docker-stage to be included in image -->        
+            <resources>
+                <resource>
+                    <targetPath>${basedir}/target/docker-stage</targetPath>
+                    <directory>${basedir}/src/main/resources</directory>
+                        <includes>
+                            <include>Dockerfile</include>
+                        </includes>
+                </resource>
+                 <resource>
+                    <targetPath>${basedir}/target/docker-stage/opt/app/dbc-client/bin</targetPath>
+                    <directory>${basedir}/misc</directory>
+                        <includes>
+                          <include>dbc-client</include>
+                        </includes>
+                </resource>
+                 <resource>
+                    <targetPath>${basedir}/target/docker-stage/opt/app/dmaapbc/etc</targetPath>
+                    <directory>${basedir}</directory>
+                        <includes>
+                            <include>version.properties</include>
+                        </includes>
+                </resource>
+                 <resource>
+                    <targetPath>${basedir}/target/docker-stage/opt/app/dbc-client/misc</targetPath>
+                    <directory>${multiproject.basedir}/misc</directory>
+                        <includes>
+                            <include>cert-client-init.sh</include>
+                        </includes>
+                </resource>
+              </resources>
+            <plugins>
+              <!-- Copy jar to docker-stage to be included in image -->
+              <plugin>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>2.7</version>
+                    <executions>
+                       <execution>
+                            <id>copy-jar</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>copy-resources</goal>
+                            </goals>
+                            <configuration>
+                                <outputDirectory>${basedir}/target/docker-stage/opt/app/dmaapbc/lib</outputDirectory>
+                                <resources>
+                                    <resource>
+                                        <directory>${multiproject.basedir}/dbc-client/target</directory>
+                                        <includes>
+                                            <include>dbc-client.jar</include>
+                                        </includes>
+                                    </resource>
+                                </resources>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+               <plugin>
+                    <groupId>io.fabric8</groupId>
+                    <artifactId>docker-maven-plugin</artifactId>
+                    <version>0.28.0</version>  
+                    <configuration>
+                        <verbose>${docker.verbose}</verbose>
+                        <apiVersion>${docker.apiVersion}</apiVersion>
+                        <pullRegistry>${docker.pull.registry}</pullRegistry>
+                        <images>
+                            <image>                            
+                                <name>${onap.nexus.dockerregistry.daily}/${docker.image}</name>
+                                <build>
+                                    <cleanup>try</cleanup>
+                                    <dockerFileDir>${basedir}/target/docker-stage</dockerFileDir>
+                                    <dockerFile>Dockerfile</dockerFile>
+                                    <tags>
+                                        <tag>${project.version}</tag>
+                                        <tag>latest</tag>
+                                    </tags>
+                                </build>
+                            </image>
+                        </images>
+                    </configuration>
+                     <executions>
+                         <execution>
+                             <id>generate-images</id>
+                             <phase>package</phase>
+                             <goals>
+                                 <goal>build</goal>
+                             </goals>
+                         </execution>
+                     </executions>
+                </plugin>
+            </plugins>
+        </build>
+    </profile>
     <profile>
-      <id>docker</id>
-           <properties>
-                <skipDockerBuild>false</skipDockerBuild>
-                <skipDockerTag>false</skipDockerTag>
-                <skipTests>true</skipTests>
-            </properties>
+      <id>docker-spotify</id>
+       <properties>
+            <skipDockerBuild>false</skipDockerBuild>
+            <skipDockerTag>false</skipDockerTag>
+            <skipTests>true</skipTests>
+        </properties>
       <build>
         <plugins>
           <plugin>
             <groupId>com.spotify</groupId>
             <artifactId>docker-maven-plugin</artifactId>
-	    <version>${docker.maven.plugin.version}</version>
+	        <version>${docker.maven.plugin.version}</version>
             <configuration>
               <baseImage>alpine:3.8</baseImage>
               <imageName>${onap.nexus.dockerregistry.daily}/${docker.image}</imageName>
               <entryPoint>["./bin/dbc-client", "deploy"]</entryPoint>
               <serverId>${onap.nexus.dockerregistry.daily}</serverId>
-	      <skipDockerBuild>false</skipDockerBuild>
               <imageTags>
                 <imageTag>${artifact.version}</imageTag>
                 <imageTag>latest</imageTag>

@@ -52,13 +52,15 @@ config() {
 		echo "Expected app root directory $APP_ROOT does not exist"
 		exit 1
 	fi
+
+	cd $APP_ROOT
 	if [ !  -f $CONTAINER_CONFIG ]
 	then
 		echo "WARNING: Expected env file $CONTAINER_CONFIG not found. Default behaviors in effect"
 		find $CONTAINER_ROOT -type f
+	else 
+	    source $CONTAINER_CONFIG
 	fi
-	cd $APP_ROOT
-	source $CONTAINER_CONFIG
 
 	if [ "$DMAAPBC_WAIT_TO_EXIT" != "Y" ]
 	then

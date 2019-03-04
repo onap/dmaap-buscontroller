@@ -40,27 +40,18 @@
         <skip.docker.push>true</skip.docker.push>
   </properties>
 
-<!---
-  <profiles>
-    <profile>
-      <id>docker</id>
--->
-      <build>
-        <plugins>
-            <plugin>
-                <groupId>com.spotify</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <version>${docker.maven.plugin.version}</version>
-                <configuration>
-                    <skipDockerBuild>${skip.docker.build}</skipDockerBuild>
-                </configuration>
-            </plugin>
-        </plugins>
-      </build>
-<!---
-    </profile>
-  </profiles>
--->
+  <build>
+    <plugins>
+        <plugin>
+            <groupId>com.spotify</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+            <version>${docker.maven.plugin.version}</version>
+            <configuration>
+                <skipDockerBuild>${skip.docker.build}</skipDockerBuild>
+            </configuration>
+        </plugin>
+    </plugins>
+  </build>
 
   <modules>
      <module>dmaap-bc</module>
