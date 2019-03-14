@@ -202,9 +202,10 @@
                         <verbose>${docker.verbose}</verbose>
                         <apiVersion>${docker.apiVersion}</apiVersion>
                         <pullRegistry>${docker.pull.registry}</pullRegistry>
+                        <pushRegistry>${docker.push.registry}</pushRegistry>
                         <images>
                             <image>                            
-                                <name>${onap.nexus.dockerregistry.daily}/${docker.image}</name>
+                                <name>${docker.image}</name>
                                 <build>
                                     <cleanup>try</cleanup>
                                     <dockerFileDir>${basedir}/target/docker-stage</dockerFileDir>
