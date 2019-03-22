@@ -26,6 +26,15 @@ COPY /opt /opt
 
 WORKDIR /opt/app/dmaapbc
 
+# Install AAF CA certificate
+RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
+RUN mkdir -p /usr/local/share/ca-certificates && \
+    mv misc/aaf-ca.crt /usr/local/share/ca-certificates/aaf-ca.crt
+RUN update-ca-certificates
+
+# Install curl
+RUN apk add --no-cache curl
+
 RUN mv etc/org.onap.dmaap-bc.jks etc/keystore && \
     chmod 600 etc/keystore && \
     chmod 600 etc/org.onap.dmaap-bc.trust.jks && \

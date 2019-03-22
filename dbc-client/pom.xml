@@ -131,6 +131,7 @@
                     <directory>${multiproject.basedir}/misc</directory>
                         <includes>
                             <include>cert-client-init.sh</include>
+                            <include>aaf-ca.crt</include>
                         </includes>
                 </resource>
               </resources>
