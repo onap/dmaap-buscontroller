@@ -26,7 +26,7 @@ COPY /opt /opt
 
 WORKDIR /opt/app/dmaapbc
 
-RUN mv etc/dbc-api.jks etc/keystore && \
+RUN mv etc/org.onap.dmaap-bc.jks etc/keystore && \
     chmod 600 etc/keystore && \
     chmod 600 etc/org.onap.dmaap-bc.trust.jks && \
     chmod +x misc/cert-client-init.sh && \

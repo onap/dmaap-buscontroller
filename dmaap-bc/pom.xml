@@ -191,8 +191,15 @@
                         <includes>
                           <include>LocalKey</include>
                           <include>logback.xml</include>
+                          <include>org.onap.dmaap-bc.cred.props</include>
+                          <include>org.onap.dmaap-bc.crontab.sh</include>
+                          <include>org.onap.dmaap-bc.jks</include>
+                          <include>org.onap.dmaap-bc.keyfile</include>
+                          <include>org.onap.dmaap-bc.location.props</include>
+                          <include>org.onap.dmaap-bc.p12</include>
+                          <include>org.onap.dmaap-bc.props</include>
+                          <include>org.onap.dmaap-bc.showpass</include>
                           <include>org.onap.dmaap-bc.trust.jks</include>
-                          <include>dbc-api.jks</include>
                         </includes>
                 </resource>
                  <resource>
@@ -417,7 +424,7 @@
     <dependency>
       <groupId>org.onap.dmaap.dbcapi</groupId>
       <artifactId>dbcapi</artifactId>
-      <version>1.0.23-SNAPSHOT</version>
+      <version>1.0.24-SNAPSHOT</version>
     </dependency>
   </dependencies>
   <reporting>
@@ -455,7 +462,7 @@
     <jettyVersion>9.4.12.RC2</jettyVersion>
     <eelf.version>1.0.0</eelf.version>
     <swagger.version>1.5.19</swagger.version>
-    <artifact.version>1.1.1</artifact.version>
+    <artifact.version>1.1.2</artifact.version>
     <!--  SONAR  -->
     <jacoco.version>0.7.7.201606060606</jacoco.version>
     <sonar-jacoco-listeners.version>3.2</sonar-jacoco-listeners.version>
