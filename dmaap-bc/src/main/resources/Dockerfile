@@ -36,7 +36,7 @@ RUN update-ca-certificates
 RUN apk add --no-cache curl
 
 # Install bash
-RUN apk update && apk upgrade && apk add bash
+RUN apk update  && apk add bash
 
 RUN mv etc/org.onap.dmaap-bc.jks etc/keystore && \
     chmod 600 etc/keystore && \
