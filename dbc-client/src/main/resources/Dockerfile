@@ -37,8 +37,7 @@ RUN apk add --no-cache curl
 
 RUN apk add --no-cache curl
 
-RUN chmod +x /opt/app/dbc-client/misc/cert-client-init.sh && \
-    chmod +x /opt/app/dbc-client/bin/* && \
+RUN chmod +x /opt/app/dbc-client/bin/* && \
     mkdir /opt/app/dbc-client/logs
 
 VOLUME /opt/app/dbc-client/log

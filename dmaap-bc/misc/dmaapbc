@@ -70,12 +70,6 @@ config() {
 		echo "Not creating $APP_ROOT/ok_to_exit"
 	fi	
 	
-	if [ ! -f $APP_ROOT/misc/cert-client-init.sh ]
-	then
-		echo "Did not find $APP_ROOT/misc/cert-client-init.sh to append to truststore"
-		exit 1
-	fi
-	$APP_ROOT/misc/cert-client-init.sh
 	. misc/havecert.tmpl > etc/havecert
 	chmod +x etc/havecert
 
