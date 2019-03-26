@@ -91,9 +91,9 @@ dopost() {
 
 	loop=true
 
-	while [ $loop ]
+	while [ $loop = true ]
 	do
-		rc=`curl -v -X POST -w "%{http_code}" -H "X-ECOMP-RequestID: $REQUESTID" -H "Content-Type: application/json" -d @${1} ${PROTO}://${DBC}:${PORT}/webapi/${2}`
+		rc=`curl -s -X POST -w "%{http_code}" -H "X-ECOMP-RequestID: $REQUESTID" -H "Content-Type: application/json" -d @${1} ${PROTO}://${DBC}:${PORT}/webapi/${2} -o /dev/null`
 		case $rc in
 		200 | 201 | 409 )
 			echo "response=$rc"
