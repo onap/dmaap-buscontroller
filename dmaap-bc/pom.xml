@@ -187,10 +187,8 @@
                 </resource>
                  <resource>
                     <targetPath>${basedir}/target/docker-stage/opt/app/dmaapbc/etc</targetPath>
-                    <directory>${basedir}/misc</directory>
+                    <directory>${multiproject.basedir}/certs</directory>
                         <includes>
-                          <include>LocalKey</include>
-                          <include>logback.xml</include>
                           <include>org.onap.dmaap-bc.cred.props</include>
                           <include>org.onap.dmaap-bc.crontab.sh</include>
                           <include>org.onap.dmaap-bc.jks</include>
@@ -200,6 +198,22 @@
                           <include>org.onap.dmaap-bc.props</include>
                           <include>org.onap.dmaap-bc.showpass</include>
                           <include>org.onap.dmaap-bc.trust.jks</include>
+                        </includes>
+                </resource>
+                 <resource>
+                    <targetPath>${basedir}/target/docker-stage/opt/app/dmaapbc/misc</targetPath>
+                    <directory>${multiproject.basedir}/misc</directory>
+                        <includes>
+                            <include>cert-client-init.sh</include>
+                            <include>aaf-ca.crt</include>
+                        </includes>
+                </resource>
+                 <resource>
+                    <targetPath>${basedir}/target/docker-stage/opt/app/dmaapbc/etc</targetPath>
+                    <directory>${basedir}/misc</directory>
+                        <includes>
+                          <include>LocalKey</include>
+                          <include>logback.xml</include>
                         </includes>
                 </resource>
                  <resource>
@@ -215,14 +229,6 @@
                         <includes>
                             <include>opensource.env</include>
                             <include>*.tmpl</include>
-                        </includes>
-                </resource>
-                 <resource>
-                    <targetPath>${basedir}/target/docker-stage/opt/app/dmaapbc/misc</targetPath>
-                    <directory>${multiproject.basedir}/misc</directory>
-                        <includes>
-                            <include>cert-client-init.sh</include>
-                            <include>aaf-ca.crt</include>
                         </includes>
                 </resource>
                  <resource>
@@ -463,7 +469,7 @@
     <jettyVersion>9.4.12.RC2</jettyVersion>
     <eelf.version>1.0.0</eelf.version>
     <swagger.version>1.5.19</swagger.version>
-    <artifact.version>1.1.2</artifact.version>
+    <artifact.version>1.1.3</artifact.version>
     <!--  SONAR  -->
     <jacoco.version>0.7.7.201606060606</jacoco.version>
     <sonar-jacoco-listeners.version>3.2</sonar-jacoco-listeners.version>

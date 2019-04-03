@@ -1,0 +1,55 @@
+Procedure to create pem files for curl use within dbc-client container.
+
+1. Download certificate artifacts from AAF
+1b.  Remember to run the showpass step to capture the cleartext passwords.  Assume this will be in a file with suffix .showpass.
+1c.  Add AAF artifacts to buscontroller project under buscontroller/certs
+
+2. Display passwords in showpass file
+
+	ubuntu@dgl-rancher:~/dublin/buscontroller/certs$ cat *showpass
+	cadi_truststore_password=8b&R5%l$l:@jSWz@FCs;rhY*
+	cadi_keystore_password_jks=Y@Y5f&gm?PAz,CVQL,lk[VAF
+	cadi_key_password=2U[iOZzMHI:.#tdCwlBqc;}S
+	cadi_keystore_password=2U[iOZzMHI:.#tdCwlBqc;}S
+	cadi_keystore_password_p12=2U[iOZzMHI:.#tdCwlBqc;}S
+	Challenge=9H83TErBrN!u?;]1iCK@&69?
+	2019-03-22T17:38:32.447+0000: Trans Info
+		 REMOTE Show Password 2214.6292ms
+
+3. copy the value for cadi_keystore_password_p12 into clipboard
+
+4. Use openssl to create pem files.  NOTE: paste pwd from step 3 to all answers.
+
+	ubuntu@dgl-rancher:~/dublin/buscontroller/certs$ openssl pkcs12 -in ./org.onap.dmaap-bc.p12 -out ca.pem -cacerts -nokeys
+	Enter Import Password:
+	MAC verified OK
+
+	ubuntu@dgl-rancher:~/dublin/buscontroller/certs$ openssl pkcs12 -in ./org.onap.dmaap-bc.p12 -out client.pem -clcerts -nokeys
+	Enter Import Password:
+	MAC verified OK
+
+	ubuntu@dgl-rancher:~/dublin/buscontroller/certs$ openssl pkcs12 -in ./org.onap.dmaap-bc.p12 -out key.pem -nocerts
+	Enter Import Password:
+	MAC verified OK
+	Enter PEM pass phrase:
+	Verifying - Enter PEM pass phrase:
+
+5. Confirm new pem files are created: 
+
+	ubuntu@dgl-rancher:~/dublin/buscontroller/certs$ ls -l
+	total 52
+	-rw-rw-r-- 1 ubuntu ubuntu 1759 Apr  3 14:52 ca.pem
+	-rw-rw-r-- 1 ubuntu ubuntu 1791 Apr  3 14:53 client.pem
+	-rw-rw-r-- 1 ubuntu ubuntu 1997 Apr  3 14:55 key.pem
+	-rw-rw-r-- 1 ubuntu ubuntu 1159 Apr  3 11:59 org.onap.dmaap-bc.cred.props
+	-rw-rw-r-- 1 ubuntu ubuntu  751 Apr  3 11:59 org.onap.dmaap-bc.crontab.sh
+	-rw-rw-r-- 1 ubuntu ubuntu 3613 Apr  3 11:59 org.onap.dmaap-bc.jks
+	-rw-rw-r-- 1 ubuntu ubuntu 2074 Apr  3 11:59 org.onap.dmaap-bc.keyfile
+	-rw-rw-r-- 1 ubuntu ubuntu  289 Apr  3 11:59 org.onap.dmaap-bc.location.props
+	-rw-rw-r-- 1 ubuntu ubuntu 4151 Apr  3 11:59 org.onap.dmaap-bc.p12
+	-rw-rw-r-- 1 ubuntu ubuntu  629 Apr  3 11:59 org.onap.dmaap-bc.props
+	-rw-rw-r-- 1 ubuntu ubuntu  365 Apr  3 11:59 org.onap.dmaap-bc.showpass
+	-rw-rw-r-- 1 ubuntu ubuntu 1413 Apr  3 11:59 org.onap.dmaap-bc.trust.jks
+
+6. pem files can now be included in docker image
+

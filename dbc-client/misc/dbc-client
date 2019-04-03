@@ -35,6 +35,12 @@ REQUESTID=${REQUESTID:-dbc-client}
 DBC=${DBC:-dmaap-bc}
 PROTO=${PROTO:-https}
 PORT=${PORT:-8443}
+WAIT_TO_EXIT=${WAIT_TO_EXIT:-N}
+PEMDIR=${PEMDIR:-/opt/app/osaaf/local}
+CAPEM=${CAPEM:-ca.pem}
+CLIENTPEM=${CLIENTPEM:-client.pem}
+KEYPEM=${KEYPEM:-key.pem}
+CERTPWD=${CERTPWD:-"2U[iOZzMHI:.#tdCwlBqc;}S"}
 
 
 
@@ -47,6 +53,18 @@ config() {
 		echo "Expected app root directory $APP_ROOT does not exist"
 		exit 1
 	fi
+	cd $PEMDIR
+	pwd
+	ls -l
+	if [ -f $CAPEM  -a -f $CLIENTPEM -a -f $KEYPEM ]
+	then
+		echo "--key $PEMDIR/$KEYPEM --cacert $PEMDIR/$CAPEM --cert $PEMDIR/${CLIENTPEM}:${CERTPWD}" > $PEMDIR/curl.cred
+		CURLCRED="-K $PEMDIR/curl.cred"
+	else
+		echo "Warning: PEM files for authorization not found!"
+		CURLCRED=""
+	fi
+	echo "CURLCRED=$CURLCRED"
 	cd $APP_ROOT
 	find . -type f -exec ls -l {} \;
 	find $CONFIGMAP_ROOT -type f -exec ls -l {} \;
@@ -57,7 +75,7 @@ config() {
 		source $CONTAINER_CONFIG
 	fi
 
-	if [ "$DMAAPBC_WAIT_TO_EXIT" != "Y" ]
+	if [ "$WAIT_TO_EXIT" != "Y" ]
 	then
 		echo "Creating $APP_ROOT/ok_to_exit so no waiting..."
 		> $APP_ROOT/ok_to_exit
@@ -70,6 +88,7 @@ config() {
 
 
 init() {
+	set -x
 	echo "ENTER init"
 	if [ ! -d $CONFIGMAP_ROOT ]
 	then
@@ -82,18 +101,20 @@ init() {
 	while [ $rc != "200" ]
 	do
 		sleep 10
-		rc=`curl -s -o /dev/null -I -w "%{http_code}" -X GET -H "X-ECOMP-RequestID: $REQUESTID" -H "Content-Type: application/json" ${PROTO}://${DBC}:${PORT}/webapi/dmaap`
+		rc=`curl $CURLCRED -s -o /dev/null -I -w "%{http_code}" -X GET -H "X-ECOMP-RequestID: $REQUESTID" -H "Content-Type: application/json" ${PROTO}://${DBC}:${PORT}/webapi/dmaap`
 		echo "get dmaap response=${rc}"
 	done
+	set +x
 }
 dopost() {
+	set -x
 	RETRY_TIME=60
 
 	loop=true
 
 	while [ $loop = true ]
 	do
-		rc=`curl -s -X POST -w "%{http_code}" -H "X-ECOMP-RequestID: $REQUESTID" -H "Content-Type: application/json" -d @${1} ${PROTO}://${DBC}:${PORT}/webapi/${2} -o /dev/null`
+		rc=`curl $CURLCRED -s -X POST -w "%{http_code}" -H "X-ECOMP-RequestID: $REQUESTID" -H "Content-Type: application/json" -d @${1} ${PROTO}://${DBC}:${PORT}/webapi/${2} -o /dev/null`
 		case $rc in
 		200 | 201 | 409 )
 			echo "response=$rc"
@@ -105,10 +126,12 @@ dopost() {
 			;;
 		esac
 	done
+	set +x
 
 }
 doprov() {
 
+	set -x
 	cd $CONFIGMAP_ROOT
 	pwd
 	# order is important in this next list
@@ -123,6 +146,7 @@ doprov() {
 			done
 		fi
 	done
+	set +x
 }
 delay() {
 	echo "DELAY=$DELAY"
@@ -132,7 +156,6 @@ delay() {
 	fi
 }
 
-set -x
 delay
 config
 init

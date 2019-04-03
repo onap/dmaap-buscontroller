@@ -35,11 +35,15 @@ RUN update-ca-certificates
 # Install curl
 RUN apk add --no-cache curl
 
-RUN apk add --no-cache curl
+# Install client certs for curl and openssl
+RUN apk add --no-cache openssl
+RUN mkdir -p /opt/app/osaaf/local  && \
+    mv etc/org.onap.dmaap-bc.p12 /opt/app/osaaf/local && \
+    mv etc/*.pem /opt/app/osaaf/local
 
 RUN chmod +x /opt/app/dbc-client/bin/* && \
     mkdir /opt/app/dbc-client/logs
 
 VOLUME /opt/app/dbc-client/log
 
-ENTRYPOINT ["sh", "./bin/dbc-client", "deploy"]
+ENTRYPOINT ["sh", "./bin/dbc-client" ]
