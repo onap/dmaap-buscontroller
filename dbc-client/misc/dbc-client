@@ -40,7 +40,7 @@ PEMDIR=${PEMDIR:-/opt/app/osaaf/local}
 CAPEM=${CAPEM:-ca.pem}
 CLIENTPEM=${CLIENTPEM:-client.pem}
 KEYPEM=${KEYPEM:-key.pem}
-CERTPWD=${CERTPWD:-"2U[iOZzMHI:.#tdCwlBqc;}S"}
+CERTPWD=${CERTPWD:-'2U[iOZzMHI:.#tdCwlBqc;}S'}
 
 
 
