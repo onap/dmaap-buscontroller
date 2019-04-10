@@ -38,6 +38,10 @@ RUN apk add --no-cache curl
 # Install bash
 RUN apk update  && apk add bash
 
+#prepare certificate location for cadi
+RUN mkdir -p /opt/app/osaaf && \
+    ln -s /opt/app/dmaapbc/etc /opt/app/osaaf/local
+
 RUN mv etc/org.onap.dmaap-bc.jks etc/keystore && \
     chmod 600 etc/keystore && \
     chmod 600 etc/org.onap.dmaap-bc.trust.jks && \
