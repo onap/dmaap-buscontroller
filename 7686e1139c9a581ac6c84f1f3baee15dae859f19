@@ -1,0 +1,9 @@
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+1: Pawel Kasperkiewicz <pawel.kasperkiewicz@nokia.com>
+Code-Review+1: Piotr Karaś <piotr.karas@nokia.com>
+Code-Review+2: Dominic Lunanuova <dgl@research.att.com>
+Submitted-by: Dominic Lunanuova <dgl@research.att.com>
+Submitted-at: Wed, 10 Apr 2019 12:46:26 +0000
+Reviewed-on: https://gerrit.onap.org/r/84638
+Project: dmaap/buscontroller
+Branch: refs/heads/master
