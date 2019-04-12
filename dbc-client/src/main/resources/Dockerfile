@@ -46,4 +46,10 @@ RUN chmod +x /opt/app/dbc-client/bin/* && \
 
 VOLUME /opt/app/dbc-client/log
 
+RUN addgroup -S -g 1001 onap \
+    && adduser -S -u 1000 dbc -G onap \
+    && chown -R dbc:onap /opt/
+
+USER dbc
+
 ENTRYPOINT ["sh", "./bin/dbc-client" ]

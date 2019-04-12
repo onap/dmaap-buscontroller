@@ -25,7 +25,6 @@ umask 0022
 TZ=GMT0
 COMPONENT=dbc-client
 APP_ROOT=${APP_ROOT:-/opt/app/$COMPONENT}
-USER=root
 export TZ
 PATH=/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin
 export PATH

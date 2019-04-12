@@ -25,7 +25,8 @@ umask 0022
 TZ=GMT0
 COMPONENT=dmaapbc
 APP_ROOT=/opt/app/$COMPONENT
-USER=root
+USER=dbc
+GROUP=onap
 export TZ
 PATH=/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/opt/java/jdk/jdk180/bin
 export PATH
@@ -36,7 +37,22 @@ CONFIGMAP_PROPS=${CONFIGMAP_PROPS:-$CONFIGMAP_ROOT/conf/dmaapbc.properties}
 CONTAINER_CONFIG=$CONFIGMAP_ROOT/conf/buscontroller.env
 MAIN=org.onap.dmaap.dbcapi.server.Main 
 
-
+authcheck() {
+	set -x
+	ID=`id -n -u`
+	GRP=`id -n -g`
+	if [ "$ID" != "$USER" ]
+	then
+		echo $COMPONENT must be started as user $USER not $ID
+		exit 1
+	fi
+	if [ "$GRP" != "$GROUP" ]
+	then
+		echo $COMPONENT must be started as group $GROUP not $GRP
+		exit 1
+	fi
+	set +x
+}
 
 pids() {
 	set -x
@@ -92,18 +108,7 @@ config() {
 start() {
 	echo "ENTER start"
 	set -x
-	ID=`id -n -u`
-	GRP=`id -n -g`
-	if [ "$ID" != "$USER" ]
-	then
-		echo $COMPONENT must be started as user $USER not $ID
-		exit 1
-	fi
-	if [ "$GRP" != "$USER" ]
-	then
-		echo $COMPONENT must be started as group $USER not $GRP
-		exit 1
-	fi
+	authcheck
 	cd $APP_ROOT
 	pwd
 
@@ -134,18 +139,7 @@ start() {
 
 stop() {
 	echo "ENTER stop"
-	ID=`id -n -u`
-	GRP=`id -n -g`
-	if [ "$ID" != "$USER" ]
-	then
-		echo $COMPONENT must be stopped as user $USER not $ID
-		exit 1
-	fi
-	if [ "$GRP" != "$USER" ]
-	then
-		echo $COMPONENT must be stopped as group $USER not $GRP
-		exit 1
-	fi
+	authcheck
 	touch $APP_ROOT/etc/SHUTDOWN
 	PIDS=`pids`
 	if [ "$PIDS" != "" ]
