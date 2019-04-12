@@ -17,4 +17,5 @@ dmaap/buscontroller
    administration/administration.rst
    logging/logging.rst
    delivery/delivery.rst
+   security/security.rst
 
