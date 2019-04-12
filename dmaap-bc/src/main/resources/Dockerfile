@@ -53,4 +53,10 @@ RUN mv etc/org.onap.dmaap-bc.jks etc/keystore && \
 
 VOLUME /opt/app/dmaapbc/log
 
+RUN addgroup -S -g 1001 onap \
+    && adduser -S -u 1000 dbc -G onap \
+    && chown -R dbc:onap /opt/
+
+USER dbc
+
 ENTRYPOINT ["sh", "./bin/dmaapbc", "deploy"]
