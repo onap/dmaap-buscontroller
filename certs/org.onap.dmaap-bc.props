@@ -4,6 +4,7 @@
 #   on 2019-03-22T17:37:33.690+0000
 # @copyright 2016, AT&T
 ############################################################
+aaf_env=DEV
 aaf_id=dmaap-bc@dmaap-bc.onap.org
 aaf_locate_url=https://aaf-onap-test.osaaf.org:8095
 aaf_url=https://AAF_LOCATE_URL/AAF_NS.service:2.1
