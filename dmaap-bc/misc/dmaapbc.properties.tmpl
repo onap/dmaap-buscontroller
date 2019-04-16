@@ -180,12 +180,12 @@ CredentialCodecKeyfile:	${DMAAPBC_CODEC_KEYFILE:-etc/LocalKey}
 # This overrides the Class used for Decryption.
 # This allows for a plugin encryption/decryption method if needed.
 # Call this Class for decryption at runtime.
-#AafDecryption.Class: com.company.proprietaryDecryptor 
+#AafDecryption.Class: com.company.proprietaryDecryptor
 
 #
 # This overrides the Class used for API Permission check.
 # This allows for a plugin policy check, if needed
-#ApiPermission.Class: com.company.policy.DecisionPolicy
+ApiPermission.Class: org.onap.dmaap.dbcapi.authentication.AllowAll
 
 # Namespace for URI values for API used to create AAF permissions
 # e.g. if ApiNamespace is X.Y..dmaapBC.api then for URI /topics we create an AAF perm X.Y..dmaapBC.api.topics
