@@ -40,6 +40,9 @@ CAPEM=${CAPEM:-ca.pem}
 CLIENTPEM=${CLIENTPEM:-client.pem}
 KEYPEM=${KEYPEM:-key.pem}
 CERTPWD=${CERTPWD:-'2U[iOZzMHI:.#tdCwlBqc;}S'}
+AUTH_METHOD=${AUTH_METHOD:-basicAuth}
+BA_IDENTITY=${BA_IDENTITY:-dmaap-bc@dmaap-bc.onap.org}
+BA_PWD=${BA_PWD:-'demo123456!'}
 
 
 
@@ -55,7 +58,12 @@ config() {
 	cd $PEMDIR
 	pwd
 	ls -l
-	if [ -f $CAPEM  -a -f $CLIENTPEM -a -f $KEYPEM ]
+	echo "AUTH_METHOD=$AUTH_METHOD"
+	if [ "$AUTH_METHOD"  =  "basicAuth" ]
+	then
+		echo "-u ${BA_IDENTITY}:${BA_PWD}" > $PEMDIR/curl.cred
+		CURLCRED="-K $PEMDIR/curl.cred"
+	elif [ -f $CAPEM  -a -f $CLIENTPEM -a -f $KEYPEM ]
 	then
 		echo "--key $PEMDIR/$KEYPEM --cacert $PEMDIR/$CAPEM --cert $PEMDIR/${CLIENTPEM}:${CERTPWD}" > $PEMDIR/curl.cred
 		CURLCRED="-K $PEMDIR/curl.cred"
