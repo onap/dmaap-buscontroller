@@ -151,8 +151,12 @@ MM.ProvUserPwd: ${DMAAPBC_MMPROV_PWD:-demo123456!}
 MM.AgentRole: ${DMAAPBC_MMAGENT_ROLE:-org.onap.dmaap-bc-mm-prov.agent}
 #################
 #
-# path to cadi.properties
+# CADI settings
 #
+# flag indication if CADI filtering is used
+enableCADI: ${DMAAPBC_ENABLE_CADI:-false}
+#
+# path to CADI properties
 cadi.properties: /opt/app/osaaf/local/org.onap.dmaap-bc.props
 
 #################
