@@ -65,7 +65,7 @@ config() {
 		CURLCRED="-K $PEMDIR/curl.cred"
 	elif [ -f $CAPEM  -a -f $CLIENTPEM -a -f $KEYPEM ]
 	then
-		echo "--key $PEMDIR/$KEYPEM --cacert $PEMDIR/$CAPEM --cert $PEMDIR/${CLIENTPEM}:${CERTPWD}" > $PEMDIR/curl.cred
+		printf "key \"$PEMDIR/$KEYPEM\"\ncacert \"$PEMDIR/$CAPEM\"\ncert \"$PEMDIR/${CLIENTPEM}:${CERTPWD}\"" > $PEMDIR/curl.cred
 		CURLCRED="-K $PEMDIR/curl.cred"
 	else
 		echo "Warning: PEM files for authorization not found!"
