@@ -1,0 +1,10 @@
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+1: Tomasz Kaminski <tomasz.kaminski@nokia.com>
+Code-Review+1: Pawel Kasperkiewicz <pawel.kasperkiewicz@nokia.com>
+Code-Review+1: Olaf Burdziakowski <olaf.burdziakowski@nokia.com>
+Code-Review+2: Dominic Lunanuova <dgl@research.att.com>
+Submitted-by: Dominic Lunanuova <dgl@research.att.com>
+Submitted-at: Tue, 30 Apr 2019 00:13:39 +0000
+Reviewed-on: https://gerrit.onap.org/r/85782
+Project: dmaap/buscontroller
+Branch: refs/heads/master
