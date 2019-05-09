@@ -216,9 +216,10 @@
                           <include>logback.xml</include>
                         </includes>
                 </resource>
+
                  <resource>
                     <targetPath>${basedir}/target/docker-stage/opt/app/dmaapbc/etc</targetPath>
-                    <directory>${basedir}</directory>
+                    <directory>${multiproject.basedir}</directory>
                         <includes>
                             <include>version.properties</include>
                         </includes>
@@ -469,7 +470,9 @@
     <jettyVersion>9.4.12.RC2</jettyVersion>
     <eelf.version>1.0.0</eelf.version>
     <swagger.version>1.5.19</swagger.version>
-    <artifact.version>1.1.5</artifact.version>
+    <artifact.version>1.1.6</artifact.version>
+    <timestamp>${maven.build.timestamp}</timestamp>
+    <maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
     <!--  SONAR  -->
     <jacoco.version>0.7.7.201606060606</jacoco.version>
     <sonar-jacoco-listeners.version>3.2</sonar-jacoco-listeners.version>
