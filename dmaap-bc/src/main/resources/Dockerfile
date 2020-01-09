@@ -18,7 +18,7 @@
 #  limitations under the License.
 #  ============LICENSE_END====================================================
 #
-FROM openjdk:8-jre-alpine
+FROM openjdk:11.0.5-jre-slim
 
 MAINTAINER DMAAP Team
 
@@ -26,17 +26,21 @@ COPY /opt /opt
 
 WORKDIR /opt/app/dmaapbc
 
+RUN apt-get update && \
+    apt-get install -y \
+       curl \
+       jq \
+       openssl \
+       net-tools \
+       wget \
+       bash
+
 # Install AAF CA certificate
-RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
+RUN apt install ca-certificates 
 RUN mkdir -p /usr/local/share/ca-certificates && \
     mv misc/aaf-ca.crt /usr/local/share/ca-certificates/aaf-ca.crt
 RUN update-ca-certificates
 
-# Install curl
-RUN apk add --no-cache curl
-
-# Install bash
-RUN apk update  && apk add bash
 
 #prepare certificate location for cadi
 RUN mkdir -p /opt/app/osaaf && \
