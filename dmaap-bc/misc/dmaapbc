@@ -28,7 +28,8 @@ APP_ROOT=/opt/app/$COMPONENT
 USER=dbc
 GROUP=onap
 export TZ
-PATH=/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/opt/java/jdk/jdk180/bin
+PATH=/usr/local/openjdk-11/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
 export PATH
 CLASSPATH=`echo $APP_ROOT/etc $APP_ROOT/lib/*.jar | tr ' ' ':'` 
 export CLASSPATH

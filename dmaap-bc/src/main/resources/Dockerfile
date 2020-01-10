@@ -33,6 +33,7 @@ RUN apt-get update && \
        openssl \
        net-tools \
        wget \
+       procps \
        bash
 
 # Install AAF CA certificate
