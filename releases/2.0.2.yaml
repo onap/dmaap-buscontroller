@@ -1,0 +1,10 @@
+distribution_type: 'container'
+container_release_tag: '2.0.2'
+project: 'dmaap-buscontroller'
+log-dir: 'dmaap-buscontroller-maven-docker-stage-master/235'
+ref: 311c7633e06861ab8d93de1738a3d6b3517abfbb 
+containers:
+  - name: dmaap/dmaap-bc
+    version: 2.0.2-20200207T200335Z
+  - name: dmaap/dbc-client
+    version: 2.0.2-20200207T200335Z
