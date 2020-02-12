@@ -18,7 +18,7 @@
 #  limitations under the License.
 #  ============LICENSE_END====================================================
 #
-FROM openjdk:11.0.5-jre-slim
+FROM library/maven:3.6-jdk-11
 
 MAINTAINER DMAAP Team
 
