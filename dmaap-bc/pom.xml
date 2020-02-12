@@ -466,7 +466,7 @@
     <jettyVersion>9.4.24.v20191120</jettyVersion>
     <eelf.version>1.0.0</eelf.version>
     <swagger.version>1.5.19</swagger.version>
-    <artifact.version>2.0.2-SNAPSHOT</artifact.version>
+    <artifact.version>2.0.3-SNAPSHOT</artifact.version>
     <timestamp>${maven.build.timestamp}</timestamp>
     <maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
     <!--  SONAR  -->

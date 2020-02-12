@@ -33,7 +33,7 @@
   </parent>
 
   <properties>
-    <artifactVersion>2.0.2</artifactVersion>
+    <artifactVersion>2.0.3</artifactVersion>
     <multiproject.basedir>${basedir}</multiproject.basedir>
         <docker.maven.plugin.version>1.0.0</docker.maven.plugin.version>
         <skip.docker.build>true</skip.docker.build>
