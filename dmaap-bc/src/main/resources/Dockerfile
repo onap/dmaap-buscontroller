@@ -44,13 +44,9 @@ RUN update-ca-certificates
 
 
 #prepare certificate location for cadi
-RUN mkdir -p /opt/app/osaaf && \
-    ln -s /opt/app/dmaapbc/etc /opt/app/osaaf/local
+RUN mkdir -p /opt/app/osaaf 
 
-RUN mv etc/org.onap.dmaap-bc.jks etc/keystore && \
-    chmod 600 etc/keystore && \
-    chmod 600 etc/org.onap.dmaap-bc.trust.jks && \
-    chmod +x bin/* && \
+RUN chmod +x bin/* && \
     mkdir logs && \
     mkdir www && \
     mkdir doc && \

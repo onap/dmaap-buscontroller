@@ -76,7 +76,7 @@ config() {
 		echo "WARNING: Expected env file $CONTAINER_CONFIG not found. Default behaviors in effect"
 		find $CONTAINER_ROOT -type f
 	else 
-	    source $CONTAINER_CONFIG
+	    . $CONTAINER_CONFIG
 	fi
 
 	if [ "$DMAAPBC_WAIT_TO_EXIT" != "Y" ]
@@ -87,8 +87,24 @@ config() {
 		echo "Not creating $APP_ROOT/ok_to_exit"
 	fi	
 	
-	. misc/havecert.tmpl > etc/havecert
-	chmod +x etc/havecert
+	#. misc/havecert.tmpl > etc/havecert
+	#chmod +x etc/havecert
+	echo Check for certificate
+	TZ=GMT0
+	cd /opt/app/dmaapbc;
+	KEYSTORE=${DMAAPBC_KSTOREFILE:-etc/keystore}
+	echo "KEYSTORE=$KEYSTORE"
+	d=`dirname $KEYSTORE`
+	ls -l $d
+	if [ -f ${KEYSTORE} ]
+	then
+		echo "Goodness: Found ${KEYSTORE}"
+	else
+		EMSG="`date '+%F %T,000'` WARN Certificate file $KEYSTORE is missing"
+		echo $EMSG
+		echo $EMSG >>${DMAAPBC_LOGS:-logs}/dmaapbc.log
+	fi
+
 
 	# These files might be better provided in kubernetes configmaps
 	# so if they are there, use them
@@ -113,7 +129,7 @@ start() {
 	cd $APP_ROOT
 	pwd
 
-	if etc/havecert
+	if [ -f "$KEYSTORE" ]
 	then
 		echo >/dev/null
 	else

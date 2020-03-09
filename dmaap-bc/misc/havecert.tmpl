@@ -21,12 +21,20 @@
 #
 #
 cat <<!EOF
+echo Check for certificate
 TZ=GMT0
 cd /opt/app/dmaapbc;
-if [ -f ${DMAAPBC_KSTOREFILE:-etc/keystore} ]
+KEYSTORE=${DMAAPBC_KSTOREFILE:-etc/keystore}
+echo "KEYSTORE=$KEYSTORE"
+d=`dirname $KEYSTORE`
+ls -l $d
+if [ -f ${KEYSTORE} ]
 then
+	echo "Goodness: Found ${KEYSTORE}"
 	exit 0
 fi
-echo `date '+%F %T,000'` WARN Certificate file "${DMAAPBC_KSTOREFILE:-etc/keystore}" is missing >>${DMAAPBC_LOGS:-logs}/dmaapbc.log
+EMSG="`date '+%F %T,000'` WARN Certificate file $KEYSTORE is missing"
+echo $EMSG
+echo $EMSG >>${DMAAPBC_LOGS:-logs}/dmaapbc.log
 exit 1
 !EOF

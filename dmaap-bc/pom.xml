@@ -177,21 +177,6 @@
                         </includes>
                 </resource>
                  <resource>
-                    <targetPath>${basedir}/target/docker-stage/opt/app/dmaapbc/etc</targetPath>
-                    <directory>${multiproject.basedir}/certs</directory>
-                        <includes>
-                          <include>org.onap.dmaap-bc.cred.props</include>
-                          <include>org.onap.dmaap-bc.crontab.sh</include>
-                          <include>org.onap.dmaap-bc.jks</include>
-                          <include>org.onap.dmaap-bc.keyfile</include>
-                          <include>org.onap.dmaap-bc.location.props</include>
-                          <include>org.onap.dmaap-bc.p12</include>
-                          <include>org.onap.dmaap-bc.props</include>
-                          <include>org.onap.dmaap-bc.showpass</include>
-                          <include>org.onap.dmaap-bc.trust.jks</include>
-                        </includes>
-                </resource>
-                 <resource>
                     <targetPath>${basedir}/target/docker-stage/opt/app/dmaapbc/misc</targetPath>
                     <directory>${multiproject.basedir}/misc</directory>
                         <includes>
@@ -228,7 +213,6 @@
                     <directory>${basedir}/misc</directory>
                         <includes>
                             <include>dmaapbc</include>
-                            <include>doaction</include>
                         </includes>
                 </resource>
               </resources>
@@ -428,7 +412,7 @@
     <dependency>
       <groupId>org.onap.dmaap.dbcapi</groupId>
       <artifactId>dbcapi</artifactId>
-      <version>2.0.1</version>
+      <version>2.0.2</version>
     </dependency>
   </dependencies>
   <reporting>
@@ -466,7 +450,7 @@
     <jettyVersion>9.4.24.v20191120</jettyVersion>
     <eelf.version>1.0.0</eelf.version>
     <swagger.version>1.5.19</swagger.version>
-    <artifact.version>2.0.3-SNAPSHOT</artifact.version>
+    <artifact.version>2.0.4-SNAPSHOT</artifact.version>
     <timestamp>${maven.build.timestamp}</timestamp>
     <maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
     <!--  SONAR  -->
