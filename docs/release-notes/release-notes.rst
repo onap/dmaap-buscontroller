@@ -1,17 +1,27 @@
 .. This work is licensed under a Creative Commons Attribution 4.0 International License.
-.. http://creativecommons.org/licenses/by/4.0
+
+.. DO NOT CHANGE THIS LABEL FOR RELEASE NOTES - EVEN THOUGH IT GIVES A WARNING
 .. _release_notes:
 
+DMaaP Buscontroller Release Notes
+====================
+
+.. note
+..      * This Release Notes must be updated each time the team decides to Release new artifacts.
+..      * The scope of these Release Notes are for ONAP DMaaP Buscontroller. In other words, each ONAP component has its Release Notes.
+..      * This Release Notes is cumulative, the most recently Released artifact is made visible in the top of
+..      * this Release Notes.
+..      * Except the date and the version number, all the other sections are optional but there must be at least
+..      * one section describing the purpose of this new release.
+..      * This note must be removed after content has been added.
 
 ..      ===========================
-
 ..      * * *    FRANKFURT    * * *
-
 ..      ===========================
+
 
 
 Abstract
-
 ========
 
 
@@ -19,15 +29,12 @@ This document provides the release notes for the Frankfurt release.
 
 
 Summary
-
 =======
 
-
+The Frankfurt release focused on improved packaging and deployment.
 
 Release Data
-
 ============
-
 
 +--------------------------------------+--------------------------------------+
 | **DMaaP Bus Controller Project**     |                                      |
@@ -48,7 +55,8 @@ New features
 ------------
 
 * Implement boolean flag in OOM to disable HTTP ports
-* Dynamic cert distribution from OOM AAF
+* Dynamic cert distribution from OOM AAF.  The dmaap-bc pod now utilizes an initContainer to acquire SSL certificates from AAF 
+* the core library, dbcapi, now utilizes Java 11 and new base images were required, so we consider this a major release increment.
 
 
 Known Limitations, Issues and Workarounds
@@ -74,24 +82,19 @@ Workarounds
 -----------
 
 
-
 Security Notes
 --------------
-
 
 
 References
 ==========
 
-
 For more information on the ONAP Frankfurt release, please see:
-
 
 #. `ONAP Home Page`_
 #. `ONAP Documentation`_
 #. `ONAP Release Downloads`_
 #. `ONAP Wiki Page`_
-
 
 
 .. _`ONAP Home Page`: https://www.onap.org
@@ -100,44 +103,18 @@ For more information on the ONAP Frankfurt release, please see:
 .. _`ONAP Release Downloads`: https://git.onap.org
 
 
-
-Release Notes
-=============
-
-Version: 6.0.0 (Frankfurt Release)
------------------------------------
-: Release Date: 2020-05-14
-
-Docker Image Version: 2.0.4 
-
-**New Features**
-
-- the core library, dbcapi, now utilizes Java 11 and new base images were required, so we consider this a major release increment.
-- The dmaap-bc pod now utilizes an initContainer to acquire SSL certificates from AAF 
-
-**Bug Fixes**
-       NA
-
-**Known Issues**
-       NA
-
-**Security Notes**
-DMAAP code has been formally scanned during build time using NexusIQ and all Critical vulnerabilities have been addressed, items that remain open have been assessed for risk and determined to be false positive. The DMAAP open Critical security vulnerabilities and their risk assessment have been documented as part of the `Dublin <https://wiki.onap.org/pages/viewpage.action?pageId=64003715>`_.
-
 Quick Links:
 - `DMAAP project page <https://wiki.onap.org/display/DW/DMaaP+Planning>`_
 - `Passing Badge information for DMAAP <https://bestpractices.coreinfrastructure.org/en/projects/1751>`_
 
-**Upgrade Notes**
-       NA
+..      ==========================
+..      * * *     EL ALTO    * * *
+..      ==========================
 
-**Deprecation Notes**
-- `Project Vulnerability Review Table for DMAAP seems to be discontinued`
+Version: 1.1.5 
+--------------
 
-
-
-Version: 1.1.5 (El Alto)
-: Release Date: 2019-06-06
+: Release Date: 2019-06-06 (El Alto)
 
 **New Features**
 
