@@ -1,9 +1,16 @@
-cadi_truststore_password=8b&R5%l$l:@jSWz@FCs;rhY*
-cadi_keystore_password_jks=Y@Y5f&gm?PAz,CVQL,lk[VAF
-cadi_key_password=2U[iOZzMHI:.#tdCwlBqc;}S
-cadi_keystore_password=2U[iOZzMHI:.#tdCwlBqc;}S
-cadi_keystore_password_p12=2U[iOZzMHI:.#tdCwlBqc;}S
+cadi_truststore_password=irp.eCm2}y2sp19KlUgk,nz4
+cadi_keystore_password_jks=]{PqV#S?!3,Ym2QjL(YnxHA(
+cadi_key_password=xx]KH@DhwO,lAZ#xXiED#yAo
+cadi_keystore_password=xx]KH@DhwO,lAZ#xXiED#yAo
+cadi_keystore_password_p12=xx]KH@DhwO,lAZ#xXiED#yAo
 Challenge=9H83TErBrN!u?;]1iCK@&69?
-2019-03-22T17:38:32.447+0000: Trans Info
-         REMOTE Show Password 2214.6292ms
+# old values
+#cadi_truststore_password=8b&R5%l$l:@jSWz@FCs;rhY*
+#cadi_keystore_password_jks=Y@Y5f&gm?PAz,CVQL,lk[VAF
+#cadi_key_password=2U[iOZzMHI:.#tdCwlBqc;}S
+#cadi_keystore_password=2U[iOZzMHI:.#tdCwlBqc;}S
+#cadi_keystore_password_p12=2U[iOZzMHI:.#tdCwlBqc;}S
+#Challenge=9H83TErBrN!u?;]1iCK@&69?
+#2019-03-22T17:38:32.447+0000: Trans Info
+         #REMOTE Show Password 2214.6292ms
  
