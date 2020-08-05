@@ -1,4 +1,5 @@
 # UUID                                                                              	Group Name
 #
+b1c94932d3704d9279660450862a942a5bf60690                                            	saml/onap-gerrit-dmaap-buscontroller-committers
 daebbf523be390041a1a9c0e340a6d833aae5043                                            	GitHub Replication
 ldap:cn=onap-gerrit-dmaap-buscontroller-committers,ou=Groups,dc=freestandards,dc=org	ldap/onap-gerrit-dmaap-buscontroller-committers
