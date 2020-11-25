@@ -16,25 +16,109 @@ DMaaP Buscontroller Release Notes
 ..      * This note must be removed after content has been added.
 
 ..      ===========================
+..      * * *    GUILIN    * * *
+..      ===========================
+
+
+
+Abstract
+--------
+
+
+This document provides the release notes for the Guilin release.
+
+
+Summary
+-------
+
+Release Data
+------------
+
++--------------------------------------+--------------------------------------+
+| **DMaaP Bus Controller Project**     |                                      |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+| **Docker images**                    | - dmaap-bc 2.0.4                     |
+|                                      | - dbc-client 1.0.9                   |
++--------------------------------------+--------------------------------------+
+| **Release designation**              | 7.0.0 guilin                         |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+| **Release date**                     | 2020-11-18                           |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+
+
+New features
+------------
+
+Known Limitations, Issues and Workarounds
+-----------------------------------------
+
+System Limitations
+------------------
+
+
+Known Vulnerabilities
+---------------------
+
+* CVE-2018-11307
+* CVE-2018-12022
+* CVE-2018-12023
+* CVE-2019-17571
+* CVE-2016-2510
+* CVE-2017-18640
+
+
+Workarounds
+-----------
+
+
+Security Notes
+--------------
+
+
+References
+----------
+
+For more information on the ONAP Guilin release, please see:
+
+#. `ONAP Home Page`_
+#. `ONAP Documentation`_
+#. `ONAP Release Downloads`_
+#. `ONAP Wiki Page`_
+
+
+.. _`ONAP Home Page`: https://www.onap.org
+.. _`ONAP Wiki Page`: https://wiki.onap.org
+.. _`ONAP Documentation`: https://docs.onap.org
+.. _`ONAP Release Downloads`: https://git.onap.org
+
+
+Quick Links:
+- `DMAAP project page <https://wiki.onap.org/display/DW/DMaaP+Planning>`_
+- `Passing Badge information for DMAAP <https://bestpractices.coreinfrastructure.org/en/projects/1751>`_
+
+..      ===========================
 ..      * * *    FRANKFURT    * * *
 ..      ===========================
 
 
 
 Abstract
-========
+--------
 
 
 This document provides the release notes for the Frankfurt release.
 
 
 Summary
-=======
+-------
 
 The Frankfurt release focused on improved packaging and deployment.
 
 Release Data
-============
+------------
 
 +--------------------------------------+--------------------------------------+
 | **DMaaP Bus Controller Project**     |                                      |
@@ -60,7 +144,7 @@ New features
 
 
 Known Limitations, Issues and Workarounds
-=========================================
+-----------------------------------------
 
 
 System Limitations
@@ -87,7 +171,7 @@ Security Notes
 
 
 References
-==========
+----------
 
 For more information on the ONAP Frankfurt release, please see:
 
