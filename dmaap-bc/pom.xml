@@ -29,7 +29,7 @@
   <parent>
     <groupId>org.onap.oparent</groupId>
     <artifactId>oparent</artifactId>
-    <version>2.1.0</version>
+    <version>3.2.0</version>
     <relativePath/>
   </parent>
   <build>
@@ -358,9 +358,14 @@
       <artifactId>jersey-media-moxy</artifactId>
     </dependency>
     <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-      <version>1.2.17</version>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
+      <version>${log4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+      <version>${log4j.version}</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
@@ -378,7 +383,6 @@
       <version>2.1.7</version>
       <classifier>full</classifier>
     </dependency>
-
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-servlet</artifactId>
@@ -400,15 +404,14 @@
     <dependency>
       <groupId>commons-codec</groupId>
       <artifactId>commons-codec</artifactId>
-      <version>1.11</version>
+      <version>1.15</version>
     </dependency>
     <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
-      <version>42.2.5</version>
+      <version>42.2.14</version>
     </dependency>
-
     <dependency>
       <groupId>org.onap.dmaap.dbcapi</groupId>
       <artifactId>dbcapi</artifactId>
@@ -447,7 +450,8 @@
     <docker.maven.plugin.version>1.0.0</docker.maven.plugin.version>
     <jersey.version>2.29</jersey.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <jettyVersion>9.4.24.v20191120</jettyVersion>
+    <log4j.version>2.13.3</log4j.version>
+    <jettyVersion>9.4.36.v20210114</jettyVersion>
     <eelf.version>1.0.0</eelf.version>
     <swagger.version>1.5.19</swagger.version>
     <artifact.version>2.0.4-SNAPSHOT</artifact.version>
