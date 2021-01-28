@@ -22,6 +22,30 @@
       "revId": "62765bbcbedf60a071b743fb7a13314083d8c79e",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0daab64e_57600e5f",
+        "filename": "dmaap-bc/pom.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 412,
+      "author": {
+        "id": 6004
+      },
+      "writtenOn": "2021-01-28T18:46:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d6670ca9_d9d63fac",
+      "range": {
+        "startLine": 389,
+        "startChar": 1,
+        "endLine": 412,
+        "endChar": 39
+      },
+      "revId": "62765bbcbedf60a071b743fb7a13314083d8c79e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
