@@ -22,7 +22,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.onap.dmaap.buscontroller</groupId>
   <artifactId>parent</artifactId>
-  <version>${artifactVersion}-SNAPSHOT</version>
+   <version>${revision}</version>
   <name>dmaap-buscontroller</name>
   <packaging>pom</packaging>
   
@@ -33,12 +33,15 @@
   </parent>
 
   <properties>
-    <artifactVersion>2.0.3</artifactVersion>
+    <revision>2.0.5-SNAPSHOT</revision>
     <multiproject.basedir>${basedir}</multiproject.basedir>
-        <docker.maven.plugin.version>1.0.0</docker.maven.plugin.version>
-        <skip.docker.build>true</skip.docker.build>
-        <skip.docker.tag>true</skip.docker.tag>
-        <skip.docker.push>true</skip.docker.push>
+    <docker.maven.plugin.version>1.0.0</docker.maven.plugin.version>
+    <skip.docker.build>false</skip.docker.build>
+    <skip.docker.tag>false</skip.docker.tag>
+    <skip.docker.push>false</skip.docker.push>
+    <docker.skip.build>false</docker.skip.build>
+    <docker.verbose>true</docker.verbose>
+    <docker.apiVersion>2.2.54</docker.apiVersion>
   </properties>
 
   <build>
@@ -46,9 +49,9 @@
         <plugin>
             <groupId>io.fabric8</groupId>
             <artifactId>docker-maven-plugin</artifactId>
-            <version>0.28.0</version>  
+            <version>0.28.0</version>
             <configuration>
-                <skipDockerBuild>${skip.docker.build}</skipDockerBuild>
+                <skipBuild>${skip.docker.build}</skipBuild>
             </configuration>
         </plugin>
     </plugins>

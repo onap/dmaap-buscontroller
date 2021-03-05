@@ -22,23 +22,17 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.onap.dmaap.buscontroller</groupId>
   <artifactId>dbc-client</artifactId>
-  <version>${artifact.version}</version>
   <name>dbc-client</name>
   <parent>
-    <groupId>org.onap.oparent</groupId>
-    <artifactId>oparent</artifactId>
-    <version>3.2.0</version>
-    <relativePath/>
+    <groupId>org.onap.dmaap.buscontroller</groupId>
+    <artifactId>parent</artifactId>
+    <version>${revision}</version>
+    <relativePath>../pom.xml</relativePath>
   </parent>
   <build>
     <finalName>dbc-client</finalName>
-
     <plugins>
-
-
-
       <!-- for Distribution management -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -260,7 +254,6 @@
     <jettyVersion>9.4.12.RC2</jettyVersion>
     <eelf.version>1.0.0</eelf.version>
     <swagger.version>1.5.19</swagger.version>
-    <artifact.version>2.0.2-SNAPSHOT</artifact.version>
     <!--  SONAR  -->
     <jacoco.version>0.7.7.201606060606</jacoco.version>
     <sonar-jacoco-listeners.version>3.2</sonar-jacoco-listeners.version>
@@ -278,7 +271,7 @@
     <docker.push.registry>nexus3.onap.org:10003</docker.push.registry>
 
     <!-- for Distribution Management -->
-    <sitePath>/content/sites/site/org/onap/dmaap/dbc-client/${artifact.version}</sitePath>
+    <sitePath>/content/sites/site/org/onap/dmaap/dbc-client/${revision}</sitePath>
 
     <timestamp>${maven.build.timestamp}</timestamp>
     <maven.build.timestamp.format>yyyyMMdd'T'HHmmss'Z'</maven.build.timestamp.format>
