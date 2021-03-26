@@ -30,6 +30,20 @@
     <version>${revision}</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
+  <description>Packaging Platform (DMaaP) HTTP Client for Bus Controller Provisioning.</description>
+  <properties>
+    <multiproject.basedir>${basedir}/..</multiproject.basedir>
+    <docker.maven.plugin.version>1.0.0</docker.maven.plugin.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <!-- docker image -->
+    <docker.image>onap/dmaap/dbc-client</docker.image>
+    <nexusproxy>https://nexus.onap.org</nexusproxy>
+    <docker.push.registry>nexus3.onap.org:10003</docker.push.registry>
+    <!-- for Distribution Management -->
+    <sitePath>/content/sites/site/org/onap/dmaap/dbc-client/${revision}</sitePath>
+    <timestamp>${maven.build.timestamp}</timestamp>
+    <maven.build.timestamp.format>yyyyMMdd'T'HHmmss'Z'</maven.build.timestamp.format>
+  </properties>
   <build>
     <finalName>dbc-client</finalName>
     <plugins>
@@ -109,9 +123,9 @@
                           <include>org.onap.dmaap-bc.props</include>
                           <include>org.onap.dmaap-bc.showpass</include>
                           <include>org.onap.dmaap-bc.trust.jks</include>
-			  <include>ca.pem</include>
+			                    <include>ca.pem</include>
                           <include>client.pem</include>
-			  <include>key.pem</include>
+			                    <include>key.pem</include>
                         </includes>
                 </resource>
 
@@ -245,37 +259,4 @@
   </profiles>
   <dependencyManagement>
   </dependencyManagement>
-
-  <properties>
-    <multiproject.basedir>${basedir}/..</multiproject.basedir>
-    <docker.maven.plugin.version>1.0.0</docker.maven.plugin.version>
-    <jersey.version>2.16</jersey.version>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <jettyVersion>9.4.12.RC2</jettyVersion>
-    <eelf.version>1.0.0</eelf.version>
-    <swagger.version>1.5.19</swagger.version>
-    <!--  SONAR  -->
-    <jacoco.version>0.7.7.201606060606</jacoco.version>
-    <sonar-jacoco-listeners.version>3.2</sonar-jacoco-listeners.version>
-    <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
-    <!-- Default Sonar configuration -->
-    <sonar.jacoco.reportPath>target/code-coverage/jacoco-ut.exec</sonar.jacoco.reportPath>
-    <sonar.jacoco.itReportPath>target/code-coverage/jacoco-it.exec</sonar.jacoco.itReportPath>
-    <!-- Note: This list should match jacoco-maven-plugin's exclusion list below -->
-    <sonar.exclusions>**/gen/**,**/generated-sources/**,**/yang-gen**,**/pax/**</sonar.exclusions>
-
-    <!-- docker image -->
-    <docker.image>onap/dmaap/dbc-client</docker.image>
-
-    <nexusproxy>https://nexus.onap.org</nexusproxy>
-    <docker.push.registry>nexus3.onap.org:10003</docker.push.registry>
-
-    <!-- for Distribution Management -->
-    <sitePath>/content/sites/site/org/onap/dmaap/dbc-client/${revision}</sitePath>
-
-    <timestamp>${maven.build.timestamp}</timestamp>
-    <maven.build.timestamp.format>yyyyMMdd'T'HHmmss'Z'</maven.build.timestamp.format>
-
-  </properties>
-  <description>Packaging Platform (DMaaP) HTTP Client for Bus Controller Provisioning.</description>
 </project>
