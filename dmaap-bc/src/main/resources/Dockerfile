@@ -36,13 +36,6 @@ RUN apt-get update && \
        procps \
        bash
 
-# Install AAF CA certificate
-RUN apt install ca-certificates 
-RUN mkdir -p /usr/local/share/ca-certificates && \
-    mv misc/aaf-ca.crt /usr/local/share/ca-certificates/aaf-ca.crt
-RUN update-ca-certificates
-
-
 #prepare certificate location for cadi
 RUN mkdir -p /opt/app/osaaf 
 
