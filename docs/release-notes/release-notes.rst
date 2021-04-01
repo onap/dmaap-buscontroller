@@ -15,6 +15,89 @@ DMaaP Buscontroller Release Notes
 ..      * one section describing the purpose of this new release.
 ..      * This note must be removed after content has been added.
 
+
+..      ===========================
+..      * * *    Honolulu    * * *
+..      ===========================
+
+
+
+Abstract
+--------
+
+
+This document provides the release notes for the Honolulu release.
+
+
+Summary
+-------
+
+Mainly Security changes to update Project Lead details, and update outdated packages
+
+Release Data
+------------
+
++--------------------------------------+--------------------------------------+
+| **DMaaP Bus Controller Project**     |                                      |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+| **Docker images**                    | - dmaap-bc 2.0.5                     |
+|                                      | - dbc-client 1.0.9                   |
++--------------------------------------+--------------------------------------+
+| **Release designation**              | 7.0.0 Honolulu                       |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+| **Release date**                     | 2021-03-05 (TBD)                     |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+
+
+New features
+------------
+* Updated log4j (Listed in "Known Vulternabilities" below) - DMAAP-1515
+* Update Project Lead details - DMAAP-1538
+
+Known Limitations, Issues and Workarounds
+-----------------------------------------
+
+System Limitations
+------------------
+
+
+Known Vulnerabilities
+---------------------
+
+* CVE-2019-17571
+
+Workarounds
+-----------
+
+
+Security Notes
+--------------
+
+
+References
+----------
+
+For more information on the ONAP Guilin release, please see:
+
+#. `ONAP Home Page`_
+#. `ONAP Documentation`_
+#. `ONAP Release Downloads`_
+#. `ONAP Wiki Page`_
+
+
+.. _`ONAP Home Page`: https://www.onap.org
+.. _`ONAP Wiki Page`: https://wiki.onap.org
+.. _`ONAP Documentation`: https://docs.onap.org
+.. _`ONAP Release Downloads`: https://git.onap.org
+
+
+Quick Links:
+- `DMAAP project page <https://wiki.onap.org/display/DW/DMaaP+Planning>`_
+- `Passing Badge information for DMAAP <https://bestpractices.coreinfrastructure.org/en/projects/1751>`_
+
 ..      ===========================
 ..      * * *    GUILIN    * * *
 ..      ===========================
