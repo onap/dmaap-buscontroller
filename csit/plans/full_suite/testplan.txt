@@ -1,0 +1,3 @@
+# Place the suites in run order.
+with_dr
+with_mr

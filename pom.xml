@@ -16,49 +16,195 @@
   * limitations under the License. 
   * ============LICENSE_END==================================================== 
   * -->
- <project xmlns="http://maven.apache.org/POM/4.0.0"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.onap.dmaap.buscontroller</groupId>
   <artifactId>parent</artifactId>
-   <version>${revision}</version>
+  <version>${revision}</version>
   <name>dmaap-buscontroller</name>
   <packaging>pom</packaging>
-  
+
   <parent>
-  	<groupId>org.onap.oparent</groupId>
-  	<artifactId>oparent</artifactId>
-      <version>3.2.0</version>
+    <groupId>org.onap.oparent</groupId>
+    <artifactId>oparent</artifactId>
+    <version>3.2.0</version>
   </parent>
 
   <properties>
     <revision>2.0.6-SNAPSHOT</revision>
     <multiproject.basedir>${basedir}</multiproject.basedir>
     <docker.maven.plugin.version>1.0.0</docker.maven.plugin.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <skip.docker.build>false</skip.docker.build>
     <skip.docker.tag>false</skip.docker.tag>
     <skip.docker.push>false</skip.docker.push>
-    <docker.skip.build>false</docker.skip.build>
     <docker.verbose>true</docker.verbose>
     <docker.apiVersion>2.2.54</docker.apiVersion>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
+    <snapshotNexusPath>/content/repositories/snapshots/</snapshotNexusPath>
+    <docker.image.root>onap/dmaap/</docker.image.root>
+    <nexusproxy>https://nexus.onap.org</nexusproxy>
+    <docker.push.registry>nexus3.onap.org:10003</docker.push.registry>
+    <timestamp>${maven.build.timestamp}</timestamp>
+    <maven.build.timestamp.format>yyyyMMdd'T'HHmmss'Z'</maven.build.timestamp.format>
+    <sonar.language>java</sonar.language>
+    <sonar.skip>false</sonar.skip>
+    <sonar.surefire.reportsPath>${project.build.directory}/surefire-reports
+    </sonar.surefire.reportsPath>
+    <sonar.projectVersion>${project.version}</sonar.projectVersion>
+    <sitePath>/content/sites/site/org/onap/dmaap/buscontroller/${project.artifactId}/${revision}
+    </sitePath>
   </properties>
-
+  <modules>
+    <module>dmaap-bc</module>
+    <module>dbc-client</module>
+  </modules>
   <build>
     <plugins>
-        <plugin>
-            <groupId>io.fabric8</groupId>
-            <artifactId>docker-maven-plugin</artifactId>
-            <version>0.28.0</version>
-            <configuration>
-                <skipBuild>${skip.docker.build}</skipBuild>
-            </configuration>
-        </plugin>
     </plugins>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <configuration>
+            <excludes>
+            </excludes>
+            <argLine>
+              ${surefireArgLine} --illegal-access=permit
+            </argLine>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-failsafe-plugin</artifactId>
+          <configuration>
+            <argLine>
+              --illegal-access=permit
+            </argLine>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>flatten-maven-plugin</artifactId>
+          <version>1.0.1</version>
+          <configuration>
+            <updatePomFile>true</updatePomFile>
+            <outputDirectory>target</outputDirectory>
+          </configuration>
+          <executions>
+            <execution>
+              <id>flatten</id>
+              <phase>process-resources</phase>
+              <goals>
+                <goal>flatten</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <artifactId>maven-checkstyle-plugin</artifactId>
+          <executions>
+            <execution>
+              <id>onap-java-style</id>
+              <configuration>
+                <consoleOutput>false</consoleOutput>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <configuration>
+            <source>${maven.compiler.source}</source>
+            <target>${maven.compiler.target}</target>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-source-plugin</artifactId>
+          <version>2.2.1</version>
+          <executions>
+            <execution>
+              <id>attach-sources</id>
+              <goals>
+                <goal>jar-no-fork</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.gmaven</groupId>
+          <artifactId>gmaven-plugin</artifactId>
+          <version>${gmaven-plugin.version}</version>
+          <executions>
+            <execution>
+              <phase>validate</phase>
+              <goals>
+                <goal>execute</goal>
+              </goals>
+              <configuration>
+                <properties>
+                  <ver>${project.version}</ver>
+                </properties>
+                <!-- Setup image tags per https://wiki.onap.org/display/DW/Independent+Versioning+and+Release+Process#IndependentVersioningandReleaseProcess-StandardizedDockerTagging -->
+                <source>
+                  println 'ver: ' + project.properties['ver'];
+                  if (project.properties['ver'].endsWith("-SNAPSHOT")) {
+                    project.properties['dockertag1'] = project.properties['ver'] + "-latest";
+                    project.properties['dockertag2'] = project.properties['ver'] + "-" + project.properties['timestamp'];
+                  } else {
+                    project.properties['dockertag1'] = project.properties['ver'] + "-STAGING-latest";
+                    project.properties['dockertag2'] = project.properties['ver'] + "-STAGING-" + project.properties['timestamp'];
+                  }
+                  println 'docker tag 1: ' + project.properties['dockertag1'];
+                  println 'docker tag 2: ' + project.properties['dockertag2'];
+                </source>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>io.fabric8</groupId>
+          <artifactId>docker-maven-plugin</artifactId>
+          <version>${io.fabric8.version}</version>
+          <configuration>
+            <skipBuild>${docker.skip.build}</skipBuild>
+            <verbose>${docker.verbose}</verbose>
+            <apiVersion>${docker.apiVersion}</apiVersion>
+            <pullRegistry>${docker.pull.registry}</pullRegistry>
+            <pushRegistry>${docker.push.registry}</pushRegistry>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>properties-maven-plugin</artifactId>
+          <version>1.0.0</version>
+          <executions>
+            <execution>
+              <phase>validate</phase>
+              <goals>
+                <goal>read-project-properties</goal>
+              </goals>
+              <configuration>
+                <files>
+                  <file>../version.properties</file>
+                </files>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
   </build>
-
-  <modules>
-     <module>dmaap-bc</module>
-     <module>dbc-client</module>
-  </modules>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>onap-plugin-snapshots</id>
+      <url>${onap.nexus.url}${snapshotNexusPath}</url>
+    </pluginRepository>
+  </pluginRepositories>
 </project>

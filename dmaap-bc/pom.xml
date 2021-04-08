@@ -19,298 +19,40 @@
   ============LICENSE_END============================================
   ECOMP is a trademark and service mark of AT&T Intellectual Property.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <artifactId>dmaap-bc</artifactId>
   <version>${revision}</version>
   <name>dmaap-bc</name>
+  <packaging>jar</packaging>
   <parent>
     <groupId>org.onap.dmaap.buscontroller</groupId>
     <artifactId>parent</artifactId>
     <version>${revision}</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
-  <build>
-    <finalName>dmaap-bc</finalName>
+  <description>Data Movement as a Platform (DMaaP) Bus Controller provides a REST API for other
+    DCAE infrastructure components to provision DMaaP resources. A DMaaP resource is a Data
+    Router Feed or a Message Router Topic, and their associated publishers and subscribers.
+  </description>
+  <properties>
+    <sitePath>/content/sites/site/${project.groupId}/${project.artifactId}/${project.version}
+    </sitePath>
+    <eelf.version>1.0.0</eelf.version>
+    <dmaapbc.image.name>${docker.image.root}${project.artifactId}</dmaapbc.image.name>
+    <swagger.version>1.5.19</swagger.version>
+    <jackson.version>2.9.5</jackson.version>
+    <jersey.version>2.29</jersey.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <jettyVersion>9.4.40.v20210413</jettyVersion>
+    <eelf.version>1.0.0</eelf.version>
+    <junit.version>4.12</junit.version>
+    <sonar.exclusions>**/gen/**,**/generated-sources/**,**/yang-gen**,**/pax/**</sonar.exclusions>
+    <docker-stage.target.path>/target/docker-stage/opt/app/dmaapbc/</docker-stage.target.path>
+  </properties>
 
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-enforcer-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>enforce-no-snapshots</id>
-            <goals>
-              <goal>enforce</goal>
-            </goals>
-            <configuration>
-              <rules>
-                <requireReleaseDeps>
-                  <message>No Snapshots Allowed!</message>
-                  <excludes>
-<!-- for example, these might be needed...
-                    <exclude>org.onap.dmaap.dbcapi:dbcapi</exclude>
-                    <exclude>org.onap.aaf.authz:aaf-cadi-client</exclude>
-                    <exclude>org.onap.aaf.authz:aaf-misc-env</exclude>
-                    <exclude>org.onap.aaf.authz:aaf-cadi-aaf</exclude>
-                    <exclude>org.onap.aaf.authz:aaf-auth-client</exclude>
-                    <exclude>org.onap.aaf.authz:aaf-cadi-core</exclude>
-                    <exclude>org.onap.aaf.authz:aaf-misc-rosetta</exclude>
--->
-                  </excludes>
-                </requireReleaseDeps>
-              </rules>
-              <fail>true</fail>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-
-      <!-- Package an Uber jar -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-shade-plugin</artifactId>
-        <version>2.4.3</version>
-        <executions>
-          <!-- Run shade goal on package phase -->
-          <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>shade</goal>
-            </goals>
-            <configuration>
-              <createDependencyReducedPom>false</createDependencyReducedPom>
-              <!-- this filter section is needed to avoid runtime error:
-                java.lang.SecurityException: Invalid signature file digest for Manifest main attributes
-                suggestion found at: https://stackoverflow.com/q/999489
-              -->
-              <filters>
-                <filter>
-                  <artifact>*:*</artifact>
-                  <excludes>
-                    <exclude>META-INF/*.SF</exclude>
-                    <exclude>META-INF/*.DSA</exclude>
-                    <exclude>META-INF/*.RSA</exclude>
-                  </excludes>
-                </filter>
-              </filters>
-              <transformers>
-                <!-- NOTE: Need the following transformer else gets "Could not resolve type id 'https' into a subtype" error
-                Solution found from here:
-                http://stackoverflow.com/questions/27543060/why-does-dropwizard-configuration-is-not-working
-                Some more context here:
-                https://github.com/dropwizard/dropwizard/issues/455 -->
-                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
-                <!-- add Main-Class to manifest file -->
-                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                  <mainClass>org.onap.dmaap.dbcapi.server.Main</mainClass>
-                </transformer>
-              </transformers>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-
-      <!-- for Distribution management -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-site-plugin</artifactId>
-        <dependencies>
-          <dependency>
-            <groupId>org.apache.maven.wagon</groupId>
-            <artifactId>wagon-webdav-jackrabbit</artifactId>
-            <version>2.10</version>
-          </dependency>
-        </dependencies>
-      </plugin>
-
-    </plugins>
-    <pluginManagement>
-      <plugins>
-        <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
-        <plugin>
-          <groupId>org.eclipse.m2e</groupId>
-          <artifactId>lifecycle-mapping</artifactId>
-          <version>1.0.0</version>
-          <configuration>
-            <lifecycleMappingMetadata>
-              <pluginExecutions>
-                <pluginExecution>
-                  <pluginExecutionFilter>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-dependency-plugin</artifactId>
-                    <versionRange>[2.10,)</versionRange>
-                    <phase>install</phase>
-                    <goals>
-                      <goal>copy-dependencies</goal>
-                    </goals>
-                  </pluginExecutionFilter>
-                  <action>
-                    <ignore/>
-                  </action>
-                </pluginExecution>
-              </pluginExecutions>
-            </lifecycleMappingMetadata>
-          </configuration>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-  </build>
-  <profiles>
-      <profile>
-        <id>docker</id>
-        <properties>
-            <skipDockerBuild>false</skipDockerBuild>
-            <skipDockerTag>false</skipDockerTag>
-            <skipTests>true</skipTests>
-        </properties>
-        <build>
-            <!-- Copy files to docker-stage to be included in image -->        
-            <resources>
-                <resource>
-                    <targetPath>${basedir}/target/docker-stage</targetPath>
-                    <directory>${basedir}/src/main/resources</directory>
-                        <includes>
-                            <include>Dockerfile</include>
-                        </includes>
-                </resource>
-                 <resource>
-                    <targetPath>${basedir}/target/docker-stage/opt/app/dmaapbc/etc</targetPath>
-                    <directory>${basedir}/misc</directory>
-                        <includes>
-                          <include>LocalKey</include>
-                          <include>logback.xml</include>
-                        </includes>
-                </resource>
-
-                 <resource>
-                    <targetPath>${basedir}/target/docker-stage/opt/app/dmaapbc/etc</targetPath>
-                    <directory>${multiproject.basedir}</directory>
-                        <includes>
-                            <include>version.properties</include>
-                        </includes>
-                </resource>
-                 <resource>
-                    <targetPath>${basedir}/target/docker-stage/opt/app/dmaapbc/misc</targetPath>
-                    <directory>${basedir}/misc</directory>
-                        <includes>
-                            <include>opensource.env</include>
-                            <include>*.tmpl</include>
-                        </includes>
-                </resource>
-                 <resource>
-                    <targetPath>${basedir}/target/docker-stage/opt/app/dmaapbc/bin</targetPath>
-                    <directory>${basedir}/misc</directory>
-                        <includes>
-                            <include>dmaapbc</include>
-                        </includes>
-                </resource>
-              </resources>
-            <plugins>
-              <!-- Copy jar to docker-stage to be included in image -->
-              <plugin>
-                    <artifactId>maven-resources-plugin</artifactId>
-                    <version>2.7</version>
-                    <executions>
-                       <execution>
-                            <id>copy-jar</id>
-                            <phase>package</phase>
-                            <goals>
-                                <goal>copy-resources</goal>
-                            </goals>
-                            <configuration>
-                                <outputDirectory>${basedir}/target/docker-stage/opt/app/dmaapbc/lib</outputDirectory>
-                                <resources>
-                                    <resource>
-                                        <directory>${multiproject.basedir}/dmaap-bc/target</directory>
-                                        <includes>
-                                            <include>dmaap-bc.jar</include>
-                                        </includes>
-                                    </resource>
-                                </resources>
-                            </configuration>
-                        </execution>
-                    </executions>
-                </plugin>
-
-                <!-- Setup image tags per https://wiki.onap.org/display/DW/Independent+Versioning+and+Release+Process#IndependentVersioningandReleaseProcess-StandardizedDockerTagging -->
-                <plugin>
-                  <groupId>org.codehaus.groovy.maven</groupId>
-                  <artifactId>gmaven-plugin</artifactId>
-                  <executions>
-                      <execution>
-                          <phase>validate</phase>
-                          <goals>
-                              <goal>execute</goal>
-                          </goals>
-                          <configuration>
-                              <properties>
-                                  <ver>${project.version}</ver>
-                                  <timestamp>${maven.build.timestamp}</timestamp>
-                              </properties>
-                              <source>
-                                  println 'ver: ' + project.properties['ver'];
-                                  if ( project.properties['ver'].endsWith("-SNAPSHOT") ) {
-                                      project.properties['dockertag1']=project.properties['ver'] + "-latest";
-                                      project.properties['dockertag2']=project.properties['ver'] + "-" + project.properties['timestamp'];
-                                  } else {
-                                      project.properties['dockertag1']=project.properties['ver'] + "-STAGING-latest";
-                                      project.properties['dockertag2']=project.properties['ver'] + "-STAGING-" + project.properties['timestamp'];
-                                  }
-                                  println 'docker tag 1: ' + project.properties['dockertag1'];
-                                  println 'docker tag 2: ' + project.properties['dockertag2'];
-                              </source>
-                          </configuration>
-                      </execution>
-                  </executions>
-                </plugin>
-
-               <plugin>
-                    <groupId>io.fabric8</groupId>
-                    <artifactId>docker-maven-plugin</artifactId>
-                    <version>0.28.0</version>  
-                    <configuration>
-                        <verbose>${docker.verbose}</verbose>
-                        <apiVersion>${docker.apiVersion}</apiVersion>
-                        <pullRegistry>${docker.pull.registry}</pullRegistry>
-                        <pushRegistry>${docker.push.registry}</pushRegistry>
-                        <images>
-                            <image>                            
-                                <name>${docker.image}</name>
-                                <build>
-                                    <cleanup>try</cleanup>
-                                    <dockerFileDir>${basedir}/target/docker-stage</dockerFileDir>
-                                    <dockerFile>Dockerfile</dockerFile>
-                                    <tags>
-                                        <tag>${dockertag1}</tag>
-                                        <tag>${dockertag2}</tag>
-                                    </tags>
-                                </build>
-                            </image>
-                        </images>
-                    </configuration>
-                     <executions>
-                         <execution>
-                             <id>generate-images</id>
-                             <phase>install</phase>
-                             <goals>
-                                 <goal>build</goal>
-                             </goals>
-                         </execution>
-                         <execution>
-                             <id>push-images</id>
-                             <phase>deploy</phase>
-                             <goals>
-                                 <goal>push</goal>
-                             </goals>
-                         </execution>
-                     </executions>
-                </plugin>
-            </plugins>
-        </build>
-    </profile>
-  </profiles>
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -322,7 +64,34 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
+
   <dependencies>
+    <dependency>
+      <groupId>org.glassfish.jersey.media</groupId>
+      <artifactId>jersey-media-json-jackson</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.jersey.containers</groupId>
+      <artifactId>jersey-container-servlet-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.jersey.media</groupId>
+      <artifactId>jersey-media-moxy</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.jersey.test-framework.providers</groupId>
+      <!-- use this if compatibility issues with jetty artifactId:
+      <artifactId>jersey-test-framework-provider-jetty</artifactId>
+          <version>${jersey.version}</version>
+      -->
+      <artifactId>jersey-test-framework-provider-jdk-http</artifactId>
+      <version>2.29.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.jersey.inject</groupId>
+      <artifactId>jersey-hk2</artifactId>
+      <version>2.29.1</version>
+    </dependency>
     <dependency>
       <groupId>org.onap.aaf.authz</groupId>
       <artifactId>aaf-cadi-aaf</artifactId>
@@ -332,12 +101,12 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-annotations</artifactId>
-      <version>2.9.5</version>
+      <version>${jackson.version}</version>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.dataformat</groupId>
       <artifactId>jackson-dataformat-yaml</artifactId>
-      <version>2.9.5</version>
+      <version>${jackson.version}</version>
     </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>
@@ -349,6 +118,10 @@
       <artifactId>logback-classic</artifactId>
       <version>1.2.3</version>
     </dependency>
+    <!-- DMAAP-656:
+       - override this dependency because it utilized a third party
+       - lib called com.google.guava:20.0 which had severe security threat identified.
+     -->
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
@@ -358,6 +131,12 @@
       <groupId>io.swagger</groupId>
       <artifactId>swagger-core</artifactId>
       <version>${swagger.version}</version>
+      <exclusions>
+        <exclusion>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>io.swagger</groupId>
@@ -370,29 +149,10 @@
       <version>${swagger.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.glassfish.jersey.containers</groupId>
-      <artifactId>jersey-container-servlet-core</artifactId>
-      <!-- use the following artifactId if you don't need servlet 2.x compatibility -->
-      <!-- artifactId>jersey-container-servlet</artifactId -->
-    </dependency>
-    <dependency>
-      <groupId>org.glassfish.jersey.media</groupId>
-      <artifactId>jersey-media-moxy</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-api</artifactId>
-      <version>${log4j.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-core</artifactId>
-      <version>${log4j.version}</version>
-    </dependency>
-    <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-server</artifactId>
       <version>${jettyVersion}</version>
+      <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
@@ -424,33 +184,9 @@
       <version>42.2.14</version>
     </dependency>
     <dependency>
-      <groupId>org.onap.dmaap.dbcapi</groupId>
-      <artifactId>dbcapi</artifactId>
-      <version>2.0.4</version>
-    </dependency>
-    <dependency>
-      <groupId>com.att.eelf</groupId>
-      <artifactId>eelf-core</artifactId>
-      <version>${eelf.version}</version>
-    </dependency>
-    <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
       <version>1.7.22</version>
-    </dependency>
-    <dependency>
-      <groupId>org.glassfish.jersey.test-framework.providers</groupId>
-      <!-- use this if compatibility issues with jetty artifactId:
-      <artifactId>jersey-test-framework-provider-jetty</artifactId>
-          <version>${jersey.version}</version>
-      -->
-      <artifactId>jersey-test-framework-provider-jdk-http</artifactId>
-      <version>2.29.1</version>
-    </dependency>
-    <dependency>
-      <groupId>org.glassfish.jersey.inject</groupId>
-      <artifactId>jersey-hk2</artifactId>
-      <version>2.29.1</version>
     </dependency>
     <dependency>
       <!-- use 2.3.1 to avoid this issue: https://github.com/eclipse-ee4j/jaxb-ri/issues/1222 -->
@@ -459,15 +195,9 @@
       <version>2.3.1</version>
     </dependency>
     <dependency>
-      <groupId>javax.activation</groupId>
-      <artifactId>javax.activation-api</artifactId>
-      <version>1.2.0</version>
-    </dependency>
-
-    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.12</version>
+      <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -476,12 +206,264 @@
       <version>1.1.0</version>
       <scope>test</scope>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>3.9.0</version>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.apache.maven.plugins</groupId>
       <artifactId>maven-enforcer-plugin</artifactId>
       <version>3.0.0-M3</version>
     </dependency>
+    <dependency>
+      <groupId>com.att.eelf</groupId>
+      <artifactId>eelf-core</artifactId>
+      <version>${eelf.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.mockito</groupId>
+          <artifactId>mockito-core</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.powermock</groupId>
+          <artifactId>powermock-module-junit4</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.powermock</groupId>
+          <artifactId>powermock-api-mockito</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
   </dependencies>
+  <build>
+    <finalName>dmaap-bc</finalName>
+    <!-- Copy files to docker-stage to be included in image -->
+    <resources>
+      <resource>
+        <targetPath>${basedir}/target/docker-stage</targetPath>
+        <directory>${basedir}/src/main/resources/docker</directory>
+        <includes>
+          <include>Dockerfile</include>
+        </includes>
+      </resource>
+      <resource>
+        <targetPath>${basedir}${docker-stage.target.path}etc</targetPath>
+        <directory>${basedir}/src/main/resources/misc</directory>
+        <includes>
+          <include>logback.xml</include>
+          <include>LocalKey</include>
+        </includes>
+      </resource>
+      <resource>
+        <targetPath>${basedir}${docker-stage.target.path}etc</targetPath>
+        <directory>${multiproject.basedir}</directory>
+        <includes>
+          <include>version.properties</include>
+        </includes>
+      </resource>
+      <resource>
+        <targetPath>${basedir}${docker-stage.target.path}misc</targetPath>
+        <directory>${basedir}/src/main/resources/misc</directory>
+        <includes>
+          <include>*.tmpl</include>
+        </includes>
+      </resource>
+      <resource>
+        <targetPath>${basedir}${docker-stage.target.path}bin</targetPath>
+        <directory>${basedir}/src/main/resources/misc</directory>
+        <includes>
+          <include>dmaapbc</include>
+        </includes>
+      </resource>
+      <resource>
+        <targetPath>${basedir}${docker-stage.target.path}misc</targetPath>
+        <directory>${basedir}/src/main/resources/misc</directory>
+        <includes>
+          <include>schema_all.sql</include>
+        </includes>
+      </resource>
+    </resources>
+    <plugins>
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.4</version>
+        <configuration>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+          <outputDirectory>${basedir}/target/docker-stage/opt/app/dmaapbc/lib</outputDirectory>
+          <archive>
+            <manifest>
+              <addClasspath>true</addClasspath>
+              <mainClass>org.onap.dmaap.dbcapi.server.Main</mainClass>
+            </manifest>
+          </archive>
+          <finalName>dmaap-bc.jar</finalName>
+          <appendAssemblyId>false</appendAssemblyId>
+        </configuration>
+        <executions>
+          <execution>
+            <id>make-assembly</id>
+            <!-- this is used for inheritance merges -->
+            <phase>package</phase>
+            <!-- bind to the packaging phase -->
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>onap-java-style</id>
+            <configuration>
+              <consoleOutput>false</consoleOutput>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- reference: https://tech.homeaway.com/development/2016/06/02/generating-swagger-spec.html -->
+      <plugin>
+        <groupId>com.github.kongchen</groupId>
+        <artifactId>swagger-maven-plugin</artifactId>
+        <version>3.1.5</version>
+        <configuration>
+          <apiSources>
+            <apiSource>
+              <springmvc>false</springmvc>
+              <locations>
+                <location>org.onap.dmaap.dbcapi.resources</location>
+              </locations>
+              <schemes>
+                <scheme>http</scheme>
+                <scheme>https</scheme>
+              </schemes>
+              <host>www.[host]:[port]</host>
+              <basePath>/webapi</basePath>
+              <info>
+                <title>DMaaP Bus Controller REST API</title>
+                <version>1.1.0</version>
+                <description>
+                  provides an API for OpenDCAE components which need to provision
+                  underlying DMaaP technologies (Data Router and Message Router).
+                  Primary clients for this API are anticipated to be the OpenDCAE
+                  Controller, OpenDCAE Orchestrator, OpenDCAE Inventory and the
+                  ECOMP Portal.
+
+                  Objects managed by DMaaP are deployed in a dcaeLocation which is
+                  a unique identifier for an OpenStack tenant for a dcaeLayer,
+                  opendcae-central (aka ecomp) or opendcae-local-ntc (aka edge).
+
+                  A dcaeEnvironment (e.g. FTL or prod) has a single DMaaP. A
+                  DMaaP is managed by a one or more stateless DMaaP Bus
+                  Controller(s), though Bus Controller relies on PGaaS for
+                  persistence. Each DMaaP has a single instance of Data Router,
+                  which has 1 or more DR_Nodes deployed at each dcaeLocation. DR
+                  Clients of type DR_Pub generally publish to a DR_Node that is
+                  local to its dcaeLocation. Routing for a Feed is determined by
+                  the dcaelocation of its DR_Sub clients.
+
+                  A DMaaP may have many Message Router instances. Each instance is
+                  deployed as an MR_Cluster. One MR_Cluster is deployed at each
+                  dcaeLocation. MR_Clients generally communicate to the
+                  MR_Cluster at the same dcaeLocation. Replication of messages
+                  between MR_Clusters is accomplished by MR Bridge, which is
+                  provioned by DMaaP Bus Controller based on Topic attributes.
+
+                  Therefore, the role of DMaaP Bus Controller is to support other
+                  DCAE infrastructure components to dynamically provision DMaaP
+                  services on behalf of DMaaP clients, and to assist in any
+                  management or discovery activity of its clients.
+
+                  A convention of this API is to return JSON responses per
+                  OpenStack style.
+                </description>
+                <termsOfService>
+                  http://www.apache.org/licenses/LICENSE-2.0
+                </termsOfService>
+                <contact>
+                  <url>http://www.onap.org</url>
+                </contact>
+                <license>
+                  <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+                  <name>Licensed under the Apache License, Version 2.0</name>
+                </license>
+              </info>
+              <swaggerDirectory>target/generated-sources/</swaggerDirectory>
+            </apiSource>
+          </apiSources>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>compile</phase>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+  <profiles>
+    <profile>
+      <id>docker</id>
+      <properties>
+        <skipDockerBuild>${skip.docker.build}</skipDockerBuild>
+        <skipDockerTag>${skip.docker.tag}</skipDockerTag>
+        <skipTests>false</skipTests>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>io.fabric8</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+            <version>0.28.0</version>
+            <configuration>
+              <verbose>${docker.verbose}</verbose>
+              <apiVersion>${docker.apiVersion}</apiVersion>
+              <pullRegistry>${docker.pull.registry}</pullRegistry>
+              <pushRegistry>${docker.push.registry}</pushRegistry>
+              <images>
+                <image>
+                  <name>${dmaapbc.image.name}</name>
+                  <build>
+                    <cleanup>try</cleanup>
+                    <dockerFileDir>${basedir}/target/docker-stage</dockerFileDir>
+                    <dockerFile>Dockerfile</dockerFile>
+                    <tags>
+                      <tag>${dockertag1}</tag>
+                      <tag>${dockertag2}</tag>
+                    </tags>
+                  </build>
+                </image>
+              </images>
+            </configuration>
+            <executions>
+              <execution>
+                <id>generate-images</id>
+                <phase>install</phase>
+                <goals>
+                  <goal>build</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>push-images</id>
+                <phase>deploy</phase>
+                <goals>
+                  <goal>push</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
   <reporting>
     <plugins>
       <plugin>
@@ -502,45 +484,10 @@
       </plugin>
     </plugins>
   </reporting>
-
   <distributionManagement>
     <site>
       <id>ecomp-site</id>
       <url>dav:${nexusproxy}${sitePath}</url>
     </site>
   </distributionManagement>
-  <properties>
-    <multiproject.basedir>${basedir}/..</multiproject.basedir>
-    <docker.maven.plugin.version>1.0.0</docker.maven.plugin.version>
-    <jersey.version>2.29</jersey.version>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <log4j.version>2.13.3</log4j.version>
-    <jettyVersion>9.4.36.v20210114</jettyVersion>
-    <eelf.version>1.0.0</eelf.version>
-    <swagger.version>1.5.19</swagger.version>
-    <timestamp>${maven.build.timestamp}</timestamp>
-    <maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
-    <!--  SONAR  -->
-    <jacoco.version>0.7.7.201606060606</jacoco.version>
-    <sonar-jacoco-listeners.version>3.2</sonar-jacoco-listeners.version>
-    <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
-    <!-- Default Sonar configuration -->
-    <sonar.jacoco.reportPath>target/code-coverage/jacoco-ut.exec</sonar.jacoco.reportPath>
-    <sonar.jacoco.itReportPath>target/code-coverage/jacoco-it.exec</sonar.jacoco.itReportPath>
-    <!-- Note: This list should match jacoco-maven-plugin's exclusion list below -->
-    <sonar.exclusions>**/gen/**,**/generated-sources/**,**/yang-gen**,**/pax/**</sonar.exclusions>
-
-    <!-- docker image -->
-    <docker.image>onap/dmaap/dmaap-bc</docker.image>
-
-    <nexusproxy>https://nexus.onap.org</nexusproxy>
-    <docker.push.registry>10.12.5.45:5000</docker.push.registry>
-
-    <timestamp>${maven.build.timestamp}</timestamp>
-    <maven.build.timestamp.format>yyyyMMdd'T'HHmmss'Z'</maven.build.timestamp.format>
-
-    <!-- for Distribution Management -->
-    <sitePath>/content/sites/site/org/onap/dmaap/dmaap-bc/${revision}</sitePath>
-  </properties>
-  <description>Packaging Platform (DMaaP) Bus Controller API as a Docker container.</description>
 </project>
