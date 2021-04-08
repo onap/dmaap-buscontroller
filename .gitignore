@@ -6,3 +6,7 @@ last*
 .settings/
 dependency-reduced-pom.xml
 /logs/
+.vscode
+/bin/
+/venv/*
+*/archives/

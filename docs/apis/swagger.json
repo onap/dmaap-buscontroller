@@ -1,0 +1,1871 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "provides an API for OpenDCAE components which need to provision\n\t\t\t\t\t\t\t\t\tunderlying DMaaP technologies (Data Router and Message Router).\n\t\t\t\t\t\t\t\t\tPrimary clients for this API are anticipated to be the OpenDCAE\n\t\t\t\t\t\t\t\t\tController, OpenDCAE Orchestrator, OpenDCAE Inventory and the\n\t\t\t\t\t\t\t\t\tECOMP Portal.\n\n\t\t\t\t\t\t\t\t\tObjects managed by DMaaP are deployed in a dcaeLocation which is a\n\t\t\t\t\t\t\t\t\tunique identifier for an OpenStack tenant for a dcaeLayer,\n\t\t\t\t\t\t\t\t\topendcae-central (aka ecomp) or opendcae-local-ntc (aka edge).\n\n\t\t\t\t\t\t\t\t\tA dcaeEnvironment (e.g. FTL or prod) has a single DMaaP. A\n\t\t\t\t\t\t\t\t\tDMaaP is managed by a one or more stateless DMaaP Bus\n\t\t\t\t\t\t\t\t\tController(s), though Bus Controller relies on PGaaS for\n\t\t\t\t\t\t\t\t\tpersistence. Each DMaaP has a single instance of Data Router,\n\t\t\t\t\t\t\t\t\twhich has 1 or more DR_Nodes deployed at each dcaeLocation. DR\n\t\t\t\t\t\t\t\t\tClients of type DR_Pub generally publish to a DR_Node that is\n\t\t\t\t\t\t\t\t\tlocal to its dcaeLocation. Routing for a Feed is determined by\n\t\t\t\t\t\t\t\t\tthe dcaelocation of its DR_Sub clients.\n\n\t\t\t\t\t\t\t\t\tA DMaaP may have many Message Router instances. Each instance is\n\t\t\t\t\t\t\t\t\tdeployed as an MR_Cluster. One MR_Cluster is deployed at each\n\t\t\t\t\t\t\t\t\tdcaeLocation. MR_Clients generally communicate to the\n\t\t\t\t\t\t\t\t\tMR_Cluster at the same dcaeLocation. Replication of messages\n\t\t\t\t\t\t\t\t\tbetween MR_Clusters is accomplished by MR Bridge, which is\n\t\t\t\t\t\t\t\t\tprovioned by DMaaP Bus Controller based on Topic attributes.\n\n\t\t\t\t\t\t\t\t\tTherefore, the role of DMaaP Bus Controller is to support other\n\t\t\t\t\t\t\t\t\tDCAE infrastructure components to dynamically provision DMaaP\n\t\t\t\t\t\t\t\t\tservices on behalf of DMaaP clients, and to assist in any\n\t\t\t\t\t\t\t\t\tmanagement or discovery activity of its clients.\n\n\t\t\t\t\t\t\t\t\tA convention of this API is to return JSON responses per\n\t\t\t\t\t\t\t\t\tOpenStack style.",
+    "version" : "1.1.0",
+    "title" : "DMaaP Bus Controller REST API",
+    "termsOfService" : "http://www.apache.org/licenses/LICENSE-2.0",
+    "contact" : {
+      "url" : "http://www.onap.org"
+    },
+    "license" : {
+      "name" : "Licensed under the Apache License, Version 2.0",
+      "url" : "http://www.apache.org/licenses/LICENSE-2.0"
+    }
+  },
+  "host" : "www.[host]:[port]",
+  "basePath" : "/webapi",
+  "tags" : [ {
+    "name" : "Feeds",
+    "description" : "Endpoint for a Data Router Feed"
+  }, {
+    "name" : "MR_Clients",
+    "description" : "Endpoint for a Message Router Client that implements a Publisher or a Subscriber"
+  }, {
+    "name" : "MR_Clusters",
+    "description" : "Endpoint for a Message Router servers in a Cluster configuration"
+  }, {
+    "name" : "bridge",
+    "description" : "Endpoint for retreiving MR Bridge metrics"
+  }, {
+    "name" : "dcaeLocations",
+    "description" : "an OpenStack tenant purposed for OpenDCAE (i.e. where OpenDCAE components might be deployed)"
+  }, {
+    "name" : "dmaap",
+    "description" : "Endpoint for this instance of DMaaP object containing values for this OpenDCAE deployment"
+  }, {
+    "name" : "dr_nodes",
+    "description" : "Endpoint for a Data Router Node server"
+  }, {
+    "name" : "dr_pubs",
+    "description" : "Endpoint for a Data Router client that implements a Publisher"
+  }, {
+    "name" : "dr_subs",
+    "description" : "Endpoint for a Data Router client that implements a Subscriber"
+  }, {
+    "name" : "info",
+    "description" : "Endpoint for this instance of DBCL.  Returns health info."
+  }, {
+    "name" : "topics",
+    "description" : "Endpoint for retreiving MR Topics"
+  } ],
+  "schemes" : [ "http", "https" ],
+  "paths" : {
+    "/bridge" : {
+      "get" : {
+        "tags" : [ "bridge" ],
+        "summary" : "return BrTopic details",
+        "description" : "Returns array of  `BrTopic` objects. If source and target query params are specified, only report on that bridge.  If detail param is true, list topics names, else just a count is returned.",
+        "operationId" : "getBridgedTopics",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "mmagent",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "detail",
+          "in" : "query",
+          "required" : false,
+          "type" : "boolean"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Success",
+            "schema" : {
+              "$ref" : "#/definitions/BrTopic"
+            }
+          },
+          "400" : {
+            "description" : "Error",
+            "schema" : {
+              "$ref" : "#/definitions/ApiError"
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "bridge" ],
+        "summary" : "update MirrorMaker details",
+        "description" : "replace the topic list for a specific Bridge.  Use JSON Body for value to replace whitelist, but if refreshFlag param is true, simply refresh using existing whitelist.If split param is true, spread whitelist over smaller mmagents.",
+        "operationId" : "putBridgedTopics",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "mmagent",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "refresh",
+          "in" : "query",
+          "required" : false,
+          "type" : "boolean"
+        }, {
+          "name" : "split",
+          "in" : "query",
+          "required" : false,
+          "type" : "boolean"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Success",
+            "schema" : {
+              "$ref" : "#/definitions/BrTopic"
+            }
+          },
+          "400" : {
+            "description" : "Error",
+            "schema" : {
+              "$ref" : "#/definitions/ApiError"
+            }
+          }
+        }
+      }
+    },
+    "/dcaeLocations" : {
+      "get" : {
+        "tags" : [ "dcaeLocations" ],
+        "summary" : "return dcaeLocation details",
+        "description" : "Returns array of  `dcaeLocation` objects.  All objects managed by DMaaP are deployed in some `dcaeLocation` which is a unique identifier for an *OpenStack* tenant purposed for a *dcaeLayer*  (ecomp or edge).",
+        "operationId" : "getDcaeLocations",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "Success",
+            "schema" : {
+              "$ref" : "#/definitions/DcaeLocation"
+            }
+          },
+          "400" : {
+            "description" : "Error",
+            "schema" : {
+              "$ref" : "#/definitions/ApiError"
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "dcaeLocations" ],
+        "summary" : "return dcaeLocation details",
+        "description" : "Create some `dcaeLocation` which is a unique identifier for an *OpenStack* tenant purposed for a *dcaeLayer*  (ecomp or edge).",
+        "operationId" : "addDcaeLocation",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "Success",
+            "schema" : {
+              "$ref" : "#/definitions/DcaeLocation"
+            }
+          },
+          "400" : {
+            "description" : "Error",
+            "schema" : {
+              "$ref" : "#/definitions/ApiError"
+            }
+          }
+        }
+      }
+    },
+    "/dcaeLocations/{locationName}" : {
+      "get" : {
+        "tags" : [ "dcaeLocations" ],
+        "summary" : "return dcaeLocation details",
+        "description" : "Returns a specific `dcaeLocation` object with specified tag",
+        "operationId" : "getDcaeLocation",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "locationName",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Success",
+            "schema" : {
+              "$ref" : "#/definitions/DcaeLocation"
+            }
+          },
+          "400" : {
+            "description" : "Error",
+            "schema" : {
+              "$ref" : "#/definitions/ApiError"
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "dcaeLocations" ],
+        "summary" : "return dcaeLocation details",
+        "description" : "update the openStackAvailabilityZone of a dcaeLocation",
+        "operationId" : "updateDcaeLocation",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "locationName",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Success",
+            "schema" : {
+              "$ref" : "#/definitions/DcaeLocation"
+            }
+          },
+          "400" : {
+            "description" : "Error",
+            "schema" : {
+              "$ref" : "#/definitions/ApiError"
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "dcaeLocations" ],
+        "summary" : "return dcaeLocation details",
+        "description" : "delete a dcaeLocation",
+        "operationId" : "deleteDcaeLocation",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "locationName",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/DcaeLocation"
+            }
+          },
+          "204" : {
+            "description" : "Success",
+            "schema" : {
+              "$ref" : "#/definitions/DcaeLocation"
+            }
+          },
+          "400" : {
+            "description" : "Error",
+            "schema" : {
+              "$ref" : "#/definitions/ApiError"
+            }
+          }
+        }
+      }
+    },
+    "/dmaap" : {
+      "get" : {
+        "tags" : [ "dmaap" ],
+        "summary" : "return dmaap details",
+        "description" : "returns the `dmaap` object, which contains system wide configuration settings",
+        "operationId" : "getDmaap",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "Success",
+            "schema" : {
+              "$ref" : "#/definitions/Dmaap"
+            }
+          },
+          "400" : {
+            "description" : "Error",
+            "schema" : {
+              "$ref" : "#/definitions/ApiError"
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "dmaap" ],
+        "summary" : "return dmaap details",
+        "description" : "Create a new DMaaP set system wide configuration settings for the *dcaeEnvironment*.  Deprecated with introduction of persistence in 1610.",
+        "operationId" : "addDmaap",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "Success",
+            "schema" : {
+              "$ref" : "#/definitions/Dmaap"
+            }
+          },
+          "400" : {
+            "description" : "Error",
+            "schema" : {
+              "$ref" : "#/definitions/ApiError"
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "dmaap" ],
+        "summary" : "return dmaap details",
+        "description" : "Update system settings for *dcaeEnvironment*.",
+        "operationId" : "updateDmaap",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "Success",
+            "schema" : {
+              "$ref" : "#/definitions/Dmaap"
+            }
+          },
+          "400" : {
+            "description" : "Error",
+            "schema" : {
+              "$ref" : "#/definitions/ApiError"
+            }
+          }
+        }
+      }
+    },
+    "/dr_nodes" : {
+      "get" : {
+        "tags" : [ "dr_nodes" ],
+        "summary" : "return DR_Node details",
+        "description" : "Returns array of `DR_Node` object array.  Need to add filter by dcaeLocation.",
+        "operationId" : "getDr_Nodes",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "Success",
+            "schema" : {
+              "$ref" : "#/definitions/DR_Node"
+            }
+          },
+          "400" : {
+            "description" : "Error",
+            "schema" : {
+              "$ref" : "#/definitions/ApiError"
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "dr_nodes" ],
+        "summary" : "return DR_Node details",
+        "description" : "create a `DR_Node` in a *dcaeLocation*.  Note that multiple `DR_Node`s may exist in the same `dcaeLocation`.",
+        "operationId" : "addDr_Node",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "Success",
+            "schema" : {
+              "$ref" : "#/definitions/DR_Node"
+            }
+          },
+          "400" : {
+            "description" : "Error",
+            "schema" : {
+              "$ref" : "#/definitions/ApiError"
+            }
+          }
+        }
+      }
+    },
+    "/dr_nodes/{fqdn}" : {
+      "get" : {
+        "tags" : [ "dr_nodes" ],
+        "summary" : "return DR_Node details",
+        "description" : "Retrieve a single `DR_Node` object.",
+        "operationId" : "get",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "fqdn",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Success",
+            "schema" : {
+              "$ref" : "#/definitions/DR_Node"
+            }
+          },
+          "400" : {
+            "description" : "Error",
+            "schema" : {
+              "$ref" : "#/definitions/ApiError"
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "dr_nodes" ],
+        "summary" : "return DR_Node details",
+        "description" : "Update a single `DR_Node` object.",
+        "operationId" : "updateDr_Node",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "fqdn",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Success",
+            "schema" : {
+              "$ref" : "#/definitions/DR_Node"
+            }
+          },
+          "400" : {
+            "description" : "Error",
+            "schema" : {
+              "$ref" : "#/definitions/ApiError"
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "dr_nodes" ],
+        "summary" : "No Content",
+        "description" : "Delete a single `DR_Node` object.",
+        "operationId" : "deleteDr_Node",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "fqdn",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/DR_Node"
+            }
+          },
+          "204" : {
+            "description" : "Success",
+            "schema" : {
+              "$ref" : "#/definitions/DR_Node"
+            }
+          },
+          "400" : {
+            "description" : "Error",
+            "schema" : {
+              "$ref" : "#/definitions/ApiError"
+            }
+          }
+        }
+      }
+    },
+    "/dr_pubs" : {
+      "get" : {
+        "tags" : [ "dr_pubs" ],
+        "summary" : "return DR_Pub details",
+        "description" : "Returns array of  `DR_Pub` objects.  Add filter for feedId.",
+        "operationId" : "getDr_Pubs",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "Success",
+            "schema" : {
+              "$ref" : "#/definitions/DR_Pub"
+            }
+          },
+          "400" : {
+            "description" : "Error",
+            "schema" : {
+              "$ref" : "#/definitions/ApiError"
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "dr_pubs" ],
+        "summary" : "return DR_Pub details",
+        "description" : "create a DR Publisher in the specified environment.",
+        "operationId" : "addDr_Pub",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "Success",
+            "schema" : {
+              "$ref" : "#/definitions/DR_Pub"
+            }
+          },
+          "400" : {
+            "description" : "Error",
+            "schema" : {
+              "$ref" : "#/definitions/ApiError"
+            }
+          }
+        }
+      }
+    },
+    "/dr_pubs/{pubId}" : {
+      "get" : {
+        "tags" : [ "dr_pubs" ],
+        "summary" : "return DR_Pub details",
+        "description" : "returns a DR Publisher in the specified environment. Gets a `DR_Pub` object by pubId",
+        "operationId" : "get",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "pubId",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Success",
+            "schema" : {
+              "$ref" : "#/definitions/DR_Pub"
+            }
+          },
+          "400" : {
+            "description" : "Error",
+            "schema" : {
+              "$ref" : "#/definitions/ApiError"
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "dr_pubs" ],
+        "summary" : "return DR_Pub details",
+        "description" : "update a DR Publisher in the specified environment.  Update a `DR_Pub` object by pubId",
+        "operationId" : "updateDr_Pub",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "pubId",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Success",
+            "schema" : {
+              "$ref" : "#/definitions/DR_Pub"
+            }
+          },
+          "400" : {
+            "description" : "Error",
+            "schema" : {
+              "$ref" : "#/definitions/ApiError"
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "dr_pubs" ],
+        "summary" : "return DR_Pub details",
+        "description" : "delete a DR Publisher in the specified environment. Delete a `DR_Pub` object by pubId",
+        "operationId" : "deleteDr_Pub",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "pubId",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/DR_Pub"
+            }
+          },
+          "204" : {
+            "description" : "Success",
+            "schema" : {
+              "$ref" : "#/definitions/DR_Pub"
+            }
+          },
+          "400" : {
+            "description" : "Error",
+            "schema" : {
+              "$ref" : "#/definitions/ApiError"
+            }
+          }
+        }
+      }
+    },
+    "/dr_subs" : {
+      "get" : {
+        "tags" : [ "dr_subs" ],
+        "summary" : "return DR_Sub details",
+        "description" : "Returns array of  `DR_Sub` objects.  Add filter for feedId.",
+        "operationId" : "getDr_Subs",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "Success",
+            "schema" : {
+              "$ref" : "#/definitions/DR_Sub"
+            }
+          },
+          "400" : {
+            "description" : "Error",
+            "schema" : {
+              "$ref" : "#/definitions/ApiError"
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "dr_subs" ],
+        "summary" : "return DR_Sub details",
+        "description" : "Create a  `DR_Sub` object.  ",
+        "operationId" : "addDr_Sub",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "Success",
+            "schema" : {
+              "$ref" : "#/definitions/DR_Sub"
+            }
+          },
+          "400" : {
+            "description" : "Error",
+            "schema" : {
+              "$ref" : "#/definitions/ApiError"
+            }
+          }
+        }
+      }
+    },
+    "/dr_subs/{subId}" : {
+      "get" : {
+        "tags" : [ "dr_subs" ],
+        "summary" : "return DR_Sub details",
+        "description" : "Retrieve a  `DR_Sub` object, selected by subId",
+        "operationId" : "get",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "subId",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Success",
+            "schema" : {
+              "$ref" : "#/definitions/DR_Sub"
+            }
+          },
+          "400" : {
+            "description" : "Error",
+            "schema" : {
+              "$ref" : "#/definitions/ApiError"
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "dr_subs" ],
+        "summary" : "return DR_Sub details",
+        "description" : "Update a  `DR_Sub` object, selected by subId",
+        "operationId" : "updateDr_Sub",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "subId",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Success",
+            "schema" : {
+              "$ref" : "#/definitions/DR_Sub"
+            }
+          },
+          "400" : {
+            "description" : "Error",
+            "schema" : {
+              "$ref" : "#/definitions/ApiError"
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "dr_subs" ],
+        "summary" : "return DR_Sub details",
+        "description" : "Delete a  `DR_Sub` object, selected by subId",
+        "operationId" : "deleteDr_Sub",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "subId",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Success",
+            "schema" : {
+              "$ref" : "#/definitions/DR_Sub"
+            }
+          },
+          "400" : {
+            "description" : "Error",
+            "schema" : {
+              "$ref" : "#/definitions/ApiError"
+            }
+          }
+        }
+      }
+    },
+    "/feeds" : {
+      "get" : {
+        "tags" : [ "Feeds" ],
+        "summary" : "return Feed details",
+        "description" : "Returns array of  `Feed` objects.",
+        "operationId" : "getFeeds",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "feedName",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "version",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "match",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Success",
+            "schema" : {
+              "$ref" : "#/definitions/Feed"
+            }
+          },
+          "400" : {
+            "description" : "Error",
+            "schema" : {
+              "$ref" : "#/definitions/ApiError"
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Feeds" ],
+        "summary" : "return Feed details",
+        "description" : "Create a of  `Feed` object.",
+        "operationId" : "addFeed",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "useExisting",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Success",
+            "schema" : {
+              "$ref" : "#/definitions/Feed"
+            }
+          },
+          "400" : {
+            "description" : "Error",
+            "schema" : {
+              "$ref" : "#/definitions/ApiError"
+            }
+          }
+        }
+      }
+    },
+    "/feeds/sync" : {
+      "put" : {
+        "tags" : [ "Feeds" ],
+        "summary" : "sync feeds to existing DR",
+        "description" : "When Bus Controller is deployed after DR, then it is possiblethat DR has previous provisioning data that needs to be importedinto Bus Controller.",
+        "operationId" : "syncFeeds",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "hard",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Success",
+            "schema" : {
+              "$ref" : "#/definitions/Feed"
+            }
+          },
+          "400" : {
+            "description" : "Error",
+            "schema" : {
+              "$ref" : "#/definitions/ApiError"
+            }
+          }
+        }
+      }
+    },
+    "/feeds/{id}" : {
+      "get" : {
+        "tags" : [ "Feeds" ],
+        "summary" : "return Feed details",
+        "description" : "Retrieve a  `Feed` object, specified by id.",
+        "operationId" : "getFeed",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Success",
+            "schema" : {
+              "$ref" : "#/definitions/DR_Pub"
+            }
+          },
+          "400" : {
+            "description" : "Error",
+            "schema" : {
+              "$ref" : "#/definitions/ApiError"
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "Feeds" ],
+        "summary" : "return Feed details",
+        "description" : "Update a  `Feed` object, specified by id.",
+        "operationId" : "updateFeed",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Success",
+            "schema" : {
+              "$ref" : "#/definitions/Feed"
+            }
+          },
+          "400" : {
+            "description" : "Error",
+            "schema" : {
+              "$ref" : "#/definitions/ApiError"
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "Feeds" ],
+        "summary" : "return Feed details",
+        "description" : "Delete a  `Feed` object, specified by id.",
+        "operationId" : "deleteFeed",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/Feed"
+            }
+          },
+          "204" : {
+            "description" : "Success",
+            "schema" : {
+              "$ref" : "#/definitions/Feed"
+            }
+          },
+          "400" : {
+            "description" : "Error",
+            "schema" : {
+              "$ref" : "#/definitions/ApiError"
+            }
+          }
+        }
+      }
+    },
+    "/info" : {
+      "get" : {
+        "tags" : [ "info" ],
+        "summary" : "return info details",
+        "description" : "returns the `info` object",
+        "operationId" : "getInfo",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "Success",
+            "schema" : {
+              "$ref" : "#/definitions/Dmaap"
+            }
+          },
+          "400" : {
+            "description" : "Error",
+            "schema" : {
+              "$ref" : "#/definitions/ApiError"
+            }
+          }
+        }
+      }
+    },
+    "/mr_clients" : {
+      "get" : {
+        "tags" : [ "MR_Clients" ],
+        "summary" : "return MR_Client details",
+        "description" : "Returns array of  `MR_Client` objects.",
+        "operationId" : "getMr_Clients",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "Success",
+            "schema" : {
+              "$ref" : "#/definitions/MR_Client"
+            }
+          },
+          "400" : {
+            "description" : "Error",
+            "schema" : {
+              "$ref" : "#/definitions/ApiError"
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "MR_Clients" ],
+        "summary" : "Associate an MR_Client object to a Topic",
+        "description" : "Create a  `MR_Client` object.The `dcaeLocation` attribute is used to match an `MR_Cluster` object with the same value, with the intent of localizing message traffic.  In legacy implementation, the `clientRole` is granted appropriate permission in AAF.  Newer implementions may instead specify an AAF Identity, which will be added to the appropriate `Topic` role.",
+        "operationId" : "addMr_Client",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "Success",
+            "schema" : {
+              "$ref" : "#/definitions/MR_Client"
+            }
+          },
+          "400" : {
+            "description" : "Error",
+            "schema" : {
+              "$ref" : "#/definitions/ApiError"
+            }
+          }
+        }
+      }
+    },
+    "/mr_clients/{clientId}" : {
+      "put" : {
+        "tags" : [ "MR_Clients" ],
+        "summary" : "Update an MR_Client object",
+        "description" : "Update a  `MR_Client` object, specified by clientId",
+        "operationId" : "updateMr_Client",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "clientId",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Success",
+            "schema" : {
+              "$ref" : "#/definitions/MR_Client"
+            }
+          },
+          "400" : {
+            "description" : "Error",
+            "schema" : {
+              "$ref" : "#/definitions/ApiError"
+            }
+          }
+        }
+      }
+    },
+    "/mr_clients/{subId}" : {
+      "get" : {
+        "tags" : [ "MR_Clients" ],
+        "summary" : "return MR_Client details",
+        "description" : "Retrieve a  `MR_Client` object, specified by clientId",
+        "operationId" : "test",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "subId",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Success",
+            "schema" : {
+              "$ref" : "#/definitions/MR_Client"
+            }
+          },
+          "400" : {
+            "description" : "Error",
+            "schema" : {
+              "$ref" : "#/definitions/ApiError"
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "MR_Clients" ],
+        "summary" : "Delete an MR_Client object",
+        "description" : "Delete a  `MR_Client` object, specified by clientId",
+        "operationId" : "deleteMr_Client",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "subId",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/MR_Client"
+            }
+          },
+          "204" : {
+            "description" : "Success",
+            "schema" : {
+              "$ref" : "#/definitions/MR_Client"
+            }
+          },
+          "400" : {
+            "description" : "Error",
+            "schema" : {
+              "$ref" : "#/definitions/ApiError"
+            }
+          }
+        }
+      }
+    },
+    "/mr_clusters" : {
+      "get" : {
+        "tags" : [ "MR_Clusters" ],
+        "summary" : "return MR_Cluster details",
+        "description" : "Returns array of  `MR_Cluster` objects.",
+        "operationId" : "getMr_Clusters",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "Success",
+            "schema" : {
+              "$ref" : "#/definitions/MR_Cluster"
+            }
+          },
+          "400" : {
+            "description" : "Error",
+            "schema" : {
+              "$ref" : "#/definitions/ApiError"
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "MR_Clusters" ],
+        "summary" : "return MR_Cluster details",
+        "description" : "Create an  `MR_Cluster` object.",
+        "operationId" : "addMr_Cluster",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "Success",
+            "schema" : {
+              "$ref" : "#/definitions/MR_Cluster"
+            }
+          },
+          "400" : {
+            "description" : "Error",
+            "schema" : {
+              "$ref" : "#/definitions/ApiError"
+            }
+          }
+        }
+      }
+    },
+    "/mr_clusters/{clusterId}" : {
+      "get" : {
+        "tags" : [ "MR_Clusters" ],
+        "summary" : "return MR_Cluster details",
+        "description" : "Retrieve an  `MR_Cluster` object, specified by clusterId.",
+        "operationId" : "getMR_Cluster",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "clusterId",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Success",
+            "schema" : {
+              "$ref" : "#/definitions/MR_Cluster"
+            }
+          },
+          "400" : {
+            "description" : "Error",
+            "schema" : {
+              "$ref" : "#/definitions/ApiError"
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "MR_Clusters" ],
+        "summary" : "return MR_Cluster details",
+        "description" : "Update an  `MR_Cluster` object, specified by clusterId.",
+        "operationId" : "updateMr_Cluster",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "clusterId",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Success",
+            "schema" : {
+              "$ref" : "#/definitions/MR_Cluster"
+            }
+          },
+          "400" : {
+            "description" : "Error",
+            "schema" : {
+              "$ref" : "#/definitions/ApiError"
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "MR_Clusters" ],
+        "summary" : "return MR_Cluster details",
+        "description" : "Delete an  `MR_Cluster` object, specified by clusterId.",
+        "operationId" : "deleteMr_Cluster",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "clusterId",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/MR_Cluster"
+            }
+          },
+          "204" : {
+            "description" : "Success",
+            "schema" : {
+              "$ref" : "#/definitions/MR_Cluster"
+            }
+          },
+          "400" : {
+            "description" : "Error",
+            "schema" : {
+              "$ref" : "#/definitions/ApiError"
+            }
+          }
+        }
+      }
+    },
+    "/topics" : {
+      "get" : {
+        "tags" : [ "topics" ],
+        "summary" : "return Topic details",
+        "description" : "Returns array of  `Topic` objects.",
+        "operationId" : "getTopics",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "responses" : {
+          "200" : {
+            "description" : "Success",
+            "schema" : {
+              "$ref" : "#/definitions/Topic"
+            }
+          },
+          "400" : {
+            "description" : "Error",
+            "schema" : {
+              "$ref" : "#/definitions/ApiError"
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "topics" ],
+        "summary" : "Create a Topic object",
+        "description" : "Create  `Topic` object.For convenience, the message body may populate the `clients` array, in which case each entry will be added as an `MR_Client`.  Beginning in ONAP Dublin Release, dbcapi will create two AAF Roles by default, one each for the publisher and subscriber per topic.  MR_Clients can then specify an AAF Identity to be added to the appropriate default Role, avoiding the need to create Role(s) in advance.",
+        "operationId" : "addTopic",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "useExisting",
+          "in" : "query",
+          "required" : false,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Success",
+            "schema" : {
+              "$ref" : "#/definitions/Topic"
+            }
+          },
+          "400" : {
+            "description" : "Error",
+            "schema" : {
+              "$ref" : "#/definitions/ApiError"
+            }
+          }
+        }
+      }
+    },
+    "/topics/{topicId}" : {
+      "get" : {
+        "tags" : [ "topics" ],
+        "summary" : "return Topic details",
+        "description" : "Retrieve a  `Topic` object, identified by topicId",
+        "operationId" : "getTopic",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "topicId",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Success",
+            "schema" : {
+              "$ref" : "#/definitions/Topic"
+            }
+          },
+          "400" : {
+            "description" : "Error",
+            "schema" : {
+              "$ref" : "#/definitions/ApiError"
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "topics" ],
+        "summary" : "return Topic details",
+        "description" : "Update a  `Topic` object, identified by topicId",
+        "operationId" : "updateTopic",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "topicId",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Success",
+            "schema" : {
+              "$ref" : "#/definitions/Topic"
+            }
+          },
+          "400" : {
+            "description" : "Error",
+            "schema" : {
+              "$ref" : "#/definitions/ApiError"
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "topics" ],
+        "summary" : "return Topic details",
+        "description" : "Delete a  `Topic` object, identified by topicId",
+        "operationId" : "deleteTopic",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "topicId",
+          "in" : "path",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "schema" : {
+              "$ref" : "#/definitions/Topic"
+            }
+          },
+          "204" : {
+            "description" : "Success",
+            "schema" : {
+              "$ref" : "#/definitions/Topic"
+            }
+          },
+          "400" : {
+            "description" : "Error",
+            "schema" : {
+              "$ref" : "#/definitions/ApiError"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "ApiError" : {
+      "type" : "object",
+      "properties" : {
+        "code" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "message" : {
+          "type" : "string"
+        },
+        "fields" : {
+          "type" : "string"
+        },
+        "is2xx" : {
+          "type" : "boolean"
+        }
+      }
+    },
+    "BrTopic" : {
+      "type" : "object",
+      "properties" : {
+        "brSource" : {
+          "type" : "string"
+        },
+        "brTarget" : {
+          "type" : "string"
+        },
+        "mmAgentName" : {
+          "type" : "string"
+        },
+        "topicCount" : {
+          "type" : "integer",
+          "format" : "int32"
+        }
+      }
+    },
+    "DR_Node" : {
+      "type" : "object",
+      "properties" : {
+        "lastMod" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "datestamp for last update to this object"
+        },
+        "status" : {
+          "type" : "string",
+          "enum" : [ "EMPTY", "NEW", "STAGED", "VALID", "INVALID", "DELETED" ]
+        },
+        "fqdn" : {
+          "type" : "string"
+        },
+        "dcaeLocationName" : {
+          "type" : "string"
+        },
+        "hostName" : {
+          "type" : "string"
+        },
+        "version" : {
+          "type" : "string"
+        }
+      }
+    },
+    "DR_Pub" : {
+      "type" : "object",
+      "properties" : {
+        "lastMod" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "datestamp for last update to this object"
+        },
+        "status" : {
+          "type" : "string",
+          "enum" : [ "EMPTY", "NEW", "STAGED", "VALID", "INVALID", "DELETED" ]
+        },
+        "dcaeLocationName" : {
+          "type" : "string"
+        },
+        "username" : {
+          "type" : "string"
+        },
+        "userpwd" : {
+          "type" : "string"
+        },
+        "feedId" : {
+          "type" : "string"
+        },
+        "pubId" : {
+          "type" : "string"
+        },
+        "feedName" : {
+          "type" : "string"
+        },
+        "feedVersion" : {
+          "type" : "string"
+        }
+      }
+    },
+    "DR_Sub" : {
+      "type" : "object",
+      "properties" : {
+        "lastMod" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "datestamp for last update to this object"
+        },
+        "status" : {
+          "type" : "string",
+          "enum" : [ "EMPTY", "NEW", "STAGED", "VALID", "INVALID", "DELETED" ]
+        },
+        "dcaeLocationName" : {
+          "type" : "string"
+        },
+        "username" : {
+          "type" : "string"
+        },
+        "userpwd" : {
+          "type" : "string"
+        },
+        "feedId" : {
+          "type" : "string"
+        },
+        "deliveryURL" : {
+          "type" : "string"
+        },
+        "logURL" : {
+          "type" : "string"
+        },
+        "subId" : {
+          "type" : "string"
+        },
+        "use100" : {
+          "type" : "boolean"
+        },
+        "suspended" : {
+          "type" : "boolean"
+        },
+        "owner" : {
+          "type" : "string"
+        },
+        "guaranteedDelivery" : {
+          "type" : "boolean"
+        },
+        "guaranteedSequence" : {
+          "type" : "boolean"
+        },
+        "privilegedSubscriber" : {
+          "type" : "boolean"
+        },
+        "decompress" : {
+          "type" : "boolean"
+        },
+        "feedName" : {
+          "type" : "string"
+        },
+        "feedVersion" : {
+          "type" : "string"
+        }
+      }
+    },
+    "DcaeLocation" : {
+      "type" : "object",
+      "properties" : {
+        "lastMod" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "datestamp for last update to this object"
+        },
+        "status" : {
+          "type" : "string",
+          "enum" : [ "EMPTY", "NEW", "STAGED", "VALID", "INVALID", "DELETED" ]
+        },
+        "clli" : {
+          "type" : "string"
+        },
+        "dcaeLayer" : {
+          "type" : "string"
+        },
+        "dcaeLocationName" : {
+          "type" : "string"
+        },
+        "openStackAvailabilityZone" : {
+          "type" : "string"
+        },
+        "subnet" : {
+          "type" : "string"
+        },
+        "local" : {
+          "type" : "boolean"
+        },
+        "central" : {
+          "type" : "boolean"
+        }
+      }
+    },
+    "Dmaap" : {
+      "type" : "object",
+      "properties" : {
+        "lastMod" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "datestamp for last update to this object"
+        },
+        "status" : {
+          "type" : "string",
+          "enum" : [ "EMPTY", "NEW", "STAGED", "VALID", "INVALID", "DELETED" ]
+        },
+        "version" : {
+          "type" : "string"
+        },
+        "topicNsRoot" : {
+          "type" : "string"
+        },
+        "dmaapName" : {
+          "type" : "string"
+        },
+        "drProvUrl" : {
+          "type" : "string"
+        },
+        "bridgeAdminTopic" : {
+          "type" : "string"
+        },
+        "loggingUrl" : {
+          "type" : "string"
+        },
+        "nodeKey" : {
+          "type" : "string"
+        },
+        "accessKeyOwner" : {
+          "type" : "string"
+        }
+      }
+    },
+    "Feed" : {
+      "type" : "object",
+      "properties" : {
+        "lastMod" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "datestamp for last update to this object"
+        },
+        "status" : {
+          "type" : "string",
+          "enum" : [ "EMPTY", "NEW", "STAGED", "VALID", "INVALID", "DELETED" ]
+        },
+        "feedId" : {
+          "type" : "string"
+        },
+        "feedName" : {
+          "type" : "string"
+        },
+        "feedVersion" : {
+          "type" : "string"
+        },
+        "feedDescription" : {
+          "type" : "string"
+        },
+        "owner" : {
+          "type" : "string"
+        },
+        "asprClassification" : {
+          "type" : "string"
+        },
+        "publishURL" : {
+          "type" : "string"
+        },
+        "subscribeURL" : {
+          "type" : "string"
+        },
+        "suspended" : {
+          "type" : "boolean"
+        },
+        "logURL" : {
+          "type" : "string"
+        },
+        "formatUuid" : {
+          "type" : "string"
+        },
+        "pubs" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/DR_Pub"
+          }
+        },
+        "subs" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/DR_Sub"
+          }
+        },
+        "bytes" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "format" : "byte"
+          }
+        }
+      }
+    },
+    "MR_Client" : {
+      "type" : "object",
+      "properties" : {
+        "lastMod" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "datestamp for last update to this object"
+        },
+        "status" : {
+          "type" : "string",
+          "enum" : [ "EMPTY", "NEW", "STAGED", "VALID", "INVALID", "DELETED" ]
+        },
+        "dcaeLocationName" : {
+          "type" : "string",
+          "description" : "a tag indicating a logical deployment site"
+        },
+        "topicURL" : {
+          "type" : "string",
+          "description" : "the URL for a MR instance - typically in the same dcaeLocation - that this client should use to access the topic"
+        },
+        "fqtn" : {
+          "type" : "string",
+          "description" : "Fully Qualified Topic Name constructed by dbcapi"
+        },
+        "clientRole" : {
+          "type" : "string",
+          "description" : "an AAF Role to be granted an appropriate Permission.  If specified, takes precedence over clientIdentity, for backwards compatibility."
+        },
+        "action" : {
+          "type" : "array",
+          "description" : "one or more actions from the set (\"pub\", \"sub\", \"view\") for which this client needs Permission",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "mrClientId" : {
+          "type" : "string",
+          "description" : "a unique identifier generated by dbcapi for this client"
+        },
+        "clientIdentity" : {
+          "type" : "string",
+          "description" : "an AAF identity to be associated to an appropriate topic Role"
+        }
+      }
+    },
+    "MR_Cluster" : {
+      "type" : "object",
+      "properties" : {
+        "lastMod" : {
+          "type" : "string",
+          "format" : "date-time"
+        },
+        "status" : {
+          "type" : "string",
+          "enum" : [ "EMPTY", "NEW", "STAGED", "VALID", "INVALID", "DELETED" ]
+        },
+        "dcaeLocationName" : {
+          "type" : "string"
+        },
+        "fqdn" : {
+          "type" : "string"
+        },
+        "topicProtocol" : {
+          "type" : "string"
+        },
+        "topicPort" : {
+          "type" : "string"
+        },
+        "replicationGroup" : {
+          "type" : "string"
+        },
+        "sourceReplicationPort" : {
+          "type" : "string"
+        },
+        "targetReplicationPort" : {
+          "type" : "string"
+        }
+      }
+    },
+    "MirrorMaker" : {
+      "type" : "object",
+      "properties" : {
+        "lastMod" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "datestamp for last update to this object"
+        },
+        "status" : {
+          "type" : "string",
+          "enum" : [ "EMPTY", "NEW", "STAGED", "VALID", "INVALID", "DELETED" ]
+        },
+        "sourceCluster" : {
+          "type" : "string"
+        },
+        "targetCluster" : {
+          "type" : "string"
+        },
+        "mmName" : {
+          "type" : "string"
+        },
+        "topics" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "whitelistUpdateJSON" : {
+          "type" : "string"
+        },
+        "topicCount" : {
+          "type" : "integer",
+          "format" : "int32"
+        }
+      }
+    },
+    "Topic" : {
+      "type" : "object",
+      "properties" : {
+        "lastMod" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "datestamp for last update to this object"
+        },
+        "status" : {
+          "type" : "string",
+          "enum" : [ "EMPTY", "NEW", "STAGED", "VALID", "INVALID", "DELETED" ]
+        },
+        "fqtn" : {
+          "type" : "string",
+          "description" : "Fully Qualified Topic Name constructed by dbcapi, following the rules for `fqtnStyle`"
+        },
+        "topicName" : {
+          "type" : "string",
+          "description" : "the short name used by humans, and utilized to construct the `FQTN`"
+        },
+        "topicDescription" : {
+          "type" : "string",
+          "description" : "a description of what this Topic is used for"
+        },
+        "tnxEnabled" : {
+          "type" : "string"
+        },
+        "owner" : {
+          "type" : "string",
+          "description" : "a label used to identify who requested this `Topic` to be provisioned.  In the future this may be an AAF Identity."
+        },
+        "formatUuid" : {
+          "type" : "string",
+          "description" : "a reference to an identifier that describes a data format used for this `Topic`"
+        },
+        "replicationCase" : {
+          "type" : "string",
+          "description" : "An indicator for how this `Topic` should be replicated when there are more than one `MR_Cluster` instances",
+          "enum" : [ "REPLICATION_NOT_SPECIFIED", "REPLICATION_NONE", "REPLICATION_EDGE_TO_CENTRAL", "REPLICATION_EDGE_TO_CENTRAL_TO_GLOBAL", "REPLICATION_CENTRAL_TO_EDGE", "REPLICATION_CENTRAL_TO_GLOBAL", "REPLICATION_GLOBAL_TO_CENTRAL", "REPLICATION_GLOBAL_TO_CENTRAL_TO_EDGE", "REPLICATION_EDGE_TO_FQDN", "REPLICATION_FQDN_TO_EDGE", "REPLICATION_FQDN_TO_GLOBAL", "REPLICATION_GLOBAL_TO_FQDN", "REPLICATION_EDGE_TO_FQDN_TO_GLOBAL", "REPLICATION_GLOBAL_TO_FQDN_TO_EDGE" ]
+        },
+        "globalMrURL" : {
+          "type" : "string",
+          "description" : "the URL of an outside MR instance"
+        },
+        "fqtnStyle" : {
+          "type" : "string",
+          "description" : "the construction rule for the `fqtn` field",
+          "enum" : [ "FQTN_NOT_SPECIFIED", "FQTN_LEGACY_FORMAT", "FQTN_PROJECTID_FORMAT", "FQTN_PROJECTID_VERSION_FORMAT" ]
+        },
+        "version" : {
+          "type" : "string",
+          "description" : "a hook for any versioning needed for managing a `Topic` over time"
+        },
+        "partitionCount" : {
+          "type" : "string",
+          "description" : "the kafka attribute for specifying the number of partitions"
+        },
+        "replicationCount" : {
+          "type" : "string",
+          "description" : "the kafka attribute for specifying replication within an `MR_Cluster` instance"
+        },
+        "publisherRole" : {
+          "type" : "string",
+          "description" : "a value generated by dbcapi, this AAF Role has permission to publish to this `Topic`"
+        },
+        "subscriberRole" : {
+          "type" : "string",
+          "description" : "a value generated by dbcapi, this AAF Role has permission to subscribe to this `Topic`"
+        },
+        "clients" : {
+          "type" : "array",
+          "description" : "an array of `MR_Client` objects associated to this `Topic`",
+          "items" : {
+            "$ref" : "#/definitions/MR_Client"
+          }
+        }
+      }
+    }
+  }
+}
