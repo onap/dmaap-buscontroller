@@ -1,0 +1,222 @@
+cat <<!EOF
+#
+# ============LICENSE_START==========================================
+# org.onap.dmaap
+# ===================================================================
+# Copyright © 2018 AT&T Intellectual Property. All rights reserved.
+# ===================================================================
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ============LICENSE_END============================================
+# ECOMP is a trademark and service mark of AT&T Intellectual Property.
+#
+#
+#
+#	Configuration parameters fixed at startup for the DMaaP Bus Controller
+#
+# CSIT TESTING
+csit: ${DMAAPBC_CSIT:-No}
+
+#
+#	URI to retrieve dynamic DR configuration
+#
+ProvisioningURI:	${DMAAPBC_INTURI:-/internal/prov}
+#
+#	Allow http access to API 
+#
+HttpAllowed:	${DMAAPBC_HTTPALLOWED:-true}
+#
+#	The port number for http as seen within the server
+#
+IntHttpPort:	${DMAAPBC_INT_HTTP_PORT:-8080}
+#
+#	The port number for https as seen within the server
+#   Set to 0 if no certificate is available yet...
+#
+IntHttpsPort:	${DMAAPBC_INT_HTTPS_PORT:-8443}
+#
+#	The external port number for https taking port mapping into account
+#
+ExtHttpsPort:	${DMAAPBC_EXT_HTTPS_PORT:-443}
+#
+#	The type of keystore for https
+#
+KeyStoreType:	jks
+#
+#	The path to the keystore for https
+#
+KeyStoreFile:	${DMAAPBC_KSTOREFILE:-etc/keystore}
+#
+#	The password for the https keystore (remember to put password in "" and escape $ characters)
+#
+KeyStorePassword:	${DMAAPBC_KSTOREPASS:-"Y@Y5f&gm?PAz,CVQL,lk[VAF"}
+#
+#	The password for the private key in the https keystore (remember to put password in "" and escape $ characters)
+#
+KeyPassword:	${DMAAPBC_PVTKEYPASS:-"Y@Y5f&gm?PAz,CVQL,lk[VAF"}
+#
+#	The type of truststore for https
+#
+TrustStoreType:	jks
+#
+#	The path to the truststore for https
+#
+TrustStoreFile:	${DMAAPBC_TSTOREFILE:-etc/org.onap.dmaap-bc.trust.jks}
+#
+#	The password for the https truststore (remember to put password in "" and escape $ characters)
+#
+TrustStorePassword:	${DMAAPBC_TSTOREPASS:-"8b&R5%l\$l:@jSWz@FCs;rhY*"}
+#
+#	The path to the file used to trigger an orderly shutdown
+#
+QuiesceFile:	etc/SHUTDOWN
+#
+#	Enable postgress
+#
+UsePGSQL:	${DMAAPBC_PG_ENABLED:-false}
+#
+#	The host for postgres access
+#
+DB.host:	${DMAAPBC_PGHOST:-HostNotSet}
+#
+#	For postgres access
+#
+DB.cred:	${DMAAPBC_PGCRED:-ValueNotSet}
+#
+#	Name of this environment
+#
+DmaapName:	${DMAAPBC_INSTANCE_NAME:-demo}
+#
+#	Name of DR prov server
+#
+DR.provhost:	${DMAAPBC_DRPROV_FQDN:-dcae-drps.domain.notset.com}
+#
+# handling of feed delete
+# DeleteOnDR - means use the DR API to DELETE a feed. (default for backwards compatibility)
+# SimulateDelete - means preserve the feed on DR (after cleaning it up), and mark as DELETED in DBCL.  Better for cfy environments
+Feed.deleteHandling: ${DMAAPBC_FEED_DELETE:-DeleteOnDR}
+
+################################################################################
+# MR Related Properties:
+#
+# ONAP Beijing and Casablanca are a single site deployment.
+MR.multisite:  false
+#
+#   Value of the CNAME DNS entry which resolves to the primary central MR cluster (when there are more than one central clusters).
+#   if there is only one MR cluster in an environment, set this to the DNS name for that cluster
+#
+MR.CentralCname:  ${DMAAPBC_MR_CNAME:-message-router}
+#
+#   MR Client Delete Level thoroughness:
+#   0 = don't delete
+#   1 = delete from persistent store
+#   2 = delete from persistent store (DB) and authorization store (AAF)
+MR.ClientDeleteLevel: 1
+#
+#   MR Topic Factory Namespace
+#
+MR.TopicFactoryNS: org.onap.dcae.dmaap.topicFactory
+#
+#   MR TopicMgr Role
+MR.TopicMgrRole:    org.onap.dmaap-bc-topic-mgr.client
+
+#   MR topic name style
+MR.topicStyle:	FQTN_LEGACY_FORMAT
+
+#   MR topic ProjectID
+MR.projectID:  23456
+#
+# end of MR Related Properties
+################################################################################
+
+#
+#	The Role and credentials of the MirrorMaker Provisioner.  This is used by DMaaP Bus Controller to pub to the provisioning topic
+#   Not part of 1701
+#
+MM.ProvRole: ${DMAAPBC_MMPROV_ROLE:-org.onap.dmaap-bc-mm-prov.prov}
+MM.ProvUserMechId: ${DMAAPBC_MMPROV_ID:-dmaap-bc-mm-prov@dmaap-bc-mm-prov.onap.org}
+MM.ProvUserPwd: ${DMAAPBC_MMPROV_PWD:-demo123456!}
+#
+#	The Role of the MirrorMaker Agent. This is used by MM to sub to provisioning topic
+#
+MM.AgentRole: ${DMAAPBC_MMAGENT_ROLE:-org.onap.dmaap-bc-mm-prov.agent}
+#################
+#
+# CADI settings
+#
+# flag indication if CADI filtering is used
+enableCADI: ${DMAAPBC_ENABLE_CADI:-false}
+#
+# path to CADI properties
+cadi.properties: /opt/app/osaaf/local/org.onap.dmaap-bc.props
+
+#################
+# AAF Properties:
+UseAAF: ${DMAAPBC_USEAAF:-false}
+#
+# regarding password encryption:
+# In the dependencies that Maven retrieves (e.g., under dcae_dmaapbc/target/deps/ is a jar file cadi-core-version.jar.  Generate the key file with:
+#
+# java \u2013jar wherever/cadi-core-*.jar keygen keyfilename
+# chmod 400 keyfilename
+#
+# To encrypt a key:
+#
+# java \u2013jar wherever/cadi-core-*.jar digest password-to-encrypt keyfilename
+#
+# This will generate a string.  Put \u201Cenc:\u201D on the front of the string, and put the result in this properties file.
+#
+# Location of the Codec Keyfile which is used to decrypt passwords in this properties file before they are passed to AAF
+#
+# REF: https://wiki.domain.notset.com/display/cadi/CADI+Deployment
+#
+CredentialCodecKeyfile:	${DMAAPBC_CODEC_KEYFILE:-etc/LocalKey}
+#
+# This overrides the Class used for Decryption.
+# This allows for a plugin encryption/decryption method if needed.
+# Call this Class for decryption at runtime.
+#AafDecryption.Class: com.company.proprietaryDecryptor
+
+#
+# This overrides the Class used for API Permission check.
+# This allows for a plugin policy check, if needed
+ApiPermission.Class: org.onap.dmaap.dbcapi.authentication.AllowAll
+
+# Namespace for URI values for API used to create AAF permissions
+# e.g. if ApiNamespace is X.Y..dmaapBC.api then for URI /topics we create an AAF perm X.Y..dmaapBC.api.topics
+ApiNamespace: ${DMAAPBC_API_NAMESPACE:-org.onap.dmaap-bc.api}
+#
+# URL of AAF environment to use.
+#
+aaf.URL:	${DMAAPBC_AAF_URL:-https://aaf-onap-test.osaaf.org:8100}
+#
+# TopicMgr mechid@namespace
+#
+aaf.TopicMgrUser:	${DMAAPBC_TOPICMGR_USER:-dmaap-bc-topic-mgr@dmaap-bc-topic-mgr.onap.org}
+#
+# TopicMgr password
+# 
+aaf.TopicMgrPassword:	${DMAAPBC_TOPICMGR_PWD:-enc:l0ScEojNQiiKbbkuM6U1mtnrme69q960}
+#
+# Bus Controller Namespace Admin  mechid@namespace
+#
+aaf.AdminUser:	${DMAAPBC_ADMIN_USER:-aaf_admin@people.osaag.org}
+#
+# Bus Controller Namespace Admin password
+#
+aaf.AdminPassword:	${DMAAPBC_ADMIN_PWD:-demo123456!}
+
+
+#
+# endof AAF Properties
+#################
+!EOF

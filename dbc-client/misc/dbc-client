@@ -44,9 +44,6 @@ AUTH_METHOD=${AUTH_METHOD:-basicAuth}
 BA_IDENTITY=${BA_IDENTITY:-dmaap-bc@dmaap-bc.onap.org}
 BA_PWD=${BA_PWD:-'demo123456!'}
 
-
-
-
 config() {
 	echo "ENTER config"
 	set -x
@@ -113,6 +110,7 @@ init() {
 	done
 	set +x
 }
+
 dopost() {
 	set -x
 	RETRY_TIME=60
@@ -136,6 +134,7 @@ dopost() {
 	set +x
 
 }
+
 doprov() {
 
 	set -x
@@ -155,6 +154,7 @@ doprov() {
 	done
 	set +x
 }
+
 delay() {
 	echo "DELAY=$DELAY"
 	if [ ! -z "$DELAY" ]
