@@ -17,7 +17,7 @@ services:
       - PG_ROOT_PASSWORD=secret
       - PG_PRIMARY_PORT=5432
     networks:
-      docker-compose_net:
+      dockercompose_net:
         aliases:
           - dbc-pg
 
@@ -34,7 +34,7 @@ services:
     - ./cadi_aaf:/opt/app/osaaf/local
     - ./logback.xml:/opt/app/dmaapbc/etc/logback.xml
     networks:
-      docker-compose_net:
+      dockercompose_net:
         aliases:
           - dmaap-bc
     extra_hosts:
@@ -42,5 +42,5 @@ services:
       - message-router:$dmaap_prov_ip
 
 networks:
-  docker-compose_net:
+  dockercompose_net:
     external: true

@@ -30,12 +30,30 @@ fi
 if [ -f ${ROBOT_VENV}/bin/activate ]; then
     source ${ROBOT_VENV}/bin/activate
 else
-    rm -rf /tmp/ci-management
     rm -f ${WORKSPACE}/env.properties
-    cd /tmp
-    git clone "https://gerrit.onap.org/r/ci-management"
-    source /tmp/ci-management/jjb/integration/include-raw-integration-install-robotframework.sh
+    ROBOT_VENV=$(mktemp -d --suffix=robot_venv)
+    echo "ROBOT_VENV=${ROBOT_VENV}" >> "${WORKSPACE}/env.properties"
+
+    # The --system-site-packages parameter allows us to pick up system level
+    # installed packages. This allows us to bake matplotlib which takes very long
+    # to install into the image.
+    virtualenv --system-site-packages "${ROBOT_VENV}"
+    source "${ROBOT_VENV}/bin/activate"
+
+    set -exu
+
+    # Make sure pip itself us up-to-date.
+    pip install --upgrade pip
+    # To avoid a json issue related to specific versions related to https://gerrit.onap.org/r/c/ci-management/+/120747 
+    # in the ci-management repo, we are reverting to the orig versions.
+    pip install --upgrade --no-binary pycparser pycparser
+    pip install --upgrade pyOpenSSL==16.2.0 docker-py importlib requests scapy netifaces netaddr ipaddr simplejson demjson
+    pip install --upgrade robotframework{,-{httplibrary,requests,sshlibrary,selenium2library,xvfb}}
+
+    pip install xvfbwrapper
+    pip install PyVirtualDisplay
 fi
 
+# Print installed versions.
 pip freeze
 

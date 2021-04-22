@@ -31,6 +31,9 @@
 
 function dmaap_mr_launch() {
 
+  COMPOSE_PREFIX=${COMPOSE_PROJECT_NAME:-dockercompose}
+  export COMPOSE_PROJECT_NAME=$COMPOSE_PREFIX
+
   mkdir -p ${WORKSPACE}/archives/dmaap/last_run_logs
 
   # start DMaaP MR containers with docker compose and configuration from docker-compose.yml
