@@ -166,6 +166,12 @@
       <version>${jettyVersion}</version>
       <scope>compile</scope>
     </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-http</artifactId>
+      <version>${jettyVersion}</version>
+      <scope>compile</scope>
+    </dependency>
     <!-- https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple -->
     <dependency>
       <groupId>com.googlecode.json-simple</groupId>
@@ -422,7 +428,6 @@
           <plugin>
             <groupId>io.fabric8</groupId>
             <artifactId>docker-maven-plugin</artifactId>
-            <version>0.28.0</version>
             <configuration>
               <verbose>${docker.verbose}</verbose>
               <apiVersion>${docker.apiVersion}</apiVersion>
