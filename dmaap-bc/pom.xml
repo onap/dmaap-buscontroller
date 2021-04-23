@@ -420,25 +420,26 @@
       <id>docker</id>
       <properties>
         <skipDockerBuild>${skip.docker.build}</skipDockerBuild>
-        <skipDockerTag>${skip.docker.tag}</skipDockerTag>
         <skipTests>false</skipTests>
       </properties>
       <build>
         <plugins>
           <plugin>
+            <groupId>org.codehaus.gmaven</groupId>
+            <artifactId>gmaven-plugin</artifactId>
+          </plugin>
+          <plugin>
             <groupId>io.fabric8</groupId>
             <artifactId>docker-maven-plugin</artifactId>
             <configuration>
-              <verbose>${docker.verbose}</verbose>
-              <apiVersion>${docker.apiVersion}</apiVersion>
-              <pullRegistry>${docker.pull.registry}</pullRegistry>
-              <pushRegistry>${docker.push.registry}</pushRegistry>
               <images>
                 <image>
                   <name>${dmaapbc.image.name}</name>
                   <build>
                     <cleanup>try</cleanup>
-                    <dockerFileDir>${basedir}/target/docker-stage</dockerFileDir>
+                    <noCache>true</noCache>
+                    <optimise>true</optimise>
+                    <contextDir>${basedir}/target/docker-stage</contextDir>
                     <dockerFile>Dockerfile</dockerFile>
                     <tags>
                       <tag>${dockertag1}</tag>

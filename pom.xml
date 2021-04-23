@@ -42,7 +42,7 @@
     <skip.docker.push>false</skip.docker.push>
     <docker.verbose>true</docker.verbose>
     <docker.apiVersion>2.2.54</docker.apiVersion>
-    <io.fabric8.version>0.28.0</io.fabric8.version>
+    <io.fabric8.version>0.33.0</io.fabric8.version>
     <gmaven-plugin.version>1.5</gmaven-plugin.version>
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
