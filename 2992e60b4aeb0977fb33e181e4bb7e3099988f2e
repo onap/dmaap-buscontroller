@@ -16,6 +16,24 @@
       "revId": "2992e60b4aeb0977fb33e181e4bb7e3099988f2e",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0d89966c_bf3fb882",
+        "filename": "csit/prepare-csit.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 4405
+      },
+      "writtenOn": "2021-04-23T10:06:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5eaf78a0_4328b0c2",
+      "revId": "2992e60b4aeb0977fb33e181e4bb7e3099988f2e",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
