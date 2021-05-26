@@ -34,7 +34,7 @@ RUN mkdir -p /usr/local/share/ca-certificates && \
 RUN update-ca-certificates
 
 # Install curl & openssl
-RUN apk add --no-cache curl openssl
+RUN apk add --no-cache curl openssl gettext
 
 RUN mkdir -p /opt/app/osaaf/local && \
     chmod +x /opt/app/dbc-client/bin/* && \
