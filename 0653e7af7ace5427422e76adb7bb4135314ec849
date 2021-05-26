@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f185ed7b_321699bb",
+        "filename": "dbc-client/misc/dbc-client",
+        "patchSetId": 1
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 6004
+      },
+      "writtenOn": "2021-05-26T11:55:25Z",
+      "side": 1,
+      "message": "Update needed $i \u003e\u003e $count",
+      "range": {
+        "startLine": 104,
+        "startChar": 0,
+        "endLine": 106,
+        "endChar": 24
+      },
+      "revId": "0653e7af7ace5427422e76adb7bb4135314ec849",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
