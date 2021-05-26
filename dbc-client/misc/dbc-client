@@ -1,10 +1,11 @@
 #!/bin/sh
 #
-# ============LICENSE_START==========================================
+# ============LICENSE_START===============================================
 # org.onap.dmaap
-# ===================================================================
+# ========================================================================
 # Copyright © 2019 AT&T Intellectual Property. All rights reserved.
-# ===================================================================
+# Copyright (C) 2021 Nordix Foundation
+# ========================================================================
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -16,162 +17,119 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-# ============LICENSE_END============================================
+# ============LICENSE_END=================================================
 # ECOMP is a trademark and service mark of AT&T Intellectual Property.
-#
-#
 
 umask 0022
-TZ=GMT0
-COMPONENT=dbc-client
-APP_ROOT=${APP_ROOT:-/opt/app/$COMPONENT}
-export TZ
-PATH=/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin
-export PATH
+set -uex -o pipefail
+export PATH=/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin
+
+# RESP_CACHE is(/opt/app/config/cache) empty-dir volume mount for K8s env
+COUNT=0
+RESP_CACHE=${RESP_CACHE:-'/dev/null'}
+STRIP_SPL_CHAR=${STRIP_SPL_CHAR:-'@'}
+APP_ROOT=${APP_ROOT:-/opt/app/dbc-client}
 CONFIGMAP_ROOT=${CONFIGMAP_ROOT:-/opt/app/config}
-CONTAINER_CONFIG=$CONFIGMAP_ROOT/conf/dbc-client.env
-REQUESTID=${REQUESTID:-dbc-client}
+
+PORT=${PORT:-8443}
 DBC=${DBC:-dmaap-bc}
 PROTO=${PROTO:-https}
-PORT=${PORT:-8443}
-WAIT_TO_EXIT=${WAIT_TO_EXIT:-N}
-PEMDIR=${PEMDIR:-/opt/app/osaaf/local}
-CAPEM=${CAPEM:-ca.pem}
-CLIENTPEM=${CLIENTPEM:-client.pem}
-KEYPEM=${KEYPEM:-key.pem}
-CERTPWD=${CERTPWD:-'2U[iOZzMHI:.#tdCwlBqc;}S'}
+PARAM=${PARAM:-'useExisting=true'}
+REQUEST_ID=${REQUEST_ID:-dbc-client}
+URL=${URL:-"${PROTO}"://"${DBC}":"${PORT}"/webapi/}
+
+CA_PEM=${CA_PEM:-ca.pem}
+KEY_PEM=${KEY_PEM:-key.pem}
+CLIENT_PEM=${CLIENT_PEM:-client.pem}
+PEM_DIR=${PEM_DIR:-/opt/app/osaaf/local}
+CERT_PWD=${CERT_PWD:-'2U[iOZzMHI:.#tdCwlBqc;}S'}
+
+BA_PWD=${BA_PWD:-'demo123456!'}
 AUTH_METHOD=${AUTH_METHOD:-basicAuth}
 BA_IDENTITY=${BA_IDENTITY:-dmaap-bc@dmaap-bc.onap.org}
-BA_PWD=${BA_PWD:-'demo123456!'}
 
-config() {
-	echo "ENTER config"
-	set -x
-	if [ ! -d $APP_ROOT ]
-	then
-		echo "Expected app root directory $APP_ROOT does not exist"
-		exit 1
-	fi
-	cd $PEMDIR
-	pwd
-	ls -l
-	echo "AUTH_METHOD=$AUTH_METHOD"
-	if [ "$AUTH_METHOD"  =  "basicAuth" ]
-	then
-		echo "-u ${BA_IDENTITY}:${BA_PWD}" > $PEMDIR/curl.cred
-		CURLCRED="-K $PEMDIR/curl.cred"
-	elif [ -f $CAPEM  -a -f $CLIENTPEM -a -f $KEYPEM ]
-	then
-		printf "key \"$PEMDIR/$KEYPEM\"\ncacert \"$PEMDIR/$CAPEM\"\ncert \"$PEMDIR/${CLIENTPEM}:${CERTPWD}\"" > $PEMDIR/curl.cred
-		CURLCRED="-K $PEMDIR/curl.cred"
-	else
-		echo "Warning: PEM files for authorization not found!"
-		CURLCRED=""
-	fi
-	echo "CURLCRED=$CURLCRED"
-	cd $APP_ROOT
-	find . -type f -exec ls -l {} \;
-	find $CONFIGMAP_ROOT -type f -exec ls -l {} \;
-	if [ !  -f $CONTAINER_CONFIG ]
-	then
-		echo "WARNING: Expected env file $CONTAINER_CONFIG not found. Default behaviors in effect"
-	else
-		source $CONTAINER_CONFIG
-	fi
-
-	if [ "$WAIT_TO_EXIT" != "Y" ]
-	then
-		echo "Creating $APP_ROOT/ok_to_exit so no waiting..."
-		> $APP_ROOT/ok_to_exit
-	else
-		echo "Not creating $APP_ROOT/ok_to_exit"
-	fi	
-	
-	set +x
+function xcurl() {
+  curl -X POST \
+    -s "$CURL_CRED" \
+    -w "%{http_code}" \
+    -H "X-ECOMP-RequestID: $REQUEST_ID" \
+    -H "Content-Type: application/json" "$@"
 }
 
-
-init() {
-	set -x
-	echo "ENTER init"
-	if [ ! -d $CONFIGMAP_ROOT ]
-	then
-		echo $CONFIGMAP_ROOT does not exist
-		return
-	fi
-
-	#loop on get /dmaap until we get a good response to indicate other provisioning can continue
-	rc=${RESP:-999}
-	while [ $rc != "200" ]
-	do
-		sleep 10
-		rc=`curl $CURLCRED -s -o /dev/null -I -w "%{http_code}" -X GET -H "X-ECOMP-RequestID: $REQUESTID" -H "Content-Type: application/json" ${PROTO}://${DBC}:${PORT}/webapi/dmaap`
-		echo "get dmaap response=${rc}"
-	done
-	set +x
+function init_config() {
+  if [ ! -d "$APP_ROOT" -a ! -d "$CONFIGMAP_ROOT" ]; then
+    echo "Expected either App root directory $APP_ROOT Or ConfigMap directory $CONFIGMAP_ROOT does not exist."
+    exit 1
+  fi
+  cd "$PEM_DIR"
+  if [ "$AUTH_METHOD" = "basicAuth" ]; then
+    echo "-u ${BA_IDENTITY}:${BA_PWD}" >"$PEM_DIR"/curl.cred
+    CURL_CRED="-K $PEM_DIR/curl.cred"
+  elif [ -f "$CA_PEM" -a -f "$CLIENT_PEM" -a -f "$KEY_PEM" ]; then
+    printf "key \"$PEM_DIR/$KEY_PEM\"\n cacert \"$PEM_DIR/$CA_PEM\"\n cert \"$PEM_DIR/${CLIENT_PEM}:${CERT_PWD}\"" >$PEM_DIR/curl.cred
+    CURL_CRED="-K $PEM_DIR/curl.cred"
+  else
+    echo "PEM files for authorization not found..!"
+  fi
 }
 
-dopost() {
-	set -x
-	RETRY_TIME=60
-
-	loop=true
-
-	while [ $loop = true ]
-	do
-		rc=`curl $CURLCRED -s -X POST -w "%{http_code}" -H "X-ECOMP-RequestID: $REQUESTID" -H "Content-Type: application/json" -d @${1} ${PROTO}://${DBC}:${PORT}/webapi/${2} -o /dev/null`
-		case $rc in
-		200 | 201 | 409 )
-			echo "response=$rc"
-			loop=false
-			;;
-		* )
-			echo "`date`: http response=$rc.  Will retry after $RETRY_TIME seconds"
-			sleep $RETRY_TIME
-			;;
-		esac
-	done
-	set +x
-
+function init_dbc_provisioning() {
+  cd "$CONFIGMAP_ROOT"
+  for dir in dmaap dcaeLocations mr_clusters topics mr_clients dr_nodes feeds dr_pubs dr_subs; do
+    if [ -d ${dir} ]; then
+      for file in $(ls ${dir}/*.json); do
+        do_http_post "$STRIP_SPL_CHAR" "$file" "$dir" "$dir"
+      done
+    fi
+  done
 }
 
-doprov() {
-
-	set -x
-	cd $CONFIGMAP_ROOT
-	pwd
-	# order is important in this next list
-	for uri in dmaap dcaeLocations mr_clusters topics mr_clients dr_nodes feeds dr_pubs dr_subs
-	do
-		if [ -d ${uri} ]
-		then
-			for j in `ls ${uri}/*.json`
-			do
-				echo "POST $j to $uri"
-				dopost $j $uri
-			done
-		fi
-	done
-	set +x
+function do_http_post() {
+  RETRY_TIME=60
+  while true; do
+    if [ "$3" != "feeds" ]; then
+      rc=$(xcurl -o "$CACHE_RESP"/"$4"-resp.json -d "$1""${2}" "${URL}${3}")
+      if [ "$rc" = "200" -o "$rc" = "201" -o "$rc" = "409" ]; then
+        echo "Http Post request is successful with response code=$rc"
+        break
+      fi
+    else
+      rc=$(xcurl -o "$CACHE_RESP"/"$4"-resp.json -d "$1""${2}" "${URL}${3}"/?"${PARAM}")
+      if [ "$rc" = "200" -o "$rc" = "201" -o "$rc" = "409" ]; then
+        create_pub_sub "pubs subs" "$2" "$3" "$CACHE_RESP"/"$4"-resp.json
+        break
+      fi
+    fi
+    echo "$(date): Http Response code=$rc.  Will retry after $RETRY_TIME seconds.."
+    sleep "$RETRY_TIME"
+  done
 }
 
-delay() {
-	echo "DELAY=$DELAY"
-	if [ ! -z "$DELAY" ]
-	then
-		sleep $DELAY
-	fi
+function create_pub_sub() {
+  for val in $1; do
+    echo "Attaching $val to DR Feed.."
+    local i=0
+    dr_pub_sub=$(jq ".$val | length" "$2")
+    dr_pub_sub_resp=$(jq ".$val | length" "$4")
+    while [ "$i" -lt "$dr_pub_sub" ]; do
+      local j=0
+      dr_usr=$(jq ".${val}[$i].username" "$2")
+      dr_loc=$(jq ".${val}[$i].dcaeLocationName" "$2")
+      while [ "$j" -lt "$dr_pub_sub_resp" ]; do
+        _dr_usr=$(jq ".${val}[$j].username" "$4")
+        _dr_loc=$(jq ".${val}[$j].dcaeLocationName" "$4")
+        if [ "$dr_usr" = "$_dr_usr" -a "$dr_loc" = "$_dr_loc" ]; then
+          break
+        elif [ "$j" -eq $((dr_pub_sub_resp - 1)) ]; then
+          _dr_pub_sub=$(jq ".${val}[$i]" "$2")
+          do_http_post "" "$_dr_pub_sub" "dr_$val" "dr_$val"-"$i"
+        fi
+        j=$((j + 1))
+      done
+      i=$((i + 1))
+    done
+  done
 }
 
-delay
-config
-init
-doprov
-
-echo "Check $APP_ROOT/ok_to_exit"
-while [ ! -f $APP_ROOT/ok_to_exit ]
-do
-	echo "$APP_ROOT/ok_to_exit does not exist.  Sticking around for debugging..."
-	sleep 10
-done
-exit 0
+init_config
+init_dbc_provisioning
