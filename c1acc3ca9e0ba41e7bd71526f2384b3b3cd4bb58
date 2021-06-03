@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "aac5c73b_bc1c6746",
+        "filename": "dbc-client/misc/dbc-client",
+        "patchSetId": 4
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 4405
+      },
+      "writtenOn": "2021-06-03T08:28:15Z",
+      "side": 1,
+      "message": "Can we run this in the existing dmaap-bc-prov job?\nAlso, testing with new feed/pub/sub entries.",
+      "range": {
+        "startLine": 75,
+        "startChar": 9,
+        "endLine": 75,
+        "endChar": 30
+      },
+      "revId": "c1acc3ca9e0ba41e7bd71526f2384b3b3cd4bb58",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
