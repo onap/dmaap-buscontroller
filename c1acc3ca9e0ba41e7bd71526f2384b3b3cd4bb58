@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "20440176_370ca288",
+        "filename": "dbc-client/misc/dbc-client",
+        "patchSetId": 4
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2021-06-03T15:11:15Z",
+      "side": 1,
+      "message": "Needs some additional documentation.  What does the script expect to find in the various \"*.json\" files that it\u0027s processing?  If you\u0027re just expecting those files to contain payloads that meet the DBC API, provide a pointer to the relevant parts of the API documentation.  (If I\u0027m reading the code correctly [and I might not be], you\u0027re expecting some additional information about publishers and subscribers in the \"feeds\" JSON files.) \n\nAlso--even more importantly--document what is being saved in the response files.  Another script/program is going to have to read those responses and inject some of the information into the configuration for a microservice.  Whoever writes that script/program needs to know what\u0027s in the responses.",
+      "revId": "c1acc3ca9e0ba41e7bd71526f2384b3b3cd4bb58",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "aac5c73b_bc1c6746",
         "filename": "dbc-client/misc/dbc-client",
         "patchSetId": 4
@@ -46,6 +63,74 @@
       "revId": "c1acc3ca9e0ba41e7bd71526f2384b3b3cd4bb58",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f4ff70e6_3d59ecbb",
+        "filename": "dbc-client/misc/dbc-client",
+        "patchSetId": 4
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2021-06-03T15:11:15Z",
+      "side": 1,
+      "message": "There is special treatment in the handling of \"feeds\" to add dr_pubs and dr_subs.  Isn\u0027t it redundant to look into the dr_pubs and dr_subs directories?",
+      "revId": "c1acc3ca9e0ba41e7bd71526f2384b3b3cd4bb58",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3c4612af_0a1e893e",
+        "filename": "dbc-client/misc/dbc-client",
+        "patchSetId": 4
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2021-06-03T15:11:15Z",
+      "side": 1,
+      "message": "Is CACHE_RESP correct?  I don\u0027t see it defined anywhere.  There is a RESP_CACHE defined at line 28.",
+      "revId": "c1acc3ca9e0ba41e7bd71526f2384b3b3cd4bb58",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ae4dc56b_ba026a15",
+        "filename": "dbc-client/misc/dbc-client",
+        "patchSetId": 4
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2021-06-03T15:11:15Z",
+      "side": 1,
+      "message": "CACHE_RESP?  Or RESP_CACHE?",
+      "revId": "c1acc3ca9e0ba41e7bd71526f2384b3b3cd4bb58",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "47de252a_c5dd7632",
+        "filename": "dbc-client/misc/dbc-client",
+        "patchSetId": 4
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2021-06-03T15:11:15Z",
+      "side": 1,
+      "message": "CACHE_RESP? or RESP_CACHE?",
+      "revId": "c1acc3ca9e0ba41e7bd71526f2384b3b3cd4bb58",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
