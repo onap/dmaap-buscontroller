@@ -8,13 +8,15 @@ Architecture
 
 Capabilities
 ------------
-Bus Controller is a RESTful web service used to provision DMaaP topics (on Message Router) and feeds (on Data Router), with associated authorization (on AAF).
+Bus Controller is a RESTful web service used to provision DMaaP topics on MR (Message Router)
+and feeds on DR (Data Router), with associated authorization via AAF.
 
 Usage Scenarios
 ---------------
 Bus Controller endpoints are used to provision:
-- a authorized topic on MR, and to create and grant permission for publishers and subscribers.
-- a feed on DR, with associated user authenticatio n.
+
+- an authorized topic on MR, and to create and grant permission for publishers and subscribers.
+- a feed on DR, with associated user authentication.
 
 .. blockdiag::
 

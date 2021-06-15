@@ -13,7 +13,7 @@ Roles and Permissions
 | The roles and permissions are being provisioned to AAF instance during DMaaP BC instance initialization phase only when AAF is in use.
 | The default namespace in AAF for storing Bus Controller API roles and permissions is ``org.onap.dmaap-bc.api``.
 | Separate permission is created for every HTTP method on each DMaaP BC REST api endpoint.
-| Refer to :doc:`DMaaP Bus Controller REST API<../../../../dmaap/dbcapi.git/docs/api>` for comprehensive api information.
+| Refer to :ref:`offeredapis` for comprehensive api information.
 | Default name for DMaaP instance in ONAP is ``mr`` which is reflected in instance part of every created permission under DMaaP BC API.
 | Exception of above rule is for ``/dmaap`` endpoint where additionally set of permissions for ``boot`` instance is defined:
 
