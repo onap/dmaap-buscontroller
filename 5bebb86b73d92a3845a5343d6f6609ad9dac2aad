@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3112851d_55df99e1",
+        "filename": "docs/apis/api.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 3091
+      },
+      "writtenOn": "2021-06-15T11:39:52Z",
+      "side": 1,
+      "message": "please remove trailing whitespaces here and below",
+      "range": {
+        "startLine": 103,
+        "startChar": 45,
+        "endLine": 103,
+        "endChar": 46
+      },
+      "revId": "5bebb86b73d92a3845a5343d6f6609ad9dac2aad",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ac6b029e_597118d0",
+        "filename": "docs/release-notes.rst",
+        "patchSetId": 1
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 3091
+      },
+      "writtenOn": "2021-06-15T11:39:52Z",
+      "side": 1,
+      "message": "please remove trailing whitespace here and below",
+      "range": {
+        "startLine": 282,
+        "startChar": 14,
+        "endLine": 282,
+        "endChar": 15
+      },
+      "revId": "5bebb86b73d92a3845a5343d6f6609ad9dac2aad",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
