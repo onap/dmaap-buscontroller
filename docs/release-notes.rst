@@ -3,8 +3,9 @@
 .. DO NOT CHANGE THIS LABEL FOR RELEASE NOTES - EVEN THOUGH IT GIVES A WARNING
 .. _release_notes:
 
-DMaaP Buscontroller Release Notes
-====================
+=============
+Release Notes
+=============
 
 .. note
 ..      * This Release Notes must be updated each time the team decides to Release new artifacts.
@@ -16,10 +17,9 @@ DMaaP Buscontroller Release Notes
 ..      * This note must be removed after content has been added.
 
 
-..      ===========================
-..      * * *    Honolulu    * * *
-..      ===========================
 
+Honolulu
+========
 
 
 Abstract
@@ -80,7 +80,7 @@ Security Notes
 References
 ----------
 
-For more information on the ONAP Guilin release, please see:
+For more information on the ONAP Honolulu release, please see:
 
 #. `ONAP Home Page`_
 #. `ONAP Documentation`_
@@ -95,14 +95,13 @@ For more information on the ONAP Guilin release, please see:
 
 
 Quick Links:
+
 - `DMAAP project page <https://wiki.onap.org/display/DW/DMaaP+Planning>`_
-- `Passing Badge information for DMAAP <https://bestpractices.coreinfrastructure.org/en/projects/1751>`_
 
-..      ===========================
-..      * * *    GUILIN    * * *
-..      ===========================
+- `Passing Badge information for DMAAP <https://bestpractices.coreinfrastructure.org/en/projects/2147>`_
 
-
+Guilin
+======
 
 Abstract
 --------
@@ -179,13 +178,13 @@ For more information on the ONAP Guilin release, please see:
 
 
 Quick Links:
+
 - `DMAAP project page <https://wiki.onap.org/display/DW/DMaaP+Planning>`_
-- `Passing Badge information for DMAAP <https://bestpractices.coreinfrastructure.org/en/projects/1751>`_
 
-..      ===========================
-..      * * *    FRANKFURT    * * *
-..      ===========================
+- `Passing Badge information for DMAAP <https://bestpractices.coreinfrastructure.org/en/projects/2147>`_
 
+Frankfurt
+=========
 
 
 Abstract
@@ -222,7 +221,7 @@ New features
 ------------
 
 * Implement boolean flag in OOM to disable HTTP ports
-* Dynamic cert distribution from OOM AAF.  The dmaap-bc pod now utilizes an initContainer to acquire SSL certificates from AAF 
+* Dynamic cert distribution from OOM AAF.  The dmaap-bc pod now utilizes an initContainer to acquire SSL certificates from AAF
 * the core library, dbcapi, now utilizes Java 11 and new base images were required, so we consider this a major release increment.
 
 
@@ -271,14 +270,15 @@ For more information on the ONAP Frankfurt release, please see:
 
 
 Quick Links:
+
 - `DMAAP project page <https://wiki.onap.org/display/DW/DMaaP+Planning>`_
-- `Passing Badge information for DMAAP <https://bestpractices.coreinfrastructure.org/en/projects/1751>`_
 
-..      ==========================
-..      * * *     EL ALTO    * * *
-..      ==========================
+- `Passing Badge information for DMAAP <https://bestpractices.coreinfrastructure.org/en/projects/2147>`_
 
-Version: 1.1.5 
+El Alto
+=======
+
+Version: 1.1.5
 --------------
 
 : Release Date: 2019-06-06 (El Alto)
@@ -297,16 +297,19 @@ Version: 1.1.5
 DMAAP code has been formally scanned during build time using NexusIQ and all Critical vulnerabilities have been addressed, items that remain open have been assessed for risk and determined to be false positive. The DMAAP open Critical security vulnerabilities and their risk assessment have been documented as part of the `Dublin <https://wiki.onap.org/pages/viewpage.action?pageId=64003715>`_.
 
 Quick Links:
+
 - `DMAAP project page <https://wiki.onap.org/display/DW/DMaaP+Planning>`_
-- `Passing Badge information for DMAAP <https://bestpractices.coreinfrastructure.org/en/projects/1751>`_
-- `El Alto Project Vulnerability Review Table for DMAAP <https://wiki.onap.org/pages/viewpage.action?pageId=71835817>`
+
+- `Passing Badge information for DMAAP <https://bestpractices.coreinfrastructure.org/en/projects/2147>`_
+
+- `El Alto Project Vulnerability Review Table for DMAAP <https://wiki.onap.org/pages/viewpage.action?pageId=71835817>`_
 
 **Upgrade Notes**
        NA
 
 **Deprecation Notes**
        NA
-	
+
 
 
 Version: 1.1.5 (Dublin)
@@ -327,8 +330,11 @@ Version: 1.1.5 (Dublin)
 DMAAP code has been formally scanned during build time using NexusIQ and all Critical vulnerabilities have been addressed, items that remain open have been assessed for risk and determined to be false positive. The DMAAP open Critical security vulnerabilities and their risk assessment have been documented as part of the `Dublin <https://wiki.onap.org/pages/viewpage.action?pageId=64003715>`_.
 
 Quick Links:
+
 - `DMAAP project page <https://wiki.onap.org/display/DW/DMaaP+Planning>`_
-- `Passing Badge information for DMAAP <https://bestpractices.coreinfrastructure.org/en/projects/1751>`_
+
+- `Passing Badge information for DMAAP <https://bestpractices.coreinfrastructure.org/en/projects/2147>`_
+
 - `Dublin Project Vulnerability Review Table for DMAAP <https://wiki.onap.org/pages/viewpage.action?pageId=64003715>`_
 
 **Upgrade Notes**
@@ -356,8 +362,11 @@ Version: 1.0.23
 DMAAP code has been formally scanned during build time using NexusIQ and all Critical vulnerabilities have been addressed, items that remain open have been assessed for risk and determined to be false positive. The DMAAP open Critical security vulnerabilities and their risk assessment have been documented as part of the `project <https://wiki.onap.org/pages/viewpage.action?pageId=28379799>`_.
 
 Quick Links:
+
 - `DMAAP project page <https://wiki.onap.org/display/DW/DMaaP+Planning>`_
-- `Passing Badge information for DMAAP <https://bestpractices.coreinfrastructure.org/en/projects/1751>`_
+
+- `Passing Badge information for DMAAP <https://bestpractices.coreinfrastructure.org/en/projects/2147>`_
+
 - `Project Vulnerability Review Table for DMAAP <https://wiki.onap.org/pages/viewpage.action?pageId=28379799>`_
 
 **Upgrade Notes**

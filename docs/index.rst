@@ -6,17 +6,16 @@ dmaap/buscontroller
 ===================
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 1
 
-   architecture/architecture.rst
-   release-notes/release-notes.rst
-   configuration/configuration.rst
-   humaninterfaces/humaninterfaces.rst
-   offeredapis/offeredapis.rst
-   Installation/Installation.rst
-   consumedapis/consumedapis.rst
-   administration/administration.rst
-   logging/logging.rst
-   delivery/delivery.rst
-   security/security.rst
+   architecture.rst
+   configuration.rst
+   installation.rst
+   offeredapis.rst
+   consumedapis.rst
+   logging.rst
+   delivery.rst
+   security.rst
+   release-notes.rst
+
 
