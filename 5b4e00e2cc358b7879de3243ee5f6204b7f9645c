@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1f19d618_44723871",
+        "filename": "dbc-client/misc/dbc-client",
+        "patchSetId": 5
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2021-06-16T16:15:09Z",
+      "side": 1,
+      "message": "If $RESP_CACHE has the default value of \"/dev/null\", then $RESP_CACHE/$RESP_FILE will evaluate\nto something like /dev/null/xyz-resp.json.  This is not writable, so the curl command will fail.",
+      "revId": "5b4e00e2cc358b7879de3243ee5f6204b7f9645c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "64c3e959_465a731a",
+        "filename": "dbc-client/misc/dbc-client",
+        "patchSetId": 5
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2021-06-16T16:15:09Z",
+      "side": 1,
+      "message": "Same comment as line 90.",
+      "revId": "5b4e00e2cc358b7879de3243ee5f6204b7f9645c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
