@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "7c12efa2_72a5f44c",
+        "filename": "dbc-client/misc/dbc-client",
+        "patchSetId": 5
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 6004
+      },
+      "writtenOn": "2021-06-17T07:27:11Z",
+      "side": 1,
+      "message": "Thanks Jack for comments.\nI overlooked it, handled now.",
+      "parentUuid": "1f19d618_44723871",
+      "revId": "5b4e00e2cc358b7879de3243ee5f6204b7f9645c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "64c3e959_465a731a",
         "filename": "dbc-client/misc/dbc-client",
         "patchSetId": 5
@@ -33,6 +51,24 @@
       "revId": "5b4e00e2cc358b7879de3243ee5f6204b7f9645c",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "612bc516_7d11a253",
+        "filename": "dbc-client/misc/dbc-client",
+        "patchSetId": 5
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 6004
+      },
+      "writtenOn": "2021-06-17T07:27:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "64c3e959_465a731a",
+      "revId": "5b4e00e2cc358b7879de3243ee5f6204b7f9645c",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
