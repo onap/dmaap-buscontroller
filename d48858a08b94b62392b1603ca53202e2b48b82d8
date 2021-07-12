@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "39d9bb9d_d074b3b4",
+        "filename": "dbc-client/src/main/resources/Dockerfile",
+        "patchSetId": 7
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 4405
+      },
+      "writtenOn": "2021-07-12T08:11:01Z",
+      "side": 1,
+      "message": "Is this still needed?",
+      "range": {
+        "startLine": 37,
+        "startChar": 36,
+        "endLine": 37,
+        "endChar": 43
+      },
+      "revId": "d48858a08b94b62392b1603ca53202e2b48b82d8",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
