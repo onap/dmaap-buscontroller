@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1ba41831_d673eadc",
+        "filename": "releases/2.0.7.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 4405
+      },
+      "writtenOn": "2021-07-12T12:26:14Z",
+      "side": 1,
+      "message": "I think the release job requires a new line at the end",
+      "range": {
+        "startLine": 8,
+        "startChar": 33,
+        "endLine": 8,
+        "endChar": 35
+      },
+      "revId": "b426e04a93637f64a05422849adbd8c4bd27d317",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
