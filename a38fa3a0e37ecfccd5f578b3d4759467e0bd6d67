@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c9ec72be_cff1749b",
+        "filename": "releases/2.0.7.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 4405
+      },
+      "writtenOn": "2021-07-12T08:23:56Z",
+      "side": 1,
+      "message": "Why are we releasing a new bc image?\nShould this not be the dbc-client image?",
+      "range": {
+        "startLine": 7,
+        "startChar": 19,
+        "endLine": 7,
+        "endChar": 24
+      },
+      "revId": "a38fa3a0e37ecfccd5f578b3d4759467e0bd6d67",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
