@@ -22,6 +22,30 @@
       "revId": "b426e04a93637f64a05422849adbd8c4bd27d317",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7422734f_6c5ff986",
+        "filename": "releases/2.0.7.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 6004
+      },
+      "writtenOn": "2021-07-12T12:31:38Z",
+      "side": 1,
+      "message": "Updated now",
+      "parentUuid": "1ba41831_d673eadc",
+      "range": {
+        "startLine": 8,
+        "startChar": 33,
+        "endLine": 8,
+        "endChar": 35
+      },
+      "revId": "b426e04a93637f64a05422849adbd8c4bd27d317",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
