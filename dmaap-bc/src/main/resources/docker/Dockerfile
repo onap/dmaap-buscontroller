@@ -27,7 +27,7 @@ WORKDIR /opt/app/dmaapbc
 
 COPY /opt /opt
 USER root
-RUN apk add --no-cache curl jq net-tools wget procps \
+RUN apk add --no-cache curl jq net-tools procps \
 
 &&  mkdir -p /opt/app/osaaf && \
     chmod +x bin/* && \
