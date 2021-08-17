@@ -187,7 +187,7 @@
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-http</artifactId>
-      <version>${jettyVersion}</version>
+      <version>9.4.43.v20210629</version>
       <scope>compile</scope>
     </dependency>
     <!-- https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple -->
@@ -261,6 +261,10 @@
         <exclusion>
           <artifactId>bsh</artifactId>
           <groupId>org.beanshell</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>maven-core</artifactId>
+          <groupId>org.apache.maven</groupId>
         </exclusion>
       </exclusions>
     </dependency>
