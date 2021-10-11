@@ -17,6 +17,81 @@ Release Notes
 ..      * This note must be removed after content has been added.
 
 
+Istanbul
+========
+
+Abstract
+--------
+This document provides the release notes for the Honolulu release.
+
+Summary
+-------
+Repo merges, package updates and dbc-clients changes
+
+Release Data
+------------
++--------------------------------------+--------------------------------------+
+| **DMaaP Bus Controller Project**     |                                      |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+| **Docker images**                    | - dmaap-bc 2.0.8                     |
+|                                      | - dbc-client 2.0.7                   |
++--------------------------------------+--------------------------------------+
+| **Release designation**              | 9.0.0 Istanbul                       |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+| **Release date**                     | 2021-10-14                           |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+
+
+New features
+------------
+* Consolidated BC repos - DMAAP-1544
+* Package upgrades  - DMAAP-1608
+* Update dbc-client script - DMAAP-1561
+
+Known Limitations, Issues and Workarounds
+-----------------------------------------
+
+System Limitations
+------------------
+
+
+Known Vulnerabilities
+---------------------
+
+
+Workarounds
+-----------
+
+
+Security Notes
+--------------
+
+
+References
+----------
+
+For more information on the ONAP Honolulu release, please see:
+
+#. `ONAP Home Page`_
+#. `ONAP Documentation`_
+#. `ONAP Release Downloads`_
+#. `ONAP Wiki Page`_
+
+
+.. _`ONAP Home Page`: https://www.onap.org
+.. _`ONAP Wiki Page`: https://wiki.onap.org
+.. _`ONAP Documentation`: https://docs.onap.org
+.. _`ONAP Release Downloads`: https://git.onap.org
+
+
+Quick Links:
+
+- `DMAAP project page <https://wiki.onap.org/display/DW/DMaaP+Planning>`_
+- `Passing Badge information for DMAAP <https://bestpractices.coreinfrastructure.org/en/projects/2147>`_
+
 
 Honolulu
 ========
