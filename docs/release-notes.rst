@@ -97,10 +97,8 @@ Honolulu
 ========
 
 
-
 Abstract
 --------
-
 
 This document provides the release notes for the Honolulu release.
 
@@ -357,7 +355,7 @@ El Alto
 Version: 1.1.5 
 --------------
 
-: Release Date: 2019-06-06 (El Alto)
+:Release Date: 2019-06-06 (El Alto)
 
 **New Features**
 
@@ -387,10 +385,13 @@ Quick Links:
        NA
 	
 
+Dublin
+======
 
-Version: 1.1.5 (Dublin)
------------------------
-: Release Date: 2019-06-06
+Version: 1.1.5
+--------------
+
+:Release Date: 2019-06-06
 
 **New Features**
 
@@ -419,9 +420,13 @@ NA
 **Deprecation Notes**
 
 
+Casablanca
+==========
+
 Version: 1.0.23
 ---------------
-: Release Date: 2018-10-18
+
+:Release Date: 2018-10-18
 
 **New Features**
 
