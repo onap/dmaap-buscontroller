@@ -1,0 +1,8 @@
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+1: Bengt Thuree <bthuree@linuxfoundation.org>
+Code-Review+2: Jessica Wagantall <jwagantall@linuxfoundation.org>
+Submitted-by: Jessica Wagantall <jwagantall@linuxfoundation.org>
+Submitted-at: Thu, 28 Oct 2021 16:32:23 +0000
+Reviewed-on: https://gerrit.onap.org/r/c/dmaap/buscontroller/+/125402
+Project: dmaap/buscontroller
+Branch: refs/heads/istanbul
