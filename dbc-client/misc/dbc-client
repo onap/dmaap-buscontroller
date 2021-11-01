@@ -28,6 +28,7 @@ export PATH=/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin
 RESP_CACHE=${RESP_CACHE:-''}
 RESP=${RESP:-'/dev/null'}
 APP_ROOT=${APP_ROOT:-/opt/app/dbc-client}
+IF_PUB_SUB_EXIST=${IF_PUB_SUB_EXIST:-false}
 CONFIGMAP_ROOT=${CONFIGMAP_ROOT:-/opt/app/config}
 
 PORT=${PORT:-8443}
@@ -91,6 +92,11 @@ function do_http_post() {
   while true; do
     if [ "$2" != "feeds" -a "$2" != "topics" ]; then
       req_body=$(cat "${1}" | envsubst)
+      check_pub_sub "${2}" "${req_body}" "${RESP}"
+      if [ "${IF_PUB_SUB_EXIST}" = "true" ]; then
+        echo "DR Publisher or Subscriber already exist.."
+        break
+      fi
       rc=$(xcurl -o "$RESP" -d "$req_body" "${URL}${2}")
       if [ "$rc" = "200" -o "$rc" = "201" -o "$rc" = "409" ]; then
         echo "Http Post request is successful with response code=$rc"
@@ -106,6 +112,44 @@ function do_http_post() {
     echo "$(date): Http Response code=$rc.  Will retry after $RETRY_TIME seconds.."
     sleep "$RETRY_TIME"
   done
+}
+
+function check_pub_sub() {
+  feed_config_resp="$RESP_CACHE"/"feedConfig-$(echo "${3//[!0-9]/}")-resp.json"
+  if [ -f "${feed_config_resp}" ]; then
+    echo "Checking if pub or sub exist.."
+    val=${1#*_}
+    dr_usr=$(echo "${2}" | jq -r '.username')
+    dr_pwd=$(echo "${2}" | jq -r '.userpwd')
+    dr_loc=$(echo "${2}" | jq -r '.dcaeLocationName')
+    pub_sub_cnt=$(jq ".${val} | length" "${feed_config_resp}")
+    local i=0
+    while [ "$i" -lt "$pub_sub_cnt" ]; do
+      _dr_usr=$(jq -r ".${val}[$i].username" "${feed_config_resp}")
+      _dr_pwd=$(jq -r ".${val}[$i].userpwd" "${feed_config_resp}")
+      _dr_loc=$(jq -r ".${val}[$i].dcaeLocationName" "${feed_config_resp}")
+      if [ "${dr_usr}" = "${_dr_usr}" -a "${dr_pwd}" = "${_dr_pwd}" -a "${dr_loc}" = "${_dr_loc}" ]; then
+        if [ "${1}" = "dr_pubs" ]; then
+          echo "Publisher exist with username: ${dr_usr}, password: ${dr_pwd}, dcaeLocationName: ${dr_loc}"
+          echo "$(jq ".${val}[$i]" "${feed_config_resp}")" >"${3}"
+          IF_PUB_SUB_EXIST=true
+          break
+        elif [ "${1}" = "dr_subs" ]; then
+          dr_deliveryURL=$(echo "${2}" | jq -r '.deliveryURL')
+          _dr_deliveryURL=$(jq ".${val}[$i].deliveryURL" "${feed_config_resp}")
+          if [ "${dr_deliveryURL}" = "${_dr_deliveryURL}" ]; then
+            echo "Subscriber exist with username: ${dr_usr}, password: ${dr_pwd}, dcaeLocationName: ${dr_loc}, deliveryURL: ${dr_deliveryURL}"
+            echo "$(jq ".${val}[$i]" "${feed_config_resp}")" >"${3}"
+            IF_PUB_SUB_EXIST=true
+            break
+          fi
+        fi
+      fi
+      i=$((i + 1))
+    done
+  else
+    echo "Feed configuration doesn't exist."
+  fi
 }
 
 init_config
