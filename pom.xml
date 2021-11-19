@@ -75,7 +75,6 @@
           <configuration>
             <excludes>
             </excludes>
-            <forkCount>0</forkCount>
             <argLine>
               ${surefireArgLine} --illegal-access=permit
             </argLine>
