@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "33f44350_1c96d7f8",
+        "filename": "dbc-client/misc/dbc-client",
+        "patchSetId": 3
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2021-11-22T22:14:41Z",
+      "side": 1,
+      "message": "Some comments here would help.  At a minimum, list what parameters the function is expecting.",
+      "revId": "2896479aa08f0ce264b5df4627d8ab9ee76f7385",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "568dd865_04b05fb8",
+        "filename": "dbc-client/misc/dbc-client",
+        "patchSetId": 3
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2021-11-22T22:14:41Z",
+      "side": 1,
+      "message": "I\u0027ve done some testing in my environment, and it appears that dmaap-bc will reject an attempt to create a new publisher that has the same username and password, even if the location is different.  I believe the test for locations being equal should be dropped.  (To put it somewhat differently, we should reuse an existing publisher if the username and password are the same.)",
+      "revId": "2896479aa08f0ce264b5df4627d8ab9ee76f7385",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e642affb_515714ae",
+        "filename": "dbc-client/misc/dbc-client",
+        "patchSetId": 3
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2021-11-22T22:14:41Z",
+      "side": 1,
+      "message": "I did not test whether dmaap-bc will reject a request to create a subscriber if the username, password, and deliveryURL match and the dcaeLocation is different.  I suspect it might.  It might also reject a request if just the username and password match.  Please check this.",
+      "revId": "2896479aa08f0ce264b5df4627d8ab9ee76f7385",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
