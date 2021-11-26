@@ -19,20 +19,17 @@
  */
 package org.onap.dmaap.dbcapi.service;
 
-import  org.onap.dmaap.dbcapi.model.*;
-import org.onap.dmaap.dbcapi.testframework.DmaapObjectFactory;
-import org.onap.dmaap.dbcapi.testframework.ReflectionHarness;
-
-import static org.junit.Assert.*;
-
+import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import java.util.List;
+import org.onap.dmaap.dbcapi.model.ApiError;
+import org.onap.dmaap.dbcapi.model.DR_Node;
+import org.onap.dmaap.dbcapi.model.DcaeLocation;
+import org.onap.dmaap.dbcapi.testframework.DmaapObjectFactory;
+import org.onap.dmaap.dbcapi.testframework.ReflectionHarness;
 
 public class DR_NodeServiceTest {
-
-	private static final String  fmt = "%24s: %s%n";
 
 	ReflectionHarness rh = new ReflectionHarness();
 	static DmaapObjectFactory factory = new DmaapObjectFactory();
@@ -41,6 +38,7 @@ public class DR_NodeServiceTest {
 
 	@Before
 	public void setUp() throws Exception {
+		System.setProperty("ConfigFile", "src/test/resources/dmaapbc.properties");
 		ns = new DR_NodeService();
 	}
 
@@ -51,17 +49,13 @@ public class DR_NodeServiceTest {
 
 	@Test
 	public void test1() {
-
-
-		rh.reflect( "org.onap.dmaap.dbcapi.service.DR_NodeService", "get", null );	
-	
+		rh.reflect( "org.onap.dmaap.dbcapi.service.DR_NodeService", "get", null );
 	}
 
 	@Test
 	public void test2() {
 		String v = "Validate";
 		rh.reflect( "org.onap.dmaap.dbcapi.service.DR_NodeService", "set", v );
-
 	}
 
 	@Test
@@ -88,9 +82,6 @@ public class DR_NodeServiceTest {
 		}
 
 		n2 = ns.removeDr_Node( f,  err );
-				
 
 	}
-
-
 }

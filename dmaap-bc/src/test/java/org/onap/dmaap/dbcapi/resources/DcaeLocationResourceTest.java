@@ -19,23 +19,18 @@
  */
 package org.onap.dmaap.dbcapi.resources;
 
-import org.onap.dmaap.dbcapi.model.*;
-import org.onap.dmaap.dbcapi.testframework.DmaapObjectFactory;
+import static org.junit.Assert.assertTrue;
 
-import static org.junit.Assert.*;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
-import org.glassfish.jersey.test.JerseyTest;
-import org.glassfish.jersey.server.ResourceConfig;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
-import javax.ws.rs.core.Response;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.Path;
-import javax.ws.rs.GET;
+import javax.ws.rs.core.Response;
+import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.test.JerseyTest;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.onap.dmaap.dbcapi.model.DcaeLocation;
+import org.onap.dmaap.dbcapi.testframework.DmaapObjectFactory;
 
 
 public class DcaeLocationResourceTest extends JerseyTest {
@@ -47,21 +42,10 @@ public class DcaeLocationResourceTest extends JerseyTest {
 		return new ResourceConfig( DcaeLocationResource.class );
 	}
 
-	private static final String  fmt = "%24s: %s%n";
-
-
-
-/*  may conflict with test framework! 
-	@Before
-	public void setUp() throws Exception {
+	@BeforeClass
+	public static void setUpClass(){
+		System.setProperty("ConfigFile", "src/test/resources/dmaapbc.properties");
 	}
-
-	@After
-	public void tearDown() throws Exception {
-	}
-*/
-
-
 
 	@Test
 	public void GetTest() {
@@ -122,8 +106,5 @@ public class DcaeLocationResourceTest extends JerseyTest {
 		System.out.println( "DELETE dcaeLocation resp=" + resp.getStatus() + " " + resp.readEntity( String.class ) );
 		assertTrue( resp.getStatus() == 204 );
 	}
-
-
-
 }
 

@@ -19,21 +19,25 @@
  */
 package org.onap.dmaap.dbcapi.service;
 
-import  org.onap.dmaap.dbcapi.model.*;
+import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
+import java.util.List;
+import org.junit.Before;
+import org.junit.Test;
+import org.onap.dmaap.dbcapi.model.ApiError;
+import org.onap.dmaap.dbcapi.model.DcaeLocation;
+import org.onap.dmaap.dbcapi.model.Dmaap;
+import org.onap.dmaap.dbcapi.model.MR_Client;
+import org.onap.dmaap.dbcapi.model.MR_Cluster;
+import org.onap.dmaap.dbcapi.model.MirrorMaker;
+import org.onap.dmaap.dbcapi.model.ReplicationType;
+import org.onap.dmaap.dbcapi.model.Topic;
 import org.onap.dmaap.dbcapi.testframework.DmaapObjectFactory;
 import org.onap.dmaap.dbcapi.testframework.ReflectionHarness;
 
-import static org.junit.Assert.*;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import java.util.List;
-import java.util.ArrayList;
-
 public class MirrorMakerServiceTest {
 
-	private static final String  fmt = "%24s: %s%n";
 	private static DmaapObjectFactory factory = new DmaapObjectFactory();
 	ReflectionHarness rh = new ReflectionHarness();
 
@@ -45,12 +49,12 @@ public class MirrorMakerServiceTest {
 	
 	private Topic replicationTopic;
 
-
 	DmaapService ds;
 	String locname;
 
 	@Before
 	public void setUp() throws Exception {
+		System.setProperty("ConfigFile", "src/test/resources/dmaapbc.properties");
 		mms = new MirrorMakerService();
 		ts = new TopicService();
 		assert( ts != null );
@@ -93,36 +97,17 @@ public class MirrorMakerServiceTest {
 		clients.add( pub );
 
 		replicationTopic.setClients( clients );
-
 	}
-
-	@After
-	public void tearDown() throws Exception {
-	}
-
-
-//	@Test
-//	public void test_getters() {
-//
-//
-//		rh.reflect( "org.onap.dmaap.dbcapi.service.MirrorMakerService", "get", null );	
-//	
-//	}
 
 	@Test
 	public void test_setters() {
 		String v = "Validate";
 		rh.reflect( "org.onap.dmaap.dbcapi.service.MirrorMakerService", "set", v );
-
 	}
-
-	
 	
 	@Test
 	public void CreateMirrorMakerWithSingleTopic() {
 		ApiError err = new ApiError();
-
-
 		Topic nTopic = ts.addTopic(replicationTopic, err, true );
 
 		assertTrue( err.getCode() == 200 );
@@ -178,8 +163,7 @@ public class MirrorMakerServiceTest {
 		
 		MirrorMaker mm = mms.getMirrorMaker(name);
 		
-		MirrorMaker mm2 = mms.splitMM(mm);	
-
+		MirrorMaker mm2 = mms.splitMM(mm);
 	}
 
 }

@@ -47,7 +47,7 @@ public class Main extends BaseLoggingClass {
 	public void setProvFQDN(String provFQDN) {
 		Main.provFQDN = provFQDN;
 	}
-	private Main() {
+	Main() {
     }
     public static void main(String[] args) {
         (new Main()).main();

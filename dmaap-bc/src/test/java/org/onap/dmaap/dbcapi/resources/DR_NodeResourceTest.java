@@ -19,6 +19,14 @@
  */
 package org.onap.dmaap.dbcapi.resources;
 
+import static javax.ws.rs.client.Entity.entity;
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.Response;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -29,15 +37,6 @@ import org.onap.dmaap.dbcapi.model.ApiError;
 import org.onap.dmaap.dbcapi.model.DR_Node;
 import org.onap.dmaap.dbcapi.testframework.DmaapObjectFactory;
 
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.Response;
-
-import static javax.ws.rs.client.Entity.entity;
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 
 public class DR_NodeResourceTest {
 
@@ -46,6 +45,7 @@ public class DR_NodeResourceTest {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
+        System.setProperty("ConfigFile", "src/test/resources/dmaapbc.properties");
         DatabaseClass.getDmaap().init(DMAAP_OBJECT_FACTORY.genDmaap());
 
         testContainer = new FastJerseyTestContainer(new ResourceConfig()

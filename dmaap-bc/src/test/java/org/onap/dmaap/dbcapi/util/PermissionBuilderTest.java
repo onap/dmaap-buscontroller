@@ -24,7 +24,9 @@ import static org.mockito.Mockito.atMost;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
 import javax.servlet.http.HttpServletRequest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -45,6 +47,10 @@ public class PermissionBuilderTest {
     @Mock
     private HttpServletRequest request;
 
+    @BeforeClass
+    public static void setUpClass() throws Exception {
+        System.setProperty("ConfigFile", "src/test/resources/dmaapbc.properties");
+    }
 
     @Test
     public void updateDmaapInstance_shouldSetBootInstance_whenDmaapIsNotInitialized() {

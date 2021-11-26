@@ -18,24 +18,14 @@
  * ============LICENSE_END=========================================================
  */
 package org.onap.dmaap.dbcapi.resources;
-import org.onap.dmaap.dbcapi.model.*;
-import org.onap.dmaap.dbcapi.service.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import java.util.*;
-import java.sql.*;
-
-import org.glassfish.jersey.test.JerseyTest;
-import org.glassfish.jersey.server.ResourceConfig;
-import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.Path;
-import javax.ws.rs.GET;
+import org.glassfish.jersey.server.ResourceConfig;
+import org.glassfish.jersey.test.JerseyTest;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 
 public class InfoResourceTest extends JerseyTest {
@@ -44,22 +34,10 @@ public class InfoResourceTest extends JerseyTest {
 	protected Application configure() {
 		return new ResourceConfig( InfoResource.class );
 	}
-
-	private static final String  fmt = "%24s: %s%n";
-
-
-
-/*  may conflict with test framework! 
-	@Before
-	public void setUp() throws Exception {
+	@BeforeClass
+	public static void setUpClass(){
+		System.setProperty("ConfigFile", "src/test/resources/dmaapbc.properties");
 	}
-
-	@After
-	public void tearDown() throws Exception {
-	}
-*/
-
-
 
 	@Test
 	public void GetTest() {

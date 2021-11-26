@@ -20,35 +20,21 @@
  */
 package org.onap.dmaap.dbcapi.database;
 
-import org.onap.dmaap.dbcapi.model.*;
-import org.onap.dmaap.dbcapi.testframework.ReflectionHarness;
-
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.onap.dmaap.dbcapi.model.Dmaap;
 
 public class DBSingletonTest {
-
-	private static final String  fmt = "%24s: %s%n";
-
-	ReflectionHarness rh = new ReflectionHarness();
-
-
 	@Before
 	public void setUp() throws Exception {
+		System.setProperty("ConfigFile", "src/test/resources/dmaapbc.properties");
 	}
-
-	@After
-	public void tearDown() throws Exception {
-	}
-
-
 
 	@Test
 	public void test3() {
 
 		try {
-			DBSingleton<Dmaap> dmaap = new DBSingleton<Dmaap>(Dmaap.class, "dmaap");
+			DBSingleton<Dmaap> dmaap = new DBSingleton<>(Dmaap.class, "dmaap");
 			Dmaap d = new Dmaap.DmaapBuilder().createDmaap();
 			dmaap.init( d );
 			d = dmaap.get();
@@ -57,11 +43,6 @@ public class DBSingletonTest {
 			dmaap.remove();
 		} catch (Exception e ) {
 		}
-
 	}
-
-
-
-
 }
 

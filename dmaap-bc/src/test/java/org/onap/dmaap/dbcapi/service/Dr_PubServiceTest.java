@@ -19,20 +19,19 @@
  */
 package org.onap.dmaap.dbcapi.service;
 
-import  org.onap.dmaap.dbcapi.model.*;
-import org.onap.dmaap.dbcapi.testframework.ReflectionHarness;
+import static org.junit.Assert.assertTrue;
 
-import static org.junit.Assert.*;
-
-import org.junit.After;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
-import java.util.List;
-import java.util.ArrayList;
+import org.onap.dmaap.dbcapi.model.ApiError;
+import org.onap.dmaap.dbcapi.model.DR_Pub;
+import org.onap.dmaap.dbcapi.model.DcaeLocation;
+import org.onap.dmaap.dbcapi.model.Feed;
+import org.onap.dmaap.dbcapi.testframework.ReflectionHarness;
 
 public class Dr_PubServiceTest {
-
-	private static final String  fmt = "%24s: %s%n";
 
 	ReflectionHarness rh = new ReflectionHarness();
 
@@ -41,28 +40,21 @@ public class Dr_PubServiceTest {
 
 	@Before
 	public void setUp() throws Exception {
+		System.setProperty("ConfigFile", "src/test/resources/dmaapbc.properties");
 		ns = new DR_PubService();
 		fs = new FeedService();
-	}
-
-	@After
-	public void tearDown() throws Exception {
 	}
 
 
 	@Test
 	public void test1() {
-
-
-		rh.reflect( "org.onap.dmaap.dbcapi.service.DR_PubService", "get", null );	
-	
+		rh.reflect( "org.onap.dmaap.dbcapi.service.DR_PubService", "get", null );
 	}
 
 	@Test
 	public void test2() {
 		String v = "Validate";
 		rh.reflect( "org.onap.dmaap.dbcapi.service.DR_PubService", "set", v );
-
 	}
 
 	@Test
@@ -93,16 +85,10 @@ public class Dr_PubServiceTest {
 		}
 
 		n2 = ns.removeDr_Pub( n2.getPubId(),  err );
-			
-
 	}
 
 	@Test
 	public void test4() {
 		ArrayList<DR_Pub> l = ns.getDr_PubsByFeedId( "1" );
-
-
 	}
-
-
 }

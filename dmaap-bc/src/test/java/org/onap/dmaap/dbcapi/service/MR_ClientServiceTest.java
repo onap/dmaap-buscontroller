@@ -22,8 +22,6 @@ package org.onap.dmaap.dbcapi.service;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
-
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.onap.dmaap.dbcapi.model.ApiError;
@@ -36,8 +34,6 @@ import org.onap.dmaap.dbcapi.testframework.ReflectionHarness;
 
 public class MR_ClientServiceTest {
 
-	private static final String  fmt = "%24s: %s%n";
-	
 	private static DmaapObjectFactory factory = new DmaapObjectFactory();
 
 	ReflectionHarness rh = new ReflectionHarness();
@@ -52,6 +48,7 @@ public class MR_ClientServiceTest {
 
 	@Before
 	public void setUp() throws Exception {
+		System.setProperty("ConfigFile", "src/test/resources/dmaapbc.properties");
 		ts = new TopicService();
 		mcs = new MR_ClusterService();
 		cls = new MR_ClientService();
@@ -68,24 +65,15 @@ public class MR_ClientServiceTest {
 		MR_Cluster n2 = mcs.addMr_Cluster( node, err );	
 	}
 
-	@After
-	public void tearDown() throws Exception {
-	}
-
-
 	@Test
 	public void test1() {
-
-
-		rh.reflect( "org.onap.dmaap.dbcapi.service.MR_ClientService", "get", null );	
-	
+		rh.reflect( "org.onap.dmaap.dbcapi.service.MR_ClientService", "get", null );
 	}
 
 	@Test
 	public void test2() {
 		String v = "Validate";
 		rh.reflect( "org.onap.dmaap.dbcapi.service.MR_ClientService", "set", v );
-
 	}
 
 	@Test
@@ -129,7 +117,5 @@ public class MR_ClientServiceTest {
 		c = cls.addMr_Client( c, topic, err );
 		assertTrue( err.getCode() == 200 );
 
-		
 	}
-	
 }

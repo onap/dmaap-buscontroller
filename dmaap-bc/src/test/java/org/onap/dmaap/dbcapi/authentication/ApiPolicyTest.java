@@ -20,18 +20,23 @@
 
 package org.onap.dmaap.dbcapi.authentication;
 
-import org.junit.Test;
-import org.onap.dmaap.dbcapi.aaf.DmaapPerm;
-
-import java.util.Properties;
-
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
+import java.util.Properties;
+import org.junit.Before;
+import org.junit.Test;
+import org.onap.dmaap.dbcapi.aaf.DmaapPerm;
 
 public class ApiPolicyTest {
 
     private Properties properties = new Properties();
     private ApiPolicy apiPolicy;
+
+    @Before
+    public void setUp() throws Exception {
+        System.setProperty("ConfigFile", "src/test/resources/dmaapbc.properties");
+    }
 
     @Test
     public void check_shouldExecuteAuthorizationApi() throws Exception {

@@ -25,12 +25,16 @@ import static org.junit.Assert.assertTrue;
 import javax.ws.rs.core.Application;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
+import org.junit.Before;
 import org.junit.Test;
-
-import org.onap.dmaap.dbcapi.authentication.ApiPerms;
 
 
 public class ApiPermsTest extends JerseyTest {
+
+	@Before
+	public void setUp() throws Exception {
+		System.setProperty("ConfigFile", "src/test/resources/dmaapbc.properties");
+	}
 
 	@Override
 	protected Application configure() {

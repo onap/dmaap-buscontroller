@@ -19,66 +19,35 @@
  */
 package org.onap.dmaap.dbcapi.database;
 
-import org.onap.dmaap.dbcapi.model.*;
-import org.onap.dmaap.dbcapi.testframework.ReflectionHarness;
-import org.onap.dmaap.dbcapi.util.Singleton;
-
-import org.junit.After;
+import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
-import java.util.*;
+import org.onap.dmaap.dbcapi.model.DcaeLocation;
+import org.onap.dmaap.dbcapi.model.Dmaap;
+import org.onap.dmaap.dbcapi.util.Singleton;
 
 public class DBMapTest {
-
-	private static final String  fmt = "%24s: %s%n";
-
-	ReflectionHarness rh = new ReflectionHarness();
-
 
     private static Singleton<Dmaap> dmaap;
     private static Map<String, DcaeLocation> dcaeLocations;
 
-
 	@Before
 	public void setUp() throws Exception {
+		System.setProperty("ConfigFile", "src/test/resources/dmaapbc.properties");
 	}
-
-	@After
-	public void tearDown() throws Exception {
-	}
-
 
 	@Test
 	public void test1() {
-
-
-		//rh.reflect( "org.onap.dmaap.dbcapi.aaf.client.MrTopicConnection", "get", "idNotSet@namespaceNotSet:pwdNotSet" );	
-	
-	}
-
-	@Test
-	public void test2() {
-		String v = "Validate";
-		//rh.reflect( "org.onap.dmaap.dbcapi.aaf.client.MrTopicConnection", "set", v );
-
-	}
-
-	@Test
-	public void test3() {
 		try {
-                dmaap = new DBSingleton<Dmaap>(Dmaap.class, "dmaap");
+                dmaap = new DBSingleton<>(Dmaap.class, "dmaap");
 				Dmaap nd = new Dmaap.DmaapBuilder().createDmaap();
 				dmaap.update(nd);
 		} catch (Exception e ) {
 		}
 		try {
-                dcaeLocations = new DBMap<DcaeLocation>(DcaeLocation.class, "dcae_location", "dcae_location_name");
+                dcaeLocations = new DBMap<>(DcaeLocation.class, "dcae_location", "dcae_location_name");
 		} catch (Exception e ) {
 		}
-
 	}
-
-
-
 }
 

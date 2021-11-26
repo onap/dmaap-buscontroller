@@ -22,24 +22,18 @@
 
 package org.onap.dmaap.dbcapi.aaf;
 
-
-
-
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.net.ConnectException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.net.UnknownHostException;
-import java.net.ConnectException;
-
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLHandshakeException;
-
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import org.apache.commons.codec.binary.Base64;
@@ -50,24 +44,15 @@ import org.onap.dmaap.dbcapi.util.DmaapConfig;
 
 public class AafConnection extends BaseLoggingClass {
 
-
-
-
-
 	private String aafCred;
 	private String unit_test;
-
-
 	private HttpsURLConnection uc;
-
 
 	public AafConnection( String cred ) {
 		aafCred = cred;
 		DmaapConfig p = (DmaapConfig)DmaapConfig.getConfig();
         unit_test = p.getProperty( "UnitTest", "No" );
-
 	}
-
 
 	private boolean makeConnection( String pURL ) {
 
@@ -103,8 +88,6 @@ public class AafConnection extends BaseLoggingClass {
 
 		return sb.toString();
 	}
-	
-
 
 	public int postAaf( AafObject obj, String pURL ) {
 		logger.info( "entry: postAaf() to  " + pURL  );

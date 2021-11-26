@@ -19,19 +19,14 @@
  */
 package org.onap.dmaap.dbcapi.database;
 
-import org.onap.dmaap.dbcapi.model.*;
-import org.onap.dmaap.dbcapi.testframework.ReflectionHarness;
-
-import static org.junit.Assert.*;
-
-import org.junit.After;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import org.junit.Before;
 import org.junit.Test;
-import java.sql.*;
+import org.onap.dmaap.dbcapi.model.ReplicationType;
+import org.onap.dmaap.dbcapi.testframework.ReflectionHarness;
 
 public class TableHandlerTest {
-
-	private static final String  fmt = "%24s: %s%n";
 
 	ReflectionHarness rh = new ReflectionHarness();
 
@@ -52,30 +47,20 @@ public class TableHandlerTest {
         }
     }
 
-
-
 	@Before
 	public void setUp() throws Exception {
+		System.setProperty("ConfigFile", "src/test/resources/dmaapbc.properties");
 	}
-
-	@After
-	public void tearDown() throws Exception {
-	}
-
 
 	@Test
 	public void test1() {
-
-
-		rh.reflect( "org.onap.dmaap.dbcapi.aaf.client.MrTopicConnection", "get", "idNotSet@namespaceNotSet:pwdNotSet" );	
-	
+		rh.reflect( "org.onap.dmaap.dbcapi.client.MrTopicConnection", "get", "idNotSet@namespaceNotSet:pwdNotSet" );
 	}
 
 	@Test
 	public void test2() {
 		String v = "Validate";
-		//rh.reflect( "org.onap.dmaap.dbcapi.aaf.client.MrTopicConnection", "set", v );
-
+		rh.reflect( "org.onap.dmaap.dbcapi.client.MrTopicConnection", "set", v );
 	}
 
 	@Test
@@ -99,8 +84,5 @@ public class TableHandlerTest {
 		}
 
 	}
-
-
-
 }
 

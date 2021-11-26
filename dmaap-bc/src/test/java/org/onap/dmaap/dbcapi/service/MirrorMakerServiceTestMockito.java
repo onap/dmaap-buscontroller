@@ -20,25 +20,10 @@
 package org.onap.dmaap.dbcapi.service;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.verifyZeroInteractions;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -72,26 +57,16 @@ public class MirrorMakerServiceTestMockito {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
-    @Before
-    public void setUp() throws Exception {
-   
+    @BeforeClass
+    public static void setUpClass() throws Exception {
+        System.setProperty("ConfigFile", "src/test/resources/dmaapbc.properties");
     }
 
     @Test
-    public void init_normalConstructor() throws Exception {
-        //given
-        
-
-        //when
-        
-
-        //then
+    public void init_normalConstructor() {
         assertEquals( MirrorMakerService.getProvUserPwd(), MirrorMakerService.PROV_PWD_DEFAULT);
         assertEquals( MirrorMakerService.getDefaultConsumerPort(), MirrorMakerService.TARGET_REPLICATION_PORT_DEFAULT);
         assertEquals( MirrorMakerService.getDefaultProducerPort(), MirrorMakerService.SOURCE_REPLICATION_PORT_DEFAULT);
     }
-
-  // Todo: learn how to make more tests in Mockito
-
 
 }

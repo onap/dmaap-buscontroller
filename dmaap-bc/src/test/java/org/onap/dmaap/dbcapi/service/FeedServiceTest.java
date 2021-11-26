@@ -20,7 +20,6 @@
 package org.onap.dmaap.dbcapi.service;
 
 import java.util.List;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.onap.dmaap.dbcapi.model.ApiError;
@@ -29,35 +28,26 @@ import org.onap.dmaap.dbcapi.testframework.ReflectionHarness;
 
 public class FeedServiceTest {
 
-	private static final String  fmt = "%24s: %s%n";
-
 	ReflectionHarness rh = new ReflectionHarness();
 
 	FeedService ds;
 
 	@Before
 	public void setUp() throws Exception {
+		System.setProperty("ConfigFile", "src/test/resources/dmaapbc.properties");
 		ds = new FeedService();
-	}
-
-	@After
-	public void tearDown() throws Exception {
 	}
 
 
 	@Test
 	public void test1() {
-
-
-		rh.reflect( "org.onap.dmaap.dbcapi.service.FeedService", "get", null );	
-	
+		rh.reflect( "org.onap.dmaap.dbcapi.service.FeedService", "get", null );
 	}
 
 	@Test
 	public void test2() {
 		String v = "Validate";
 		rh.reflect( "org.onap.dmaap.dbcapi.service.FeedService", "set", v );
-
 	}
 
 	@Test
@@ -86,7 +76,6 @@ public class FeedServiceTest {
 	@Test
 	public void test5() {
 		List<Feed> f = ds.getAllFeeds( "aName", "1.0", "startsWith" );
-
 	}
 
 	
@@ -97,6 +86,4 @@ public class FeedServiceTest {
 		
 		assert( 200 == err.getCode());
 	}
-
-
 }

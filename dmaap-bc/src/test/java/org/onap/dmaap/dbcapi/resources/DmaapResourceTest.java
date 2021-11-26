@@ -27,6 +27,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.onap.dmaap.dbcapi.model.Dmaap;
 import org.onap.dmaap.dbcapi.testframework.DmaapObjectFactory;
@@ -36,27 +37,15 @@ public class DmaapResourceTest extends JerseyTest {
 
 	static DmaapObjectFactory factory = new DmaapObjectFactory();
 
+	@BeforeClass
+	public static void setUpClass(){
+		System.setProperty("ConfigFile", "src/test/resources/dmaapbc.properties");
+	}
+
 	@Override
 	protected Application configure() {
 		return new ResourceConfig( DmaapResource.class );
-		//return new ResourceConfig( HelloResource.class );
 	}
-
-	private static final String  fmt = "%24s: %s%n";
-
-
-
-/*  may conflict with test framework! 
-	@Before
-	public void setUp() throws Exception {
-	}
-
-	@After
-	public void tearDown() throws Exception {
-	}
-*/
-
-
 
 	@Test
 	public void GetTest() {

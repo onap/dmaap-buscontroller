@@ -19,6 +19,13 @@
  */
 package org.onap.dmaap.dbcapi.service;
 
+import static com.google.common.collect.Lists.newArrayList;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.BDDMockito.given;
+
+import java.util.List;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.junit.Before;
@@ -36,14 +43,6 @@ import org.onap.dmaap.dbcapi.model.ApiError;
 import org.onap.dmaap.dbcapi.model.Dmaap;
 import org.onap.dmaap.dbcapi.model.Topic;
 import org.onap.dmaap.dbcapi.util.DmaapConfig;
-
-import java.util.List;
-
-import static com.google.common.collect.Lists.newArrayList;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.BDDMockito.given;
 
 @RunWith(JUnitParamsRunner.class)
 public class AafTopicSetupServiceTest {
@@ -65,6 +64,7 @@ public class AafTopicSetupServiceTest {
 
     @Before
     public void setUp() throws Exception {
+        System.setProperty("ConfigFile", "src/test/resources/dmaapbc.properties");
         MockitoAnnotations.initMocks(this);
         Dmaap dmaap = new Dmaap();
         dmaap.setTopicNsRoot(TOPIC_NS_ROOT);

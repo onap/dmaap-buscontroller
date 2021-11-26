@@ -24,7 +24,6 @@ package org.onap.dmaap.dbcapi.model;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.onap.dmaap.dbcapi.model.DmaapObject.DmaapObject_Status;
@@ -38,15 +37,12 @@ public class TopicTest {
 
     @Before
     public void setUp() throws Exception {
+        System.setProperty("ConfigFile", "src/test/resources/dmaapbc.properties");
         f = "org.onap.dmaap.interestingTopic";
         t = "interestingTopic";
         d = "A so very interesting topic";
         e = "Yes";
         o = "m12345";
-    }
-
-    @After
-    public void tearDown() throws Exception {
     }
 
     @Test

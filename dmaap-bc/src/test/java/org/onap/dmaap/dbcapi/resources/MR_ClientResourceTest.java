@@ -20,6 +20,14 @@
 
 package org.onap.dmaap.dbcapi.resources;
 
+import static javax.ws.rs.client.Entity.entity;
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.Response;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -31,15 +39,6 @@ import org.onap.dmaap.dbcapi.model.MR_Cluster;
 import org.onap.dmaap.dbcapi.model.Topic;
 import org.onap.dmaap.dbcapi.testframework.DmaapObjectFactory;
 
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.Response;
-
-import static javax.ws.rs.client.Entity.entity;
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 public class MR_ClientResourceTest {
 
     private static final DmaapObjectFactory DMAAP_OBJECT_FACTORY = new DmaapObjectFactory();
@@ -47,6 +46,7 @@ public class MR_ClientResourceTest {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
+        System.setProperty("ConfigFile", "src/test/resources/dmaapbc.properties");
         DatabaseClass.getDmaap().init(DMAAP_OBJECT_FACTORY.genDmaap());
 
         testContainer = new FastJerseyTestContainer(new ResourceConfig()

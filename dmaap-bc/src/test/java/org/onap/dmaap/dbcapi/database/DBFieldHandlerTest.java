@@ -25,48 +25,10 @@ package org.onap.dmaap.dbcapi.database;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import org.junit.Test;
 import org.onap.dmaap.dbcapi.logging.BaseLoggingClass;
-import org.onap.dmaap.dbcapi.model.ReplicationType;
-import org.onap.dmaap.dbcapi.testframework.ReflectionHarness;
 
 public class DBFieldHandlerTest extends BaseLoggingClass {
-
-    private static final String fmt = "%24s: %s%n";
-
-    ReflectionHarness rh = new ReflectionHarness();
-
-    private static class TopicReplicationTypeHandler implements DBFieldHandler.SqlOp {
-        public Object get(ResultSet rs, int index) throws Exception {
-            int val = rs.getInt(index);
-
-            return (ReplicationType.valueOf(val));
-        }
-
-        public void set(PreparedStatement ps, int index, Object val) throws Exception {
-            if (val == null) {
-                ps.setInt(index, 0);
-                return;
-            }
-            @SuppressWarnings("unchecked")
-            ReplicationType rep = (ReplicationType) val;
-            ps.setInt(index, rep.getValue());
-        }
-    }
-
-    @Test
-    public void test1() {
-        // rh.reflect( "org.onap.dmaap.dbcapi.aaf.client.MrTopicConnection", "get",
-        // "idNotSet@namespaceNotSet:pwdNotSet" );
-    }
-
-    @Test
-    public void test2() {
-        String v = "Validate";
-        // rh.reflect( "org.onap.dmaap.dbcapi.aaf.client.MrTopicConnection", "set", v );
-    }
 
     @Test
     public void test3() {

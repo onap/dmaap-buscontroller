@@ -39,6 +39,7 @@ import javax.servlet.FilterConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -69,6 +70,10 @@ public class AAFAuthorizationFilterTest {
     @Mock
     private DmaapService dmaapService;
 
+    @BeforeClass
+    public static void setUpClass(){
+        System.setProperty("ConfigFile", "src/test/resources/dmaapbc.properties");
+    }
     @Before
     public void setUp() throws Exception {
         filter.setPermissionBuilder(permissionBuilder);

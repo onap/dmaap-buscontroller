@@ -19,7 +19,6 @@
  */
 package org.onap.dmaap.dbcapi.service;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.onap.dmaap.dbcapi.model.Dmaap;
@@ -27,35 +26,20 @@ import org.onap.dmaap.dbcapi.testframework.ReflectionHarness;
 
 public class DmaapServiceTest {
 
-	private static final String  fmt = "%24s: %s%n";
-
 	ReflectionHarness rh = new ReflectionHarness();
 
 	DmaapService ds;
 
 	@Before
 	public void setUp() throws Exception {
+		System.setProperty("ConfigFile", "src/test/resources/dmaapbc.properties");
 		ds = new DmaapService();
-	}
-
-	@After
-	public void tearDown() throws Exception {
-	}
-
-
-	@Test
-	public void test1() {
-
-
-		//rh.reflect( "org.onap.dmaap.dbcapi.service.DmaapService", "get", null );	
-	
 	}
 
 	@Test
 	public void test2() {
 		String v = "Validate";
 		rh.reflect( "org.onap.dmaap.dbcapi.service.DmaapService", "set", v );
-
 	}
 
 	@Test

@@ -19,9 +19,8 @@
  */
 package org.onap.dmaap.dbcapi.model;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.onap.dmaap.dbcapi.testframework.ReflectionHarness;
@@ -32,6 +31,7 @@ public class MR_ClusterTest {
 
 	@Before
 	public void setUp() throws Exception {
+		System.setProperty("ConfigFile", "src/test/resources/dmaapbc.properties");
 		d = "central-onap";
 		fqdn = "mr.onap.org";
 		repGrp = "zeppelin";
@@ -44,14 +44,8 @@ public class MR_ClusterTest {
 		
 	}
 
-	@After
-	public void tearDown() throws Exception {
-	}
-
-
 	@Test
 	public void testMR_ClusterClassDefaultConstructor() {
-
 		MR_Cluster t = new MR_Cluster();
 	
 		assertTrue( t.getDcaeLocationName() == null  );
@@ -120,16 +114,10 @@ public class MR_ClusterTest {
 		assertTrue(fqtn.contains(topic2));
 	}
 
-
-
 	@Test
 	public void testsetter() {
-
 		String v = "validate";
-
-
-		rh.reflect( "org.onap.dmaap.dbcapi.model.MR_Cluster", "set", v );	
-	
+		rh.reflect( "org.onap.dmaap.dbcapi.model.MR_Cluster", "set", v );
 	}
 
 }

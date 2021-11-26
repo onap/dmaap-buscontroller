@@ -47,6 +47,7 @@ public class MrProvConnectionTest {
 
 	@Before
 	public void setUp() throws Exception {
+		System.setProperty("ConfigFile", "src/test/resources/dmaapbc.properties");
 		ns = new MrProvConnection();
 		ts = new TopicService();
 		mcs = new MR_ClusterService();
@@ -61,14 +62,14 @@ public class MrProvConnectionTest {
 	public void test1() {
 
 
-		rh.reflect( "org.onap.dmaap.dbcapi.aaf.client.MrProvConnection", "get", "idNotSet@namespaceNotSet:pwdNotSet" );	
+		rh.reflect( "org.onap.dmaap.dbcapi.client.MrProvConnection", "get", "idNotSet@namespaceNotSet:pwdNotSet" );
 	
 	}
 
 	@Test
 	public void test2() {
 		String v = "Validate";
-		rh.reflect( "org.onap.dmaap.dbcapi.aaf.client.MrProvConnection", "set", v );
+		rh.reflect( "org.onap.dmaap.dbcapi.client.MrProvConnection", "set", v );
 
 	}
 

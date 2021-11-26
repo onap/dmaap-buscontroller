@@ -19,42 +19,29 @@
  */
 package org.onap.dmaap.dbcapi.model;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
-import org.junit.After;
+import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 import org.onap.dmaap.dbcapi.testframework.ReflectionHarness;
 
-import java.util.ArrayList;
-
 
 public class MirrorMakerTest {
 
-	private static final String  fmt = "%24s: %s%n";
-
 	ReflectionHarness rh = new ReflectionHarness();
-
 
 	@Before
 	public void setUp() throws Exception {
+		System.setProperty("ConfigFile", "src/test/resources/dmaapbc.properties");
 	}
-
-	@After
-	public void tearDown() throws Exception {
-	}
-
 
 	@Test
 	public void test1() {
-
-
-		rh.reflect( "org.onap.dmaap.dbcapi.model.MirrorMaker", "get", null );	
-	
+		rh.reflect( "org.onap.dmaap.dbcapi.model.MirrorMaker", "get", null );
 	}
 	@Test
 	public void test2() {
-
 		String v = "Validate";
 		rh.reflect( "org.onap.dmaap.dbcapi.model.MirrorMaker", "set", v );
 	}

@@ -19,26 +19,21 @@
  */
 package org.onap.dmaap.dbcapi.resources;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -69,6 +64,11 @@ public class AAFAuthenticationFilterTest {
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
+
+    @BeforeClass
+    public static void setUpClass(){
+        System.setProperty("ConfigFile", "src/test/resources/dmaapbc.properties");
+    }
 
     @Before
     public void setUp() throws Exception {
@@ -131,65 +131,4 @@ public class AAFAuthenticationFilterTest {
         //when
         filter.init(filterConfig);
     }
-
-  /*
-   * See https://jira.onap.org/browse/DMAAP-1361  for why this is commented out
-    @Test
-    public void init_shouldInitializeCADI_whenAafIsUsed_andValidCadiPropertiesSet() throws Exception {
-        //given
-        doReturn("true").when(dmaapConfig).getProperty(eq(AAFAuthenticationFilter.CADI_AUTHN_FLAG), anyString());
-        doReturn("src/test/resources/cadi.properties").when(dmaapConfig).getProperty(AAFAuthenticationFilter.CADI_PROPERTIES);
-
-        //when
-        filter.init(filterConfig);
-
-        //then
-        assertTrue(filter.isCadiEnabled());
-        assertNotNull(filter.getCadiFilter());
-    }
-
-    @Test
-    public void doFilter_shouldUseCADIfilter_andAuthenticateUser_whenAAFisUsed_andUserIsValid() throws Exception{
-        //given
-        initCADIFilter();
-        doReturn(200).when(servletResponse).getStatus();
-
-        //when
-        filter.doFilter(servletRequest,servletResponse,filterChain);
-
-        //then
-        verify(cadiFilterMock).doFilter(servletRequest,servletResponse,filterChain);
-        verify(servletResponse).getStatus();
-        verifyNoMoreInteractions(servletResponse);
-        verifyZeroInteractions(filterChain, servletRequest);
-    }
-
-    @Test
-    public void doFilter_shouldUseCADIfilter_andReturnAuthenticationError_whenAAFisUsed_andUserInvalid() throws Exception{
-        //given
-        String errorResponseJson = "{\"code\":401,\"message\":\"invalid or no credentials provided\",\"fields\":\"Authentication\",\"2xx\":false}";
-        initCADIFilter();
-        doReturn(401).when(servletResponse).getStatus();
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        doReturn(pw).when(servletResponse).getWriter();
-
-        //when
-        filter.doFilter(servletRequest,servletResponse,filterChain);
-
-        //then
-        verify(cadiFilterMock).doFilter(servletRequest,servletResponse,filterChain);
-        verify(servletResponse).getStatus();
-        verify(servletResponse).setContentType("application/json");
-        verifyZeroInteractions(filterChain, servletRequest);
-        assertEquals(errorResponseJson, sw.toString());
-    }
-
-    private void initCADIFilter() throws Exception{
-        doReturn("true").when(dmaapConfig).getProperty(eq(AAFAuthenticationFilter.CADI_AUTHN_FLAG), anyString());
-        doReturn("src/test/resources/cadi.properties").when(dmaapConfig).getProperty(AAFAuthenticationFilter.CADI_PROPERTIES);
-        filter.init(filterConfig);
-        filter.setCadiFilter(cadiFilterMock);
-    }
-*/
 }

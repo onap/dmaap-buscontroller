@@ -19,50 +19,33 @@
  */
 package org.onap.dmaap.dbcapi.util;
 
-import org.onap.dmaap.dbcapi.model.*;
-import org.onap.dmaap.dbcapi.service.*;
-import org.onap.dmaap.dbcapi.testframework.ReflectionHarness;
-
-import static org.junit.Assert.*;
-
-import org.junit.After;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
-import java.util.*;
+import org.onap.dmaap.dbcapi.model.DcaeLocation;
+import org.onap.dmaap.dbcapi.model.MR_Client;
+import org.onap.dmaap.dbcapi.service.DcaeLocationService;
+import org.onap.dmaap.dbcapi.testframework.ReflectionHarness;
 
 public class GraphTest {
-
-	private static final String  fmt = "%24s: %s%n";
 
 	ReflectionHarness rh = new ReflectionHarness();
 
 	Graph g;
 
-
 	@Before
 	public void setUp() throws Exception {
-		HashMap<String, String> hm = new HashMap<String,String>();
+		System.setProperty("ConfigFile", "src/test/resources/dmaapbc.properties");
+		HashMap<String, String> hm = new HashMap<>();
 		g = new Graph( hm );
 	}
 
-	@After
-	public void tearDown() throws Exception {
-	}
-
-
 	@Test
 	public void test1() {
-
-
-		rh.reflect( "org.onap.dmaap.dbcapi.util.Graph", "get", "idNotSet@namespaceNotSet:pwdNotSet" );	
-	
-	}
-
-	@Test
-	public void test2() {
-		String v = "Validate";
-		//rh.reflect( "org.onap.dmaap.dbcapi.util.Graph", "set", v );
-
+		rh.reflect( "org.onap.dmaap.dbcapi.util.Graph", "get", "idNotSet@namespaceNotSet:pwdNotSet" );
 	}
 
 	@Test
@@ -82,7 +65,6 @@ public class GraphTest {
 
 		HashMap<String, String> hm = new HashMap<String, String>();
 
-
 		String s = g.put( "aKey", "aVal" );
 		s = g.get( "aKey" );
 
@@ -93,10 +75,7 @@ public class GraphTest {
 		hm = g.getGraph();
 
 		Collection<String> k = g.getKeys();
-
 	}
-
-
 
 }
 

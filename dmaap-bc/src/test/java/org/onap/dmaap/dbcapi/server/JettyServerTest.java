@@ -19,26 +19,21 @@
  */
 package org.onap.dmaap.dbcapi.server;
 
-import org.onap.dmaap.dbcapi.testframework.ReflectionHarness;
-import org.onap.dmaap.dbcapi.util.DmaapConfig;
-import static org.junit.Assert.*;
-
+import java.util.Properties;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import java.util.Properties;
+import org.onap.dmaap.dbcapi.testframework.ReflectionHarness;
+import org.onap.dmaap.dbcapi.util.DmaapConfig;
 
 public class JettyServerTest {
 
-	private static final String  fmt = "%24s: %s%n";
-
 	ReflectionHarness rh = new ReflectionHarness();
-
-
-		JettyServer m = null;
+	JettyServer m = null;
 
 	@Before
 	public void setUp() throws Exception {
+		System.setProperty("ConfigFile", "src/test/resources/dmaapbc.properties");
 		Properties p = DmaapConfig.getConfig();
 		try {
 			m = new JettyServer(p);
@@ -54,26 +49,15 @@ public class JettyServerTest {
 		}
 	}
 
-
 	@Test
 	public void test1() {
-
-
-		rh.reflect( "org.onap.dmaap.dbcapi.server.JettyServer", "get", null );	
-	
+		rh.reflect( "org.onap.dmaap.dbcapi.server.JettyServer", "get", null );
 	}
 
 	@Test
 	public void test2() {
 		String v = "Validate";
 		rh.reflect( "org.onap.dmaap.dbcapi.server.JettyServer", "set", v );
-
 	}
-
-	@Test
-	public void test3() {
-	}
-
-
 
 }

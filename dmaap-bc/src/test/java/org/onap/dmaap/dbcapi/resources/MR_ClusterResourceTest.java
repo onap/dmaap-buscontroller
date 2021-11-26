@@ -50,6 +50,7 @@ public class MR_ClusterResourceTest {
 
 	@BeforeClass
 	public static void setUpClass() throws Exception {
+		System.setProperty("ConfigFile", "src/test/resources/dmaapbc.properties");
 		DatabaseClass.getDmaap().init(DMAAP_OBJECT_FACTORY.genDmaap());
 
 		testContainer = new FastJerseyTestContainer(new ResourceConfig()

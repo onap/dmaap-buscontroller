@@ -20,17 +20,18 @@
 
 package org.onap.dmaap.dbcapi.aaf;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.BDDMockito.given;
+
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.onap.dmaap.dbcapi.aaf.AafService.ServiceType;
 import org.onap.dmaap.dbcapi.util.DmaapConfig;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.BDDMockito.given;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AafServiceFactoryTest {
@@ -44,6 +45,11 @@ public class AafServiceFactoryTest {
     @Mock
     private DmaapConfig dmaapConfig;
     private AafServiceFactory aafServiceFactory;
+
+    @BeforeClass
+    public static void setUpClass() {
+        System.setProperty("ConfigFile", "src/test/resources/dmaapbc.properties");
+    }
 
     @Before
     public void setUp() throws Exception {

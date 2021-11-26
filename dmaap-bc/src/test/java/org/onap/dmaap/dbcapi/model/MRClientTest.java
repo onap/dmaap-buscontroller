@@ -22,16 +22,14 @@
 
 package org.onap.dmaap.dbcapi.model;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.onap.dmaap.dbcapi.testframework.ReflectionHarness;
 
 public class MRClientTest {
-
-    private static final String fmt = "%24s: %s%n";
 
     ReflectionHarness rh = new ReflectionHarness();
 
@@ -39,6 +37,7 @@ public class MRClientTest {
 
     @Before
     public void setUp() throws Exception {
+        System.setProperty("ConfigFile", "src/test/resources/dmaapbc.properties");
         d = "central-onap";
         t = "org.onap.dmaap.interestingTopic";
         f = "mrc.onap.org:3904/events/org.onap.dmaap.interestingTopic";
@@ -46,13 +45,8 @@ public class MRClientTest {
         m = "m12345";
     }
 
-    @After
-    public void tearDown() throws Exception {
-    }
-
     @Test
     public void test1() {
-
         // can't use simple reflection to test for null since null constructor
         // initializes some fields.
         // rh.reflect( "org.onap.dmaap.dbcapi.model.MR_Client", "get", null );
@@ -84,7 +78,6 @@ public class MRClientTest {
 
     @Test
     public void test3() {
-
         String v = "Validate";
         rh.reflect("org.onap.dmaap.dbcapi.model.MR_Client", "set", v);
     }
@@ -105,7 +98,6 @@ public class MRClientTest {
         assertEquals(false, mrClient.isPublisher());
         assertEquals(false, mrClient.isSubscriber());
         assertEquals("test", mrClient.getAction()[0]);
-
     }
 
 }

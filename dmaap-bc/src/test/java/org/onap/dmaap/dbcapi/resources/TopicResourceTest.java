@@ -54,6 +54,7 @@ public class TopicResourceTest {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
+        System.setProperty("ConfigFile", "src/test/resources/dmaapbc.properties");
         //TODO: init is still needed here to assure that dmaap is not null
         DatabaseClass.getDmaap().init(DMAAP_OBJECT_FACTORY.genDmaap());
 

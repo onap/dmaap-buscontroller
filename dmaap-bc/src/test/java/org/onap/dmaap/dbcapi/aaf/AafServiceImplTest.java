@@ -50,6 +50,7 @@ public class AafServiceImplTest {
 
     @Before
     public void setUp() throws Exception {
+        System.setProperty("ConfigFile", "src/test/resources/dmaapbc.properties");
         MockitoAnnotations.initMocks(this);
         given(aafConnection.postAaf(any(AafObject.class), anyString())).willReturn(CREATED);
         given(aafConnection.delAaf(any(AafObject.class), anyString())).willReturn(OK);
@@ -58,7 +59,6 @@ public class AafServiceImplTest {
 
     @Test
     public void shouldReturnCorrectIdentity() {
-
         assertEquals(IDENTITY, aafService.getIdentity());
     }
 

@@ -19,19 +19,15 @@
  */
 package org.onap.dmaap.dbcapi.service;
 
-import  org.onap.dmaap.dbcapi.model.*;
-import org.onap.dmaap.dbcapi.testframework.ReflectionHarness;
-
-import static org.junit.Assert.*;
-
-import org.junit.After;
+import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
-import java.util.List;
+import org.onap.dmaap.dbcapi.model.ApiError;
+import org.onap.dmaap.dbcapi.model.DcaeLocation;
+import org.onap.dmaap.dbcapi.model.MR_Cluster;
+import org.onap.dmaap.dbcapi.testframework.ReflectionHarness;
 
 public class MR_ClusterServiceTest {
-
-	private static final String  fmt = "%24s: %s%n";
 
 	ReflectionHarness rh = new ReflectionHarness();
 
@@ -39,27 +35,19 @@ public class MR_ClusterServiceTest {
 
 	@Before
 	public void setUp() throws Exception {
+		System.setProperty("ConfigFile", "src/test/resources/dmaapbc.properties");
 		ns = new MR_ClusterService();
 	}
 
-	@After
-	public void tearDown() throws Exception {
-	}
-
-
 	@Test
 	public void test1() {
-
-
-		rh.reflect( "org.onap.dmaap.dbcapi.service.MR_ClusterService", "get", null );	
-	
+		rh.reflect( "org.onap.dmaap.dbcapi.service.MR_ClusterService", "get", null );
 	}
 
 	@Test
 	public void test2() {
 		String v = "Validate";
 		rh.reflect( "org.onap.dmaap.dbcapi.service.MR_ClusterService", "set", v );
-
 	}
 
 	@Test
@@ -84,44 +72,7 @@ public class MR_ClusterServiceTest {
 		if ( n2 != null ) {
 			n2 = ns.updateMr_Cluster( n2, err );
 		}
-
 		n2 = ns.removeMr_Cluster( f,  err );
-				
-
 	}
-
-/*
-	@Test
-	public void test4() {
-		List<MR_Client> l = cls.getAllMr_Clients();
-
-		ArrayList<MR_Client> al = cls.getAllMrClients( "foo" );
-
-		ArrayList<MR_Client> al2 = cls.getClientsByLocation( "central" );
-	}
-
-	@Test
-	public void test5() {
-		Topic topic = new Topic();
-		ApiError err = new ApiError();
-		topic.setTopicName( "test3" );
-		topic.setFqtnStyle( FqtnType.Validator("none") );
-		topic.getFqtn();
-		Topic nTopic = ts.addTopic( topic, err );
-		if ( nTopic != null ) {
-			assertTrue( nTopic.getTopicName().equals( topic.getTopicName() ));
-		}
-		String[] actions = { "pub", "view" };
-		MR_Client c = new MR_Client( "central-onap", "org.onap.dmaap.demo.interestingTopic2", "org.onap.clientApp.publisher", actions );
-
-		c = cls.addMr_Client( c, topic, err );
-		if ( c != null ) {
-				actions[0] = "sub";
-				c.setAction( actions );
-				c = cls.updateMr_Client( c, err );
-				assertTrue( err.getCode() == 200 );
-		}
-	}
-*/
 
 }

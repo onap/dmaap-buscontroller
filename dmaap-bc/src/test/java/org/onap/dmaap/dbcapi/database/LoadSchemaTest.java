@@ -19,42 +19,28 @@
  */
 package org.onap.dmaap.dbcapi.database;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.onap.dmaap.dbcapi.testframework.ReflectionHarness;
 
 public class LoadSchemaTest {
 
-	private static final String  fmt = "%24s: %s%n";
-
 	ReflectionHarness rh = new ReflectionHarness();
-
-	LoadSchema ls;
-
 
 	@Before
 	public void setUp() throws Exception {
+		System.setProperty("ConfigFile", "src/test/resources/dmaapbc.properties");
 	}
-
-	@After
-	public void tearDown() throws Exception {
-	}
-
 
 	@Test
 	public void test1() {
-
-
 		rh.reflect( "org.onap.dmaap.dbcapi.database.LoadSchema", "get", "idNotSet@namespaceNotSet:pwdNotSet" );
-	
 	}
 
 	@Test
 	public void test2() {
 		String v = "Validate";
 		rh.reflect( "org.onap.dmaap.dbcapi.database.LoadSchema", "set", v );
-
 	}
 
 	@Test

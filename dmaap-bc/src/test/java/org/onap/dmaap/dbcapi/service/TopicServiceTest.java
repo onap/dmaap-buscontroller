@@ -20,26 +20,6 @@
 
 package org.onap.dmaap.dbcapi.service;
 
-import com.google.common.collect.ImmutableMap;
-import org.hamcrest.BaseMatcher;
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
-import org.onap.dmaap.dbcapi.model.ApiError;
-import org.onap.dmaap.dbcapi.model.MR_Client;
-import org.onap.dmaap.dbcapi.model.Topic;
-import org.onap.dmaap.dbcapi.util.DmaapConfig;
-
-import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import static com.google.common.collect.Iterables.getOnlyElement;
 import static com.google.common.collect.Lists.newArrayList;
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
@@ -55,6 +35,26 @@ import static org.mockito.BDDMockito.then;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.onap.dmaap.dbcapi.model.ReplicationType.REPLICATION_GLOBAL_TO_FQDN;
+
+import com.google.common.collect.ImmutableMap;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.ws.rs.core.Response;
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
+import org.onap.dmaap.dbcapi.model.ApiError;
+import org.onap.dmaap.dbcapi.model.MR_Client;
+import org.onap.dmaap.dbcapi.model.Topic;
+import org.onap.dmaap.dbcapi.util.DmaapConfig;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TopicServiceTest {
@@ -74,6 +74,12 @@ public class TopicServiceTest {
     private MirrorMakerService bridge;
     @Mock
     private AafTopicSetupService aafTopicSetupService;
+
+    @BeforeClass
+    public static void setUpClass(){
+        System.setProperty("ConfigFile", "src/test/resources/dmaapbc.properties");
+
+    }
 
     @Before
     public void setUp() throws Exception {
