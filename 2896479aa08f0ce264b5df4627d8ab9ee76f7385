@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "cce39a09_e39a67af",
+        "filename": "dbc-client/misc/dbc-client",
+        "patchSetId": 3
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 6004
+      },
+      "writtenOn": "2022-01-18T23:15:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "33f44350_1c96d7f8",
+      "revId": "2896479aa08f0ce264b5df4627d8ab9ee76f7385",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "568dd865_04b05fb8",
         "filename": "dbc-client/misc/dbc-client",
         "patchSetId": 3
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "fe201058_22c1782d",
+        "filename": "dbc-client/misc/dbc-client",
+        "patchSetId": 3
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 6004
+      },
+      "writtenOn": "2022-01-18T23:15:21Z",
+      "side": 1,
+      "message": "There is difference in behaviour of DR Publisher \u0026 Subscriber creation.\nWhile creating a new publisher dmaap-bc will reject an attempt to create publisher if the location is different but the same is not true for subscriber, dmaap-bc creates a new subscriber if the username/password is same and dcaeLocationName is different.",
+      "parentUuid": "568dd865_04b05fb8",
+      "revId": "2896479aa08f0ce264b5df4627d8ab9ee76f7385",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e642affb_515714ae",
         "filename": "dbc-client/misc/dbc-client",
         "patchSetId": 3
@@ -50,6 +86,24 @@
       "revId": "2896479aa08f0ce264b5df4627d8ab9ee76f7385",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b95e091f_61c70a54",
+        "filename": "dbc-client/misc/dbc-client",
+        "patchSetId": 3
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 6004
+      },
+      "writtenOn": "2022-01-18T23:15:21Z",
+      "side": 1,
+      "message": "Tested for both cases:\n1. UserName/Password \u0026 deliveryURL matches with different dcaeLocationName dmaap-bc creates a new subscriber.\n2. UserName/Password \u0026 dcaeLocationName matches with different deliveryURL dmaap-bc creates a new subscriber.\n\nTo make sure we resue any entity of subscriber having similar userName/password/deliveryURL/dcaeLocationName checks are in place in script.",
+      "parentUuid": "e642affb_515714ae",
+      "revId": "2896479aa08f0ce264b5df4627d8ab9ee76f7385",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
     }
   ]
 }
