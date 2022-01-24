@@ -72,6 +72,24 @@
     },
     {
       "key": {
+        "uuid": "f7412996_c0bd5f6c",
+        "filename": "dbc-client/misc/dbc-client",
+        "patchSetId": 3
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2022-01-24T21:21:59Z",
+      "side": 1,
+      "message": "For the publisher case, then, shouldn\u0027t the code omit the test for \"${dr_loc}\" \u003d \"${_dr_loc}\"?",
+      "parentUuid": "fe201058_22c1782d",
+      "revId": "2896479aa08f0ce264b5df4627d8ab9ee76f7385",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e642affb_515714ae",
         "filename": "dbc-client/misc/dbc-client",
         "patchSetId": 3
