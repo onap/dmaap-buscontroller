@@ -126,6 +126,24 @@
     },
     {
       "key": {
+        "uuid": "95c4526e_f034ecb6",
+        "filename": "dbc-client/misc/dbc-client",
+        "patchSetId": 3
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 6004
+      },
+      "writtenOn": "2022-01-25T18:01:46Z",
+      "side": 1,
+      "message": "Hi Jack, I understood the concern here, thanks for pointing it out, now removed check \"${dr_loc}\" \u003d \"${_dr_loc}\" for publisher, please have a check if it looks fine.",
+      "parentUuid": "9d844bbe_d343d461",
+      "revId": "2896479aa08f0ce264b5df4627d8ab9ee76f7385",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e642affb_515714ae",
         "filename": "dbc-client/misc/dbc-client",
         "patchSetId": 3
