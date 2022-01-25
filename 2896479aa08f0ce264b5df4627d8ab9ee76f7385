@@ -108,6 +108,24 @@
     },
     {
       "key": {
+        "uuid": "9d844bbe_d343d461",
+        "filename": "dbc-client/misc/dbc-client",
+        "patchSetId": 3
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 511
+      },
+      "writtenOn": "2022-01-25T16:42:50Z",
+      "side": 1,
+      "message": "Maybe I\u0027m not seeing this correctly.  \n\nSuppose I\u0027ve already created a publisher for feed F with username jack, password xyz, and location chicago.   Then, later, in another deployment, I try to add a publisher for feed F with username jack, password xyz, and location dallas.  The code you have here would not treat the new publisher as a duplicate (because the location is not the same), so it would make a call to dmaap-bc to create a publisher with username jack, password xyz, and location dallas.  But dmaap-bc considers this a duplicate and will fail.\n\nI tried this in November after building a dbc-client container from this code, and that\u0027s the result I saw.",
+      "parentUuid": "3634ee00_6aa1a4a2",
+      "revId": "2896479aa08f0ce264b5df4627d8ab9ee76f7385",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e642affb_515714ae",
         "filename": "dbc-client/misc/dbc-client",
         "patchSetId": 3
