@@ -90,6 +90,24 @@
     },
     {
       "key": {
+        "uuid": "3634ee00_6aa1a4a2",
+        "filename": "dbc-client/misc/dbc-client",
+        "patchSetId": 3
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 6004
+      },
+      "writtenOn": "2022-01-25T11:55:04Z",
+      "side": 1,
+      "message": "Yeah,can be updated but skipping check for dcaeLocationName and wait for Dmaap to fail creation of dr publisher REST call later due to similar location, its better to check and stop the REST call which is going to fail at later point of time.",
+      "parentUuid": "f7412996_c0bd5f6c",
+      "revId": "2896479aa08f0ce264b5df4627d8ab9ee76f7385",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e642affb_515714ae",
         "filename": "dbc-client/misc/dbc-client",
         "patchSetId": 3
