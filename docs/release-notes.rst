@@ -17,6 +17,80 @@ Release Notes
 ..      * This note must be removed after content has been added.
 
 
+Jakarta
+=======
+
+Abstract
+--------
+This document provides the release notes for the Jakarta release.
+
+Summary
+-------
+No change
+
+Release Data
+------------
++--------------------------------------+--------------------------------------+
+| **DMaaP Bus Controller Project**     |                                      |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+| **Docker images**                    | - dmaap-bc 2.0.8                     |
+|                                      | - dbc-client 2.0.9                   |
++--------------------------------------+--------------------------------------+
+| **Release designation**              | 10.0.0 Jakarta                       |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+| **Release date**                     | TBD                                  |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+
+
+New features
+------------
+NA
+
+Known Limitations, Issues and Workarounds
+-----------------------------------------
+
+System Limitations
+------------------
+
+
+Known Vulnerabilities
+---------------------
+
+
+Workarounds
+-----------
+
+
+Security Notes
+--------------
+
+
+References
+----------
+
+For more information on the ONAP Jakarta release, please see:
+
+#. `ONAP Home Page`_
+#. `ONAP Documentation`_
+#. `ONAP Release Downloads`_
+#. `ONAP Wiki Page`_
+
+
+.. _`ONAP Home Page`: https://www.onap.org
+.. _`ONAP Wiki Page`: https://wiki.onap.org
+.. _`ONAP Documentation`: https://docs.onap.org
+.. _`ONAP Release Downloads`: https://git.onap.org
+
+
+Quick Links:
+
+- `DMAAP project page <https://wiki.onap.org/display/DW/DMaaP+Planning>`_
+- `Passing Badge information for DMAAP <https://bestpractices.coreinfrastructure.org/en/projects/2147>`_
+
+
 Istanbul
 ========
 
