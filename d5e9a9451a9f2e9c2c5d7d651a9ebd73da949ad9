@@ -1,0 +1,7 @@
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+2: David McWeeney <david.mcweeney@est.tech>
+Submitted-by: David McWeeney <david.mcweeney@est.tech>
+Submitted-at: Thu, 12 May 2022 11:44:56 +0000
+Reviewed-on: https://gerrit.onap.org/r/c/dmaap/buscontroller/+/129222
+Project: dmaap/buscontroller
+Branch: refs/heads/jakarta
