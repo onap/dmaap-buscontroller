@@ -16,6 +16,79 @@ Release Notes
 ..      * one section describing the purpose of this new release.
 ..      * This note must be removed after content has been added.
 
+Kohn
+====
+
+Abstract
+--------
+This document provides the release notes for the Kohn release.
+
+Summary
+-------
+No change
+
+Release Data
+------------
++--------------------------------------+--------------------------------------+
+| **DMaaP Bus Controller Project**     |                                      |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+| **Docker images**                    | - dmaap-bc 2.0.10                    |
+|                                      | - dbc-client 2.0.10                  |
++--------------------------------------+--------------------------------------+
+| **Release designation**              | 11.0.0 Kohn                          |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+| **Release date**                     | TBD                                  |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+
+
+New features
+------------
+NA
+
+Known Limitations, Issues and Workarounds
+-----------------------------------------
+
+System Limitations
+------------------
+
+
+Known Vulnerabilities
+---------------------
+
+
+Workarounds
+-----------
+
+
+Security Notes
+--------------
+
+
+References
+----------
+
+For more information on the ONAP Jakarta release, please see:
+
+#. `ONAP Home Page`_
+#. `ONAP Documentation`_
+#. `ONAP Release Downloads`_
+#. `ONAP Wiki Page`_
+
+
+.. _`ONAP Home Page`: https://www.onap.org
+.. _`ONAP Wiki Page`: https://wiki.onap.org
+.. _`ONAP Documentation`: https://docs.onap.org
+.. _`ONAP Release Downloads`: https://git.onap.org
+
+
+Quick Links:
+
+- `DMAAP project page <https://wiki.onap.org/display/DW/DMaaP+Planning>`_
+- `Passing Badge information for DMAAP <https://bestpractices.coreinfrastructure.org/en/projects/2147>`_
+
 
 Jakarta
 =======
