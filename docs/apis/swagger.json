@@ -1,7 +1,7 @@
 {
   "swagger" : "2.0",
   "info" : {
-    "description" : "provides an API for OpenDCAE components which need to provision\n\t\t\t\t\t\t\t\t\tunderlying DMaaP technologies (Data Router and Message Router).\n\t\t\t\t\t\t\t\t\tPrimary clients for this API are anticipated to be the OpenDCAE\n\t\t\t\t\t\t\t\t\tController, OpenDCAE Orchestrator, OpenDCAE Inventory and the\n\t\t\t\t\t\t\t\t\tECOMP Portal.\n\n\t\t\t\t\t\t\t\t\tObjects managed by DMaaP are deployed in a dcaeLocation which is a\n\t\t\t\t\t\t\t\t\tunique identifier for an OpenStack tenant for a dcaeLayer,\n\t\t\t\t\t\t\t\t\topendcae-central (aka ecomp) or opendcae-local-ntc (aka edge).\n\n\t\t\t\t\t\t\t\t\tA dcaeEnvironment (e.g. FTL or prod) has a single DMaaP. A\n\t\t\t\t\t\t\t\t\tDMaaP is managed by a one or more stateless DMaaP Bus\n\t\t\t\t\t\t\t\t\tController(s), though Bus Controller relies on PGaaS for\n\t\t\t\t\t\t\t\t\tpersistence. Each DMaaP has a single instance of Data Router,\n\t\t\t\t\t\t\t\t\twhich has 1 or more DR_Nodes deployed at each dcaeLocation. DR\n\t\t\t\t\t\t\t\t\tClients of type DR_Pub generally publish to a DR_Node that is\n\t\t\t\t\t\t\t\t\tlocal to its dcaeLocation. Routing for a Feed is determined by\n\t\t\t\t\t\t\t\t\tthe dcaelocation of its DR_Sub clients.\n\n\t\t\t\t\t\t\t\t\tA DMaaP may have many Message Router instances. Each instance is\n\t\t\t\t\t\t\t\t\tdeployed as an MR_Cluster. One MR_Cluster is deployed at each\n\t\t\t\t\t\t\t\t\tdcaeLocation. MR_Clients generally communicate to the\n\t\t\t\t\t\t\t\t\tMR_Cluster at the same dcaeLocation. Replication of messages\n\t\t\t\t\t\t\t\t\tbetween MR_Clusters is accomplished by MR Bridge, which is\n\t\t\t\t\t\t\t\t\tprovioned by DMaaP Bus Controller based on Topic attributes.\n\n\t\t\t\t\t\t\t\t\tTherefore, the role of DMaaP Bus Controller is to support other\n\t\t\t\t\t\t\t\t\tDCAE infrastructure components to dynamically provision DMaaP\n\t\t\t\t\t\t\t\t\tservices on behalf of DMaaP clients, and to assist in any\n\t\t\t\t\t\t\t\t\tmanagement or discovery activity of its clients.\n\n\t\t\t\t\t\t\t\t\tA convention of this API is to return JSON responses per\n\t\t\t\t\t\t\t\t\tOpenStack style.",
+    "description" : "provides an API for OpenDCAE components which need to provision\n\t\t\t\t\t\t\t\t\tunderlying DMaaP technologies (Data Router and Message Router).\n\t\t\t\t\t\t\t\t\tPrimary clients for this API are anticipated to be the OpenDCAE\n\t\t\t\t\t\t\t\t\tController, OpenDCAE Orchestrator, OpenDCAE Inventory and the\n\t\t\t\t\t\t\t\t\tECOMP Portal.\n\n\t\t\t\t\t\t\t\t\tObjects managed by DMaaP are deployed in a dcaeLocation which is a\n\t\t\t\t\t\t\t\t\tunique identifier for an OpenStack tenant for a dcaeLayer,\n\t\t\t\t\t\t\t\t\topendcae-central (aka ecomp) or opendcae-local-ntc (aka edge).\n\n\t\t\t\t\t\t\t\t\tA dcaeEnvironment (e.g. FTL or prod) has a single DMaaP. A\n\t\t\t\t\t\t\t\t\tDMaaP is managed by a one or more stateless DMaaP Bus\n\t\t\t\t\t\t\t\t\tController(s), though Bus Controller relies on PGaaS for\n\t\t\t\t\t\t\t\t\tpersistence. Each DMaaP has a single instance of Data Router,\n\t\t\t\t\t\t\t\t\twhich has 1 or more DR_Nodes deployed at each dcaeLocation. DR\n\t\t\t\t\t\t\t\t\tClients of type DR_Pub generally publish to a DR_Node that is\n\t\t\t\t\t\t\t\t\tlocal to its dcaeLocation. Routing for a Feed is determined by\n\t\t\t\t\t\t\t\t\tthe dcaelocation of its DR_Sub clients.\n\n\t\t\t\t\t\t\t\t\tA DMaaP may have many Message Router instances. Each instance is\n\t\t\t\t\t\t\t\t\tdeployed as an MR_Cluster. One MR_Cluster is deployed at each\n\t\t\t\t\t\t\t\t\tdcaeLocation. MR_Clients generally communicate to the\n\t\t\t\t\t\t\t\t\tMR_Cluster at the same dcaeLocation. Replication of messages\n\t\t\t\t\t\t\t\t\tbetween MR_Clusters is accomplished by MR Bridge, which is\n\t\t\t\t\t\t\t\t\tprovisioned by DMaaP Bus Controller based on Topic attributes.\n\n\t\t\t\t\t\t\t\t\tTherefore, the role of DMaaP Bus Controller is to support other\n\t\t\t\t\t\t\t\t\tDCAE infrastructure components to dynamically provision DMaaP\n\t\t\t\t\t\t\t\t\tservices on behalf of DMaaP clients, and to assist in any\n\t\t\t\t\t\t\t\t\tmanagement or discovery activity of its clients.\n\n\t\t\t\t\t\t\t\t\tA convention of this API is to return JSON responses per\n\t\t\t\t\t\t\t\t\tOpenStack style.",
     "version" : "1.1.0",
     "title" : "DMaaP Bus Controller REST API",
     "termsOfService" : "http://www.apache.org/licenses/LICENSE-2.0",
@@ -26,7 +26,7 @@
     "description" : "Endpoint for a Message Router servers in a Cluster configuration"
   }, {
     "name" : "bridge",
-    "description" : "Endpoint for retreiving MR Bridge metrics"
+    "description" : "Endpoint for retrieving MR Bridge metrics"
   }, {
     "name" : "dcaeLocations",
     "description" : "an OpenStack tenant purposed for OpenDCAE (i.e. where OpenDCAE components might be deployed)"
@@ -47,7 +47,7 @@
     "description" : "Endpoint for this instance of DBCL.  Returns health info."
   }, {
     "name" : "topics",
-    "description" : "Endpoint for retreiving MR Topics"
+    "description" : "Endpoint for retrieving MR Topics"
   } ],
   "schemes" : [ "http", "https" ],
   "paths" : {
