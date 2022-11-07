@@ -34,39 +34,59 @@ Steps for local development and test
 ------------------------------------
 On Intel dev machine, in terminal (> indicates prompt) :
 1) Build buscontroller images
+
     > git clone https://gerrit.onap.org/r/dmaap/buscontroller
         - anonymous http, can't push changes
+
     > cd buscontroller
+
     > mvn clean install -P docker
+
         - builds dmaap-bc and dbc-client images
+
 2) Run tests
+
     > cd dmaap-bc/src/main/resources/
+
     > cp docker-databus-controller.conf /var/tmp/
+
         - set docker preferences/file sharing to access /var/tmp
+
     - edit docker-compose.yml
-        - remove "nexus3.onap.org:10001/" from dmaap-bc:image: and dbc-client:image: to
-            use local images
+
+        - remove "nexus3.onap.org:10001/" from dmaap-bc:image: and dbc-client:image: to use local images
+
     > docker-compose up -d
     - create sample.txt file (as above)(content of file not important)
+
     > curl http://localhost:30241/webapi/bridge
 
 On Arm:
 1) Build buscontroller images
+
     > git clone https://gerrit.onap.org/r/dmaap/buscontroller
         - anonymous http, can't push changes
+
     > cd buscontroller
+
     > mvn clean install -P docker  -Ddocker.pull.registry=docker.io
         - ensure we pull Arm version of base image
+
 2) Run tests
+
     > cd dmaap-bc/src/main/resources/
+
     > cp docker-databus-controller.conf /var/tmp/
         - set docker preferences/file sharing to access /var/tmp
+
     - edit docker-compose.yml
         - remove "nexus3.onap.org:10001/" from dmaap-bc:image: and dbc-client:image: to
             use local images
         - replace 'crunchydata/crunchy-postgres:centos7-10.4-2.0.0' with
             multi-platform 'postgres:9.6-alpine' normative image
+
     > docker-compose up -d
     - create sample.txt file (as above)(content of file not important)
+
     > curl http://localhost:30241/webapi/bridge
 

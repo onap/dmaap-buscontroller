@@ -64,7 +64,6 @@ Base URL
 ~~~~~~~~
 
 http://www.[host]:[port]/webapi
-https://www.[host]:[port]/webapi
 
 BRIDGE
 ~~~~~~
