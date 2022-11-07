@@ -28,7 +28,7 @@ Description
     dcaeLocation. MR_Clients generally communicate to the
     MR_Cluster at the same dcaeLocation. Replication of messages
     between MR_Clusters is accomplished by MR Bridge, which is
-    provioned by DMaaP Bus Controller based on Topic attributes.
+    provisioned by DMaaP Bus Controller based on Topic attributes.
 
     Therefore, the role of DMaaP Bus Controller is to support other
     DCAE infrastructure components to dynamically provision DMaaP
@@ -64,13 +64,12 @@ Base URL
 ~~~~~~~~
 
 http://www.[host]:[port]/webapi
-https://www.[host]:[port]/webapi
 
 BRIDGE
 ~~~~~~
 
 
-Endpoint for retreiving MR Bridge metrics
+Endpoint for retrieving MR Bridge metrics
 
 
 
@@ -4031,7 +4030,7 @@ TOPICS
 ~~~~~~
 
 
-Endpoint for retreiving MR Topics
+Endpoint for retrieving MR Topics
 
 
 

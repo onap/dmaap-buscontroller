@@ -275,7 +275,7 @@ Release Data
 
 New features
 ------------
-* Updated log4j (Listed in "Known Vulternabilities" below) - DMAAP-1515
+* Updated log4j (Listed in "Known Vulnerabilities" below) - DMAAP-1515
 * Update Project Lead details - DMAAP-1538
 
 Known Limitations, Issues and Workarounds
