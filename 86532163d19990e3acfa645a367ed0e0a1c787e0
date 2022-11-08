@@ -1,0 +1,7 @@
+Verified+1: ONAP Jobbuilder <onap-jobbuilder@jenkins.onap.org>
+Code-Review+2: Thomas Kulik <thomas.kulik@telekom.de>
+Submitted-by: Thomas Kulik <thomas.kulik@telekom.de>
+Submitted-at: Tue, 08 Nov 2022 07:47:25 +0000
+Reviewed-on: https://gerrit.onap.org/r/c/dmaap/buscontroller/+/132024
+Project: dmaap/buscontroller
+Branch: refs/heads/master
