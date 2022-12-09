@@ -28,9 +28,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.ConnectException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.SocketException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.Arrays;
 import javax.net.ssl.HttpsURLConnection;
 import org.onap.dmaap.dbcapi.logging.BaseLoggingClass;
@@ -53,9 +56,8 @@ public class DrProvConnection extends BaseLoggingClass {
 	private	String	subContentType;
 	private	String unit_test;
 	private	String	provURI;
-	
-	private HttpsURLConnection uc;
 
+	private HttpURLConnection uc;
 
 	public DrProvConnection() {
 		provURL = new DmaapService().getDmaap().getDrProvUrl();
@@ -71,45 +73,44 @@ public class DrProvConnection extends BaseLoggingClass {
 		logger.info( "provURL=" + provURL + " provApi=" + provApi + " behalfHeader=" + behalfHeader
 				+ " feedContentType=" + feedContentType + " subContentType=" + subContentType );
 		unit_test = p.getProperty( "UnitTest", "No" );
-			
 	}
 	
 	public boolean makeFeedConnection() {
-		return makeConnection( provURL );
+		return makeDrConnection( provURL );
 	}
 	public boolean makeFeedConnection(String feedId) {
-		return makeConnection( provURL + "/feed/" + feedId );	
+		return makeDrConnection( provURL + "/feed/" + feedId );
 	}
 	public boolean makeSubPostConnection( String subURL ) {
 		String[] parts = subURL.split("/");
 		String revisedURL = provURL + "/" + parts[3] + "/" + parts[4];
 		logger.info( "mapping " + subURL + " to " + revisedURL );
-		return makeConnection( revisedURL );
+		return makeDrConnection( revisedURL );
 	}
 	public boolean makeSubPutConnection( String subId ) {
 		String revisedURL = provURL + "/subs/" + subId;
 		logger.info( "mapping " + subId + " to " + revisedURL );
-		return makeConnection( revisedURL );
+		return makeDrConnection( revisedURL );
 	}
 
 	public boolean makeIngressConnection( String feed, String user, String subnet, String nodep ) {
 		String uri = String.format("/internal/route/ingress/?feed=%s&user=%s&subnet=%s&nodepatt=%s", 
 					feed, user, subnet, nodep );
-		return makeConnection( provURL + uri );
+		return makeDrConnection( provURL + uri );
 	}
 	public boolean makeEgressConnection( String sub, String nodep ) {
 		String uri = String.format("/internal/route/egress/?sub=%s&node=%s", 
 					sub,  nodep );
-		return makeConnection( provURL + uri );
+		return makeDrConnection( provURL + uri );
 	}
 	public boolean makeDumpConnection() {
 		String url = provURL + provURI;
-		return makeConnection( url );
+		return makeDrConnection( url );
 	}
 	public boolean makeNodesConnection( String varName ) {
 		
 		String uri = String.format("/internal/api/%s", varName);
-		return makeConnection( provURL + uri );
+		return makeDrConnection( provURL + uri );
 	}
 	
 	public boolean makeNodesConnection( String varName, String val ) {
@@ -120,22 +121,54 @@ public class DrProvConnection extends BaseLoggingClass {
 		String cv = val.replaceAll("\\|", "%7C");
 		String uri = String.format( "/internal/api/%s?val=%s", varName, cv );
 
-		return makeConnection( provURL + uri );
+		return makeDrConnection( provURL + uri );
+	}
+
+	public boolean makeDrConnection(String provUrl) {
+		boolean rc = false;
+		logger.info( "connect to data router at: {}", provUrl);
+		try {
+			URL pUrl = new URL(provUrl);
+			if (pUrl.getProtocol().equals( "https" )) {
+				rc = makeSecureConnection(pUrl);
+			} else {
+				rc = makeDrConnection(pUrl);
+			}
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+
+		return rc;
 	}
 	
-	private boolean makeConnection( String pURL ) {
-	
+	private boolean makeSecureConnection(URL u) {
 		try {
-			URL u = new URL( pURL );
 			uc = (HttpsURLConnection) u.openConnection();
 			uc.setInstanceFollowRedirects(false);
-			logger.info( "successful connect to " + pURL );
-			uc.setSSLSocketFactory(DmaapConfig.getSSLSocketFactory());
+			logger.info( "successful connect to {}", u);
+			HttpsURLConnection ucs = (HttpsURLConnection) uc;
+			ucs.setSSLSocketFactory(DmaapConfig.getSSLSocketFactory());
 			return(true);
 		} catch (Exception e) {
-			errorLogger.error( DmaapbcLogMessageEnum.HTTP_CONNECTION_ERROR,  pURL, e.getMessage() );
+			logger.error("Unexpected error during openConnection of {}", u, e.getMessage());
             return(false);
         }
+	}
+
+	private boolean makeDrConnection(URL u) {
+		try {
+			uc = (HttpURLConnection) u.openConnection();
+			uc.setInstanceFollowRedirects(false);
+			logger.info( "successful connect to {}", u);
+			return(true);
+		} catch(UnknownHostException uhe){
+			logger.error("Caught UnknownHostException for {}", u);
+			return(false);
+		} catch (Exception e) {
+			logger.error("Unexpected error during openConnection of {}", u, e.getMessage());
+			return(false);
+		}
+
 	}
 	
 	public String bodyToString( InputStream is ) {

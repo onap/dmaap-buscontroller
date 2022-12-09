@@ -49,7 +49,7 @@ public class DmaapConfig extends Properties	{
 		try (InputStream is = new FileInputStream(CONFIG_FILE_NAME)){
 			load(is);
 		} catch (Exception e) {
-			logger.error("Unable to load configuration file " + CONFIG_FILE_NAME);
+			logger.error("Unable to load configuration file " + CONFIG_FILE_NAME, e.getMessage());
 			System.exit(1);
 		}
 	}
