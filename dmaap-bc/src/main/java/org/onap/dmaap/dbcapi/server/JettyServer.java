@@ -51,7 +51,6 @@ public class JettyServer extends BaseLoggingClass {
         new CertficateManagerFactory(DmaapConfig.getConfig()).initCertificateManager();
     private final Server server;
 
-
     public Server getServer() {
         return server;
     }
@@ -61,37 +60,30 @@ public class JettyServer extends BaseLoggingClass {
     }
 
     public JettyServer(Properties params) {
-
         server = new Server();
         int httpPort = Integer.parseInt(params.getProperty("IntHttpPort", "80"));
         int sslPort = Integer.parseInt(params.getProperty("IntHttpsPort", "443"));
         boolean allowHttp = Boolean.parseBoolean(params.getProperty("HttpAllowed", "false"));
         serverLogger.info("port params: http=" + httpPort + " https=" + sslPort);
         serverLogger.info("allowHttp=" + allowHttp);
-
         // HTTP Server
         HttpConfiguration httpConfig = new HttpConfiguration();
         httpConfig.setSecureScheme("https");
         httpConfig.setSecurePort(sslPort);
         httpConfig.setOutputBufferSize(32768);
-
         try (ServerConnector httpConnector = new ServerConnector(server, new HttpConnectionFactory(httpConfig))) {
             httpConnector.setPort(httpPort);
             httpConnector.setIdleTimeout(30000);
-
             // HTTPS Server
             HttpConfiguration httpsConfig = new HttpConfiguration(httpConfig);
             httpsConfig.addCustomizer(new SecureRequestCustomizer());
             SslContextFactory sslContextFactory = new SslContextFactory.Server();
             sslContextFactory.setWantClientAuth(true);
-
-            if ( ! certificateManager.isReady()) {
+            if (!certificateManager.isReady()) {
             	serverLogger.error("CertificateManager is not ready.  NOT starting https!");
             } else {
             	setUpKeystore(sslContextFactory);
             	setUpTrustStore(sslContextFactory);
-          
-
 	            if (sslPort != 0) {
 	                try (ServerConnector sslConnector = new ServerConnector(server,
 	                    new SslConnectionFactory(sslContextFactory, HttpVersion.HTTP_1_1.asString()),
@@ -111,7 +103,6 @@ public class JettyServer extends BaseLoggingClass {
                 serverLogger.info("NOT starting httpConnector because HttpAllowed param is " + allowHttp);
             }
         }
-
         // Set context for servlet.  This is shared for http and https
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
