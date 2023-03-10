@@ -128,6 +128,7 @@ public class DrProvConnection extends BaseLoggingClass {
 		boolean rc = false;
 		logger.info( "connect to data router at: {}", provUrl);
 		try {
+			logger.error("\n\n\nURL:" + provUrl + "\n\n\n");
 			URL pUrl = new URL(provUrl);
 			if (pUrl.getProtocol().equals( "https" )) {
 				rc = makeSecureConnection(pUrl);

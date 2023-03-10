@@ -24,14 +24,14 @@ services:
   dmaap-bc:
     container_name: dmaap-bc
     hostname: dmaap-bc
-    image: onap/dmaap/dmaap-bc
+    image: onap/dmaap/dmaap-bc:latest
     ports:
     - "30241:8080"
     - "30242:8443"
     volumes:
     - ./buscontroller.env:/opt/app/config/conf/buscontroller.env
     - ./dmaapbc.properties:/opt/app/config/conf/dmaapbc.properties
-    - ./cadi_aaf:/opt/app/osaaf/local
+    #- ./cadi_aaf:/opt/app/osaaf/local
     - ./logback.xml:/opt/app/dmaapbc/etc/logback.xml
     networks:
       dockercompose_net:
@@ -40,6 +40,7 @@ services:
     extra_hosts:
       - dmaap-dr-prov:$dmaap_prov_ip
       - message-router:$dmaap_prov_ip
+      - dbc-pg:$dbc_pg_ip
 
 networks:
   dockercompose_net:

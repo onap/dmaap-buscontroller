@@ -21,7 +21,7 @@ package org.onap.dmaap.dbcapi.resources;
 
 import org.glassfish.jersey.test.JerseyTest;
 
-import javax.ws.rs.core.Application;
+import jakarta.ws.rs.core.Application;
 
 class FastJerseyTestContainer extends JerseyTest {
 

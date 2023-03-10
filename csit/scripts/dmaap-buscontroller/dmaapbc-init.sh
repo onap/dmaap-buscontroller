@@ -8,7 +8,7 @@ cat << EOF > $JSON
 {
     "version": "1",
     "topicNsRoot": "org.onap.dmaap",
-    "drProvUrl": "https://dmaap-dr-prov:8443",
+    "drProvUrl": "http://dmaap-dr-prov:8080",
     "dmaapName": "onapCSIT",
     "bridgeAdminTopic": "MM_AGENT_PROV"
 
@@ -16,7 +16,7 @@ cat << EOF > $JSON
 EOF
 
 echo "Initializing /dmaap endpoint"
-curl -v -k  -X POST -d @${JSON} -H "Content-Type: application/json" https://$1:8443/webapi/dmaap
+curl -v -k  -X POST -d @${JSON} -H "Content-Type: application/json" http://$1:8080/webapi/dmaap
 
 
 # INITIALIZE: dcaeLocation object
@@ -32,7 +32,7 @@ cat << EOF > $JSON
 EOF
 
 echo "Initializing /dcaeLocations endpoint"
-curl -v -k  -X POST -d @${JSON} -H "Content-Type: application/json" https://$1:8443/webapi/dcaeLocations
+curl -v -k  -X POST -d @${JSON} -H "Content-Type: application/json" http://$1:8080/webapi/dcaeLocations
 
 
 # INITIALIZE: MR object in 1 site
@@ -55,4 +55,4 @@ cat << EOF > $JSON
 EOF
 
 echo "Initializing /mr_clusters endpoint"
-curl -v -k  -X POST -d @${JSON} -H "Content-Type: application/json" https://$1:8443/webapi/mr_clusters
+curl -v -k  -X POST -d @${JSON} -H "Content-Type: application/json" http://$1:8080/webapi/mr_clusters

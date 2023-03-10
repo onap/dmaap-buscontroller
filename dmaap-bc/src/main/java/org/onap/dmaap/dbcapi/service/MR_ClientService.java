@@ -22,6 +22,10 @@
 
 package org.onap.dmaap.dbcapi.service;
 
+import jakarta.ws.rs.core.Response.Status;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import org.onap.dmaap.dbcapi.aaf.AafService.ServiceType;
 import org.onap.dmaap.dbcapi.aaf.AafServiceFactory;
 import org.onap.dmaap.dbcapi.client.MrProvConnection;
@@ -34,11 +38,6 @@ import org.onap.dmaap.dbcapi.model.MR_Client;
 import org.onap.dmaap.dbcapi.model.MR_Cluster;
 import org.onap.dmaap.dbcapi.model.Topic;
 import org.onap.dmaap.dbcapi.util.DmaapConfig;
-
-import javax.ws.rs.core.Response.Status;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 public class MR_ClientService extends BaseLoggingClass {
 

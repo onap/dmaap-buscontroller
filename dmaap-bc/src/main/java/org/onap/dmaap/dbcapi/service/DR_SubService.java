@@ -22,12 +22,10 @@
 
 package org.onap.dmaap.dbcapi.service;
 
+import jakarta.ws.rs.core.Response.Status;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import javax.ws.rs.core.Response.Status;
-
 import org.onap.dmaap.dbcapi.client.DrProvConnection;
 import org.onap.dmaap.dbcapi.database.DatabaseClass;
 import org.onap.dmaap.dbcapi.logging.BaseLoggingClass;

@@ -42,11 +42,11 @@
     </sitePath>
     <eelf.version>1.0.0</eelf.version>
     <dmaapbc.image.name>${docker.image.root}${project.artifactId}</dmaapbc.image.name>
-    <swagger.version>1.5.19</swagger.version>
-    <jackson.version>2.9.5</jackson.version>
-    <jersey.version>2.29</jersey.version>
+    <swagger.version>1.6.8</swagger.version>
+    <jackson.version>2.14.2</jackson.version>
+    <jersey.version>3.1.1</jersey.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <jettyVersion>9.4.40.v20210413</jettyVersion>
+    <jettyVersion>11.0.14</jettyVersion>
     <eelf.version>1.0.0</eelf.version>
     <junit.version>4.12</junit.version>
     <sonar.exclusions>**/gen/**,**/generated-sources/**,**/yang-gen**,**/pax/**</sonar.exclusions>
@@ -69,14 +69,17 @@
     <dependency>
       <groupId>org.glassfish.jersey.media</groupId>
       <artifactId>jersey-media-json-jackson</artifactId>
+      <version>${jersey.version}</version>
     </dependency>
     <dependency>
       <groupId>org.glassfish.jersey.containers</groupId>
       <artifactId>jersey-container-servlet-core</artifactId>
+      <version>${jersey.version}</version>
     </dependency>
     <dependency>
       <groupId>org.glassfish.jersey.media</groupId>
       <artifactId>jersey-media-moxy</artifactId>
+      <version>${jersey.version}</version>
     </dependency>
     <dependency>
       <groupId>org.glassfish.jersey.test-framework.providers</groupId>
@@ -85,12 +88,12 @@
           <version>${jersey.version}</version>
       -->
       <artifactId>jersey-test-framework-provider-jdk-http</artifactId>
-      <version>2.29.1</version>
+      <version>${jersey.version}</version>
     </dependency>
     <dependency>
       <groupId>org.glassfish.jersey.inject</groupId>
       <artifactId>jersey-hk2</artifactId>
-      <version>2.29.1</version>
+      <version>${jersey.version}</version>
     </dependency>
     <dependency>
       <groupId>org.onap.aaf.authz</groupId>
@@ -181,13 +184,13 @@
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-servlets</artifactId>
-      <version>9.4.41.v20210516</version>
+      <version>${jettyVersion}</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-http</artifactId>
-      <version>9.4.43.v20210629</version>
+      <version>${jettyVersion}</version>
       <scope>compile</scope>
     </dependency>
     <!-- https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple -->
@@ -205,7 +208,7 @@
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
-      <version>42.3.7</version>
+      <version>42.5.4</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -216,7 +219,7 @@
       <!-- use 2.3.1 to avoid this issue: https://github.com/eclipse-ee4j/jaxb-ri/issues/1222 -->
       <groupId>javax.xml.bind</groupId>
       <artifactId>jaxb-api</artifactId>
-      <version>2.3.1</version>
+      <version>2.4.0-b180830.0359</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>

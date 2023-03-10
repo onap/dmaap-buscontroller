@@ -20,15 +20,14 @@
 
 package org.onap.dmaap.dbcapi.resources;
 
+import static jakarta.ws.rs.core.Response.Status.NOT_FOUND;
+import static jakarta.ws.rs.core.Response.Status.SERVICE_UNAVAILABLE;
+import static jakarta.ws.rs.core.Response.Status.UNAUTHORIZED;
+import static org.junit.Assert.assertEquals;
+
+import jakarta.ws.rs.core.Response;
 import org.junit.Test;
 import org.onap.dmaap.dbcapi.model.ApiError;
-
-import javax.ws.rs.core.Response;
-
-import static javax.ws.rs.core.Response.Status.NOT_FOUND;
-import static javax.ws.rs.core.Response.Status.SERVICE_UNAVAILABLE;
-import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
-import static org.junit.Assert.assertEquals;
 
 public class ResponseBuilderTest {
 
