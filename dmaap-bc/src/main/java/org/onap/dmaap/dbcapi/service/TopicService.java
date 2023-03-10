@@ -22,6 +22,13 @@
 
 package org.onap.dmaap.dbcapi.service;
 
+import jakarta.ws.rs.core.Response.Status;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import org.onap.dmaap.dbcapi.aaf.AafService.ServiceType;
 import org.onap.dmaap.dbcapi.aaf.AafServiceFactory;
 import org.onap.dmaap.dbcapi.database.DatabaseClass;
@@ -38,14 +45,6 @@ import org.onap.dmaap.dbcapi.model.Topic;
 import org.onap.dmaap.dbcapi.util.DmaapConfig;
 import org.onap.dmaap.dbcapi.util.Fqdn;
 import org.onap.dmaap.dbcapi.util.Graph;
-
-import javax.ws.rs.core.Response.Status;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class TopicService extends BaseLoggingClass {
 

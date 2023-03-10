@@ -24,11 +24,11 @@ package org.onap.dmaap.dbcapi.resources;
 import static com.att.eelf.configuration.Configuration.MDC_RESPONSE_CODE;
 import static com.att.eelf.configuration.Configuration.MDC_RESPONSE_DESC;
 import static com.att.eelf.configuration.Configuration.MDC_STATUS_CODE;
-import static javax.ws.rs.core.Response.Status.NOT_FOUND;
-import static javax.ws.rs.core.Response.Status.SERVICE_UNAVAILABLE;
-import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
+import static jakarta.ws.rs.core.Response.Status.NOT_FOUND;
+import static jakarta.ws.rs.core.Response.Status.SERVICE_UNAVAILABLE;
+import static jakarta.ws.rs.core.Response.Status.UNAUTHORIZED;
 
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response;
 import org.onap.dmaap.dbcapi.logging.BaseLoggingClass;
 import org.onap.dmaap.dbcapi.model.ApiError;
 import org.slf4j.MDC;

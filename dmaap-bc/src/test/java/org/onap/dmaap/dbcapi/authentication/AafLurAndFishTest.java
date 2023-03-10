@@ -22,7 +22,7 @@ package org.onap.dmaap.dbcapi.authentication;
 
 import static org.junit.Assert.assertTrue;
 
-import javax.ws.rs.core.Application;
+import jakarta.ws.rs.core.Application;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Before;

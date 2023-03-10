@@ -20,8 +20,8 @@
 package org.onap.dmaap.dbcapi.resources;
 import static org.junit.Assert.assertTrue;
 
-import javax.ws.rs.core.Application;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.core.Application;
+import jakarta.ws.rs.core.Response;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 import org.junit.BeforeClass;

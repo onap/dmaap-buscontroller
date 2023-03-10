@@ -20,9 +20,9 @@
 
 package org.onap.dmaap.dbcapi.resources;
 
-import javax.ws.rs.container.ContainerRequestContext;
-import javax.ws.rs.container.ContainerRequestFilter;
 
+import jakarta.ws.rs.container.ContainerRequestContext;
+import jakarta.ws.rs.container.ContainerRequestFilter;
 import org.onap.dmaap.dbcapi.authentication.AuthenticationErrorException;
 import org.onap.dmaap.dbcapi.logging.BaseLoggingClass;
 import org.onap.dmaap.dbcapi.service.ApiService;
@@ -30,7 +30,7 @@ import org.onap.dmaap.dbcapi.util.DmaapConfig;
 
 
 @Authorization
-public class AuthorizationFilter extends BaseLoggingClass implements ContainerRequestFilter   {
+public class AuthorizationFilter extends BaseLoggingClass implements ContainerRequestFilter {
 
 	private static final String AAF_CADI_FLAG = "enableCADI";
 	private final ResponseBuilder responseBuilder = new ResponseBuilder();

@@ -22,9 +22,9 @@
 
 package org.onap.dmaap.dbcapi.server;
 
-import com.google.common.collect.Sets;
+import jakarta.servlet.DispatcherType;
+import java.util.EnumSet;
 import java.util.Properties;
-import javax.servlet.DispatcherType;
 import org.eclipse.jetty.http.HttpVersion;
 import org.eclipse.jetty.server.HttpConfiguration;
 import org.eclipse.jetty.server.HttpConnectionFactory;
@@ -77,7 +77,7 @@ public class JettyServer extends BaseLoggingClass {
             // HTTPS Server
             HttpConfiguration httpsConfig = new HttpConfiguration(httpConfig);
             httpsConfig.addCustomizer(new SecureRequestCustomizer());
-            SslContextFactory sslContextFactory = new SslContextFactory.Server();
+            SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
             sslContextFactory.setWantClientAuth(true);
             if (!certificateManager.isReady()) {
             	serverLogger.error("CertificateManager is not ready.  NOT starting https!");
@@ -112,17 +112,18 @@ public class JettyServer extends BaseLoggingClass {
             .addServlet(org.glassfish.jersey.servlet.ServletContainer.class, "/webapi/*");
         jerseyServlet.setInitOrder(1);
         jerseyServlet.setInitParameter("jersey.config.server.provider.packages", "org.onap.dmaap.dbcapi.resources");
-        jerseyServlet.setInitParameter("javax.ws.rs.Application", "org.onap.dmaap.dbcapi.server.ApplicationConfig");
+        jerseyServlet.setInitParameter("jakarta.ws.rs.Application", "org.onap.dmaap.dbcapi.server.ApplicationConfig");
 
         // also serve up some static pages...
         ServletHolder staticServlet = context.addServlet(DefaultServlet.class, "/*");
         staticServlet.setInitParameter("resourceBase", "www");
         staticServlet.setInitParameter("pathInfoOnly", "true");
 
-        registerAuthFilters(context);
+        if (Boolean.parseBoolean(params.getProperty("enableCADI", "false"))) {
+            registerAuthFilters(context);
+        }
 
         try {
-
             serverLogger.info("Starting jetty server");
             String unitTest = params.getProperty("UnitTest", "No");
             serverLogger.info("UnitTest=" + unitTest);
@@ -136,14 +137,13 @@ public class JettyServer extends BaseLoggingClass {
         } finally {
             server.destroy();
         }
-
     }
 
     private void registerAuthFilters(ServletContextHandler context) {
-        context.addFilter("org.onap.dmaap.dbcapi.resources.AAFAuthenticationFilter", "/webapi/*",
-            Sets.newEnumSet(Sets.newHashSet(DispatcherType.FORWARD, DispatcherType.REQUEST), DispatcherType.class));
-        context.addFilter("org.onap.dmaap.dbcapi.resources.AAFAuthorizationFilter", "/webapi/*",
-            Sets.newEnumSet(Sets.newHashSet(DispatcherType.FORWARD, DispatcherType.REQUEST), DispatcherType.class));
+        context.addFilter("org.onap.dmaap.dbcapi.resources.AAFAuthenticationFilter", "/webapi/*", EnumSet.of(
+            DispatcherType.FORWARD, DispatcherType.REQUEST));
+        context.addFilter("org.onap.dmaap.dbcapi.resources.AAFAuthorizationFilter", "/webapi/*", EnumSet.of(
+            DispatcherType.FORWARD, DispatcherType.REQUEST));
     }
 
     private void setUpKeystore(SslContextFactory sslContextFactory) {

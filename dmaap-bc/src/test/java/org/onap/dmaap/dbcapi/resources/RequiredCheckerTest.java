@@ -27,7 +27,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.onap.dmaap.dbcapi.model.ApiError;
 
-import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
+import static jakarta.ws.rs.core.Response.Status.BAD_REQUEST;
 import static org.junit.Assert.fail;
 
 public class RequiredCheckerTest {

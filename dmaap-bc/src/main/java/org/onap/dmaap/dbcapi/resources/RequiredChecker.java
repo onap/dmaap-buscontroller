@@ -20,7 +20,8 @@
 
 package org.onap.dmaap.dbcapi.resources;
 
-import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
+
+import static jakarta.ws.rs.core.Response.Status.BAD_REQUEST;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

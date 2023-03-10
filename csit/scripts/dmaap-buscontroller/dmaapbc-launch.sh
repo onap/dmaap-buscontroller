@@ -12,10 +12,12 @@ function dmaapbc_launch() {
       export dmaap_mr_ip=$1
     fi
 
-    docker-compose -f ${WORKSPACE}/scripts/dmaap-buscontroller/docker-compose/docker-compose-bc.yml up -d
-
+    docker-compose -f ${WORKSPACE}/scripts/dmaap-buscontroller/docker-compose/docker-compose-bc.yml up -d dbc-pg-primary
+    sleep 5
+    DMAAP_BC_PG_IP=`get-instance-ip.sh dbc-pg`
+    export dbc_pg_ip=${DMAAP_BC_PG_IP}
+    docker-compose -f ${WORKSPACE}/scripts/dmaap-buscontroller/docker-compose/docker-compose-bc.yml up -d dmaap-bc
     sleep 10
-
     DMAAP_BC_IP=`get-instance-ip.sh dmaap-bc`
 
     # Wait for initialization
