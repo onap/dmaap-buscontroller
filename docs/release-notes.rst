@@ -16,6 +16,80 @@ Release Notes
 ..      * one section describing the purpose of this new release.
 ..      * This note must be removed after content has been added.
 
+London
+======
+
+Abstract
+--------
+This document provides the release notes for the London release.
+
+Summary
+-------
+No change
+
+Release Data
+------------
++--------------------------------------+--------------------------------------+
+| **DMaaP Bus Controller Project**     |                                      |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+| **Docker images**                    | - dmaap-bc 2.0.12                    |
+|                                      | - dbc-client 2.0.12                  |
++--------------------------------------+--------------------------------------+
+| **Release designation**              | 12.0.0 London                        |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+| **Release date**                     | TBD                                  |
+|                                      |                                      |
++--------------------------------------+--------------------------------------+
+
+
+New features
+------------
+Vulnerability upgrades fro London - DMAAP-1844
+
+Known Limitations, Issues and Workarounds
+-----------------------------------------
+
+System Limitations
+------------------
+
+
+Known Vulnerabilities
+---------------------
+
+
+Workarounds
+-----------
+
+
+Security Notes
+--------------
+
+
+References
+----------
+
+For more information on the ONAP Kohn release, please see:
+
+#. `ONAP Home Page`_
+#. `ONAP Documentation`_
+#. `ONAP Release Downloads`_
+#. `ONAP Wiki Page`_
+
+
+.. _`ONAP Home Page`: https://www.onap.org
+.. _`ONAP Wiki Page`: https://wiki.onap.org
+.. _`ONAP Documentation`: https://docs.onap.org
+.. _`ONAP Release Downloads`: https://git.onap.org
+
+
+Quick Links:
+
+- `DMAAP project page <https://wiki.onap.org/display/DW/DMaaP+Planning>`_
+- `Passing Badge information for DMAAP <https://bestpractices.coreinfrastructure.org/en/projects/2147>`_
+
+
 Kohn
 ====
 
@@ -39,7 +113,7 @@ Release Data
 | **Release designation**              | 11.0.0 Kohn                          |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
-| **Release date**                     | TBD                                  |
+| **Release date**                     | 2022-12-05                           |
 |                                      |                                      |
 +--------------------------------------+--------------------------------------+
 
