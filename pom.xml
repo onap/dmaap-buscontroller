@@ -33,7 +33,7 @@
   </parent>
 
   <properties>
-    <revision>2.0.12-SNAPSHOT</revision>
+    <revision>2.0.13-SNAPSHOT</revision>
     <multiproject.basedir>${basedir}</multiproject.basedir>
     <docker.maven.plugin.version>1.0.0</docker.maven.plugin.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
