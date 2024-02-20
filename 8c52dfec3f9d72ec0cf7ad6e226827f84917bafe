@@ -1,0 +1,9 @@
+Verified+1: ONAP Required GHA <releng+onap.required.gha@linuxfoundation.org>
+Code-Review+2: David McWeeney <david.mcweeney@est.tech>
+Verified+1: Jessica Wagantall <jwagantall@linuxfoundation.org>
+Code-Review+2: Jessica Wagantall <jwagantall@linuxfoundation.org>
+Submitted-by: Jessica Wagantall <jwagantall@linuxfoundation.org>
+Submitted-at: Tue, 20 Feb 2024 18:31:44 +0000
+Reviewed-on: https://gerrit.onap.org/r/c/dmaap/buscontroller/+/137291
+Project: dmaap/buscontroller
+Branch: refs/heads/master
