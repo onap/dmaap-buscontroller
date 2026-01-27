@@ -597,8 +597,6 @@ Quick Links:
 
 - `Passing Badge information for DMAAP <https://bestpractices.coreinfrastructure.org/en/projects/2147>`_
 
-- `El Alto Project Vulnerability Review Table for DMAAP <https://wiki.onap.org/pages/viewpage.action?pageId=71835817>`_
-
 **Upgrade Notes**
        NA
 
@@ -633,8 +631,6 @@ Quick Links:
 
 - `Passing Badge information for DMAAP <https://bestpractices.coreinfrastructure.org/en/projects/2147>`_
 
-- `Dublin Project Vulnerability Review Table for DMAAP <https://wiki.onap.org/pages/viewpage.action?pageId=64003715>`_
-
 **Upgrade Notes**
 NA
 
@@ -668,8 +664,6 @@ Quick Links:
 - `DMAAP project page <https://wiki.onap.org/display/DW/DMaaP+Planning>`_
 
 - `Passing Badge information for DMAAP <https://bestpractices.coreinfrastructure.org/en/projects/2147>`_
-
-- `Project Vulnerability Review Table for DMAAP <https://wiki.onap.org/pages/viewpage.action?pageId=28379799>`_
 
 **Upgrade Notes**
 NA
