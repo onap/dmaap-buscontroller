@@ -597,8 +597,6 @@ Quick Links:
 
 - `Passing Badge information for DMAAP <https://bestpractices.coreinfrastructure.org/en/projects/2147>`_
 
-- `El Alto Project Vulnerability Review Table for DMAAP <https://wiki.onap.org/pages/viewpage.action?pageId=71835817>`_
-
 **Upgrade Notes**
        NA
 
@@ -633,8 +631,6 @@ Quick Links:
 
 - `Passing Badge information for DMAAP <https://bestpractices.coreinfrastructure.org/en/projects/2147>`_
 
-- `Dublin Project Vulnerability Review Table for DMAAP <https://wiki.onap.org/pages/viewpage.action?pageId=64003715>`_
-
 **Upgrade Notes**
 NA
 
@@ -661,15 +657,13 @@ Version: 1.0.23
        NA
 
 **Security Notes**
-DMAAP code has been formally scanned during build time using NexusIQ and all Critical vulnerabilities have been addressed, items that remain open have been assessed for risk and determined to be false positive. The DMAAP open Critical security vulnerabilities and their risk assessment have been documented as part of the `project <https://wiki.onap.org/pages/viewpage.action?pageId=28379799>`_.
+DMAAP code has been formally scanned during build time using NexusIQ and all Critical vulnerabilities have been addressed, items that remain open have been assessed for risk and determined to be false positive. The DMAAP open Critical security vulnerabilities and their risk assessment have been documented as part of the project.`_.
 
 Quick Links:
 
 - `DMAAP project page <https://wiki.onap.org/display/DW/DMaaP+Planning>`_
 
 - `Passing Badge information for DMAAP <https://bestpractices.coreinfrastructure.org/en/projects/2147>`_
-
-- `Project Vulnerability Review Table for DMAAP <https://wiki.onap.org/pages/viewpage.action?pageId=28379799>`_
 
 **Upgrade Notes**
 NA
