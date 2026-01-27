@@ -669,7 +669,7 @@ Quick Links:
 
 - `Passing Badge information for DMAAP <https://bestpractices.coreinfrastructure.org/en/projects/2147>`_
 
-- `Project Vulnerability Review Table for DMAAP <https://wiki.onap.org/pages/viewpage.action?pageId=28379799>`_
+- `Project Vulnerability Review Table for DMAAP <https://wiki.onap.org/>`_
 
 **Upgrade Notes**
 NA
