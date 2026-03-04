@@ -18,32 +18,36 @@ Bus Controller endpoints are used to provision:
 - an authorized topic on MR, and to create and grant permission for publishers and subscribers.
 - a feed on DR, with associated user authentication.
 
-.. blockdiag::
+.. mermaid::
 
-   blockdiag layers {
-   orientation = portrait
-   DBC_CLIENT -> DBC_API;
-   DBC_API -> MR;
-   DBC_API -> DR;
-   DBC_API -> AAF;
-   group l1 {
-        color = blue;
-        label = "Bus Controller Container";
-        DBC_API;
-        }
-   group l2 {
-        color = yellow;
-        label = "MR";
-        MR;
-        }
-   group l3 {
-        color = orange;
-        label = "DR";
-        DR;
-        }
-    group l4 {
-        color = green;
-        label = "AAF";
-        AAF;
-        }
-    }
+   graph TD
+       DBC_CLIENT --> DBC_API
+       DBC_API --> MR
+       DBC_API --> DR
+       DBC_API --> AAF
+
+       subgraph "Bus Controller Container"
+           DBC_API
+       end
+
+       subgraph "MR"
+           MR
+       end
+
+       subgraph "DR"
+           DR
+       end
+
+       subgraph "AAF"
+           AAF
+       end
+
+       classDef blue fill:#33f,stroke:#333,color:#fff
+       classDef yellow fill:#ff0,stroke:#333,color:#000
+       classDef orange fill:#f90,stroke:#333,color:#000
+       classDef green fill:#0c0,stroke:#333,color:#000
+
+       class DBC_API blue
+       class MR yellow
+       class DR orange
+       class AAF green
